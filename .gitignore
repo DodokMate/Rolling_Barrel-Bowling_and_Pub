@@ -1,0 +1,28 @@
+# Node.js packages (backend)
+backend/node_modules/
+
+# Environment / configuration files
+backend/.env
+
+# Build / output folders (if exist)
+frontend/client/dist/
+frontend/admin/dist/
+
+# Bootstrap
+frontend/client/bootstrap/
+frontend/admin/bootstrap/
+
+# Log files
+*.log
+
+# IDE / editor files
+.vscode/
+.idea/
+
+# OS temporary files
+.DS_Store
+Thumbs.db
+
+# Temporary / cache files
+*.tmp
+*.swp
