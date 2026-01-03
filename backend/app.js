@@ -1,11 +1,15 @@
 //MODULE IMPORTS
 const express = require('express');
+const path = require('path');
 
 //SETTINGS
 const database = require('./database');
 
 const app = express();
 app.use(express.json());
+
+//Static frontend
+app.use(express.static(path.join(__dirname, '../frontend/client/index.html')));
 
 //ENDPOINTS
 const authRoutes = require('./routes/auth.routes')

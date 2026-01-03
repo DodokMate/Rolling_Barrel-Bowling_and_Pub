@@ -31,16 +31,16 @@ async function registration(user) {
     return result;
 }
 
-//DETECTING EMAIL DUPLICATION
-async function doubleEmail(email) {
-    const query = 'SELECT id FROM users WHERE email = ?';
+//DETECTING EMAIL DUPLICATION + LOGIN
+async function checkEmail(email) {
+    const query = 'SELECT name FROM users WHERE email = ?';
     const [rows] = await pool.execute(query, [email]);
-    return rows;
+    return rows[0];
 }
 
 //Exports
 module.exports = {
     test,
     registration,
-    doubleEmail
+    checkEmail
 };
