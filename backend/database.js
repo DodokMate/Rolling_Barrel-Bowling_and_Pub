@@ -10,14 +10,37 @@ const pool = mysql.createPool({
     queueLimit: 0,
 });
 
-//SQL Queries
+//SQL QUERIES
+
+//Test
 async function test() {
     const query = "SELECT * FROM users";
     const [rows] = await pool.execute(query);
     return rows;
 }
 
+//REGISTRATION
+async function registration(user) {
+    const query = 'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?);';
+    const values = [user.name, user.email, user.password, 'user'];
+    await pool.execute(query, values);
+    const result = { 
+        success: true, 
+        username: user.name 
+    };
+    return result;
+}
+
+//DETECTING EMAIL DUPLICATION
+async function doubleEmail(email) {
+    const query = 'SELECT id FROM users WHERE email = ?';
+    const [rows] = await pool.execute(query, [email]);
+    return rows;
+}
+
 //Exports
 module.exports = {
-    test
+    test,
+    registration,
+    doubleEmail
 };
