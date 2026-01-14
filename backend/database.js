@@ -33,7 +33,7 @@ async function registration(user) {
 
 //DETECTING EMAIL DUPLICATION + LOGIN
 async function checkEmail(email) {
-    const query = 'SELECT name FROM users WHERE email = ?';
+    const query = 'SELECT id, name, email, password, role FROM users WHERE email = ?';
     const [rows] = await pool.execute(query, [email]);
     return rows[0];
 }

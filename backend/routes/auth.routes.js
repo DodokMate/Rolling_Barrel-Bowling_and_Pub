@@ -25,7 +25,9 @@ router.post('/registration', async (req, res) => {
 
         const existingEmail = await database.checkEmail(email);
 
-        if (existingEmail.length > 0) {
+        if (existingEmail) {
+            console.log('Account with this email is already exists.');
+
             return res.status(409).json({
                 success: false,
                 message: 'Account with this email is already exists.'
@@ -35,7 +37,7 @@ router.post('/registration', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         await database.registration({
-            username: name,
+            name: name,
             email: email,
             password: hashedPassword
         });
