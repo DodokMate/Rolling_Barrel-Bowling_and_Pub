@@ -12,8 +12,12 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../frontend/client/index.html')));
 
 //ENDPOINTS
-const authRoutes = require('./routes/auth.routes')
+const authRoutes = require('./routes/auth.routes.js');
 app.use('/api', authRoutes);
+
+const profileRoutes = require('./routes/profile.routes.js');
+app.use('/api', profileRoutes);
+
 
 app.get('/', (req, res) => {
     res.send('Rolling Barrel backend is running');

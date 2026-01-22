@@ -2,7 +2,7 @@
 backend/node_modules/
 
 # Environment / configuration files
-backend/.env
+# backend/.env --> alapjáraton ezt nem pusholjuk fel biztonsági okokból 
 
 # Build / output folders (if exist)
 frontend/client/dist/
