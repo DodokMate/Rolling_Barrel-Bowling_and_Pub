@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 //Static frontend
-app.use(express.static(path.join(__dirname, '../frontend/client/index.html')));
+app.use(express.static(path.join(__dirname, '../frontend/client')));
 
 //ENDPOINTS
 const authRoutes = require('./routes/auth.routes.js');
@@ -18,10 +18,11 @@ app.use('/api', authRoutes);
 const profileRoutes = require('./routes/profile.routes.js');
 app.use('/api', profileRoutes);
 
-
+/* Test
 app.get('/', (req, res) => {
     res.send('Rolling Barrel backend is running');
 });
+*/
 
 //api/testsql
 app.get('/api/testsql', async (request, response) => {
