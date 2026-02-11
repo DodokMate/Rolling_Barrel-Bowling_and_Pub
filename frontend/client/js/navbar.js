@@ -222,3 +222,9 @@ export function initNavbar() {
         logoutBtn.addEventListener("click", logout);
     }
 }
+
+function logout() {
+    localStorage.removeItem('token');
+    location.reload();
+    alert("Sikeres kijelentkezés!");
+}
