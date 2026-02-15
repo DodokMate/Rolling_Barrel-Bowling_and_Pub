@@ -1,3 +1,6 @@
+import { renderRegisterForm } from "./auth.js";
+import { renderLoginForm } from "./auth.js";
+
 //Initialize the navbar with DOM
 export function initNavbar() {
     const token = localStorage.getItem('token');
@@ -86,6 +89,11 @@ export function initNavbar() {
         aReg.className = "dropdown-item";
         aReg.id = "regBtn";
         aReg.textContent = "Regisztráció";
+
+        aReg.addEventListener("click", () => {
+            renderRegisterForm();
+        });
+
         liReg.appendChild(aReg);
 
         //login link
@@ -95,6 +103,11 @@ export function initNavbar() {
         aLogin.className = "dropdown-item";
         aLogin.id = "logInBtn";
         aLogin.textContent = "Belépés";
+
+        aLogin.addEventListener("click", () => {
+            renderLoginForm();
+        });
+
         liLogin.appendChild(aLogin);
 
         dropdownMenu.append(liReg, liLogin);
