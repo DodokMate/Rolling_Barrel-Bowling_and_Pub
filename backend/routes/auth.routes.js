@@ -19,18 +19,18 @@ router.post('/registration', async (req, res) => {
         if (!name || !email || !password) {
             return res.status(400).json({
                 success: false,
-                message: 'Missing required fields!'
+                message: 'Hiányzó szükséges adatok!'
             });
         }
 
         const existingEmail = await database.checkEmail(email);
 
         if (existingEmail) {
-            console.log('Account with this email is already exists.');
+            console.log('Felhasználói fiók ezzel az email címmel már létezik.');
 
             return res.status(409).json({
                 success: false,
-                message: 'Account with this email is already exists.'
+                message: 'Felhasználói fiók ezzel az email címmel már létezik.'
             });
         }
 
@@ -44,16 +44,16 @@ router.post('/registration', async (req, res) => {
 
         res.status(201).json({
             success: true,
-            message: 'User registered successfully!'
+            message: 'Felhasználó sikeresen regisztrálva!'
         });
-        console.log('User registered successfully!');
+        console.log('Felhasználó sikeresen regisztrálva!');
     } 
     catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Registration failed! ' + error.message
+            message: 'Sikertelen regisztráció! ' + error.message
         });
-        console.log('Registration failed!');
+        console.log('Sikertelen regisztráció!');
     }
 });
 
@@ -67,7 +67,7 @@ router.post('/login', async (req, res) => {
         if (!email || !password) {
             return res.status(400).json({
                 success: false,
-                message: 'Missing email or password!'
+                message: 'Hiányzó email vagy jelszó!'
             });
         }
 
@@ -76,7 +76,7 @@ router.post('/login', async (req, res) => {
         if (!user) {
             return res.status(401).json({
                 success: false,
-                message: 'Invalid email or password!'
+                message: 'Helytelen email vagy jelszó!'
             });
         }
 
@@ -85,7 +85,7 @@ router.post('/login', async (req, res) => {
         if (!passwordMatch) {
             return res.status(401).json({
                 success: false,
-                message: 'Invalid password!'
+                message: 'Helytelen jelszó!'
             });
         }
 
@@ -101,18 +101,18 @@ router.post('/login', async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: 'Login successful!',
+            message: 'Sikeres bejelentkezés!',
             token,
             role: user.role
         });
-        console.log('Login successful!');
+        console.log('Sikeres bejelentkezés!');
     } 
     catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Login failed! ' + error.message
+            message: 'Sikertelen bejelentkezés! ' + error.message
         });
-        console.log('Login failed!');
+        console.log('Sikertelen bejelentkezés!');
     }
 });
 

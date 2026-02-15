@@ -1,5 +1,6 @@
 //MODULE IMPORTS
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 
 //SETTINGS
@@ -7,6 +8,7 @@ const database = require('./database');
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 //Static frontend
 app.use(express.static(path.join(__dirname, '../frontend/client')));
