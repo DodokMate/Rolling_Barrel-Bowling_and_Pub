@@ -51,10 +51,25 @@ export function renderRegisterForm() {
     btn.className = "reg-btn";
     btn.textContent = "Regisztráció";
 
-    const helper = document.createElement("p");
-    helper.className = "auth-helper";
-    helper.innerHTML = `Már van fiókod? <button type="button" class="reg-link" id="go-to-login">Belépés</button>`;
+    const helper = document.createElement("div");
+    helper.className = "helper";
+    helper.id = "reg-helper";
 
+    const helperText = document.createElement("p");
+    helperText.className = "auth-helper";
+    helperText.textContent = "Már van fiókod?";
+
+    const goToLogin = document.createElement("button");
+    goToLogin.type = "button";
+    goToLogin.className = "reg-link";
+    goToLogin.id = "go-to-login";
+    goToLogin.textContent = "Belépés";
+
+    goToLogin.addEventListener("click", () => {
+        renderLoginForm();
+    });
+
+    helper.append(helperText, goToLogin);
     form.append(btn, helper);
     card.append(header, form);
     wrapper.append(card);
@@ -112,10 +127,25 @@ export function renderLoginForm() {
     btn.className = "login-btn";
     btn.textContent = "Belépés";
 
-    const helper = document.createElement("p");
-    helper.className = "auth-helper";
-    helper.innerHTML = `Még nincs fiókod? <button type="button" class="login-link" id="go-to-reg">Regisztráció</button>`;
+    const helper = document.createElement("div");
+    helper.className = "helper";
+    helper.id = "reg-helper"
 
+    const helperText = document.createElement("p");
+    helperText.className = "auth-helper";
+    helperText.textContent = "Már van fiókod?";
+
+    const goToReg = document.createElement("button");
+    goToReg.type = "button";
+    goToReg.className = "login-link";
+    goToReg.id = "go-to-reg";
+    goToReg.textContent = "Regisztráció";
+
+    goToReg.addEventListener("click", () => {
+        renderRegisterForm();
+    });
+
+    helper.append(helperText, goToReg);
     form.append(btn, helper);
     card.append(header, form);
     wrapper.append(card);

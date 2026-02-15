@@ -104,9 +104,9 @@ body {
 }
 
 /*MAIN*/
-main{
+/*main{
     height: 100vh;
-}
+}*/
 
 .auth-page {
     min-height: calc(100vh - 140px);
@@ -245,41 +245,47 @@ main{
         0 0 14px rgba(0, 234, 255, 0.6);
 }
 
-.auth-helper {
-    margin: 0.625em 0 0;
-    font-size: 0.8em;
-    color: #8a8a8a;
-    text-align: center;
+.helper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4em;
+    margin-top: 0.8em;
 }
 
-.reg-link {
+.auth-helper {
+    margin: 0;
+    padding: 0;
+    font-size: 0.85em;
+    color: #8a8a8a;
+}
+
+#go-to-login{
     background: none;
     border: none;
     padding: 0;
-    margin-left: 0.25em;
-    font-size: 1em;
+    font-size: 0.85em;
     color: #ff2fbf;
     cursor: pointer;
     text-decoration: none;
     transition: color .15s ease;
 }
 
-.reg-link:hover {
-    color: #00eaff;
-}
-
-.login-link {
+#go-to-reg{
     background: none;
     border: none;
     padding: 0;
-    margin-left: 0.25em;
-    font-size: 1em;
+    font-size: 0.85em;
     color: #00eaff;
     cursor: pointer;
     text-decoration: none;
     transition: color .15s ease;
 }
 
-.login-link:hover {
+#go-to-login:hover {
+    color: #00eaff;
+}
+
+#go-to-reg:hover {
     color: #ff2fbf;
 }
