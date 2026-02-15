@@ -60,3 +60,64 @@ export function renderRegisterForm() {
     wrapper.append(card);
     main.append(wrapper);
 }
+
+//Login
+export function renderLoginForm() {
+    const main = document.getElementById("main-content");
+    main.innerHTML = "";
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "auth-page";
+
+    const card = document.createElement("div");
+    card.className = "auth-card";
+
+    const header = document.createElement("div");
+    header.className = "auth-card-header";
+
+    const title = document.createElement("h1");
+    title.className = "auth-card-title";
+    title.textContent = "Lépj be saját fiókodba";
+
+    const subtitle = document.createElement("p");
+    subtitle.className = "auth-card-subtitle";
+    subtitle.textContent = "Foglalj pályákat, asztalokat, tekintsd meg kedvencid, és élvezd a kínálatot";
+
+    header.append(title, subtitle);
+
+    const form = document.createElement("form");
+    form.id = "login-form";
+    form.className = "auth-card-form";
+
+    const fields = [
+        { type: "email", placeholder: "Email cím" },
+        { type: "password", placeholder: "Jelszó" }
+    ];
+
+    fields.forEach(f => {
+        const group = document.createElement("div");
+        group.className = "auth-field-group";
+
+        const input = document.createElement("input");
+        input.type = f.type;
+        input.placeholder = f.placeholder;
+        input.className = "auth-input";
+
+        group.appendChild(input);
+        form.appendChild(group);
+    });
+
+    const btn = document.createElement("button");
+    btn.type = "submit";
+    btn.className = "auth-btn";
+    btn.textContent = "Belépés";
+
+    const helper = document.createElement("p");
+    helper.className = "auth-helper";
+    helper.innerHTML = `Még nincs fiókod? <button type="button" class="auth-link" id="go-to-reg">Regisztráció</button>`;
+
+    form.append(btn, helper);
+    card.append(header, form);
+    wrapper.append(card);
+    main.append(wrapper);
+}
