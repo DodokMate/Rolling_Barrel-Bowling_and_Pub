@@ -14,9 +14,6 @@ body {
 }
 
 /*HEADER*/
-header{
-    height: 30vh;
-}
 
 /*Navbar*/
 .navbar {
@@ -43,6 +40,10 @@ header{
 
 .navbar-brand:visited {
     color: white;
+}
+
+.neon{
+    filter: drop-shadow(0 0 4px #37405f) drop-shadow(0 0 5px #37405f);
 }
 
 #hamburgerBtn{
@@ -107,6 +108,178 @@ main{
     height: 100vh;
 }
 
-.neon{
-    filter: drop-shadow(0 0 4px #37405f) drop-shadow(0 0 5px #37405f);
+.auth-page {
+    min-height: calc(100vh - 140px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3.5em 2em;
+}
+
+.reg-card {
+    width: 100%;
+    max-width: 30em;
+    background: radial-gradient(circle at top, rgba(52, 63, 88, 0.847) 0, #0b0e19 55%);
+    border-radius: 18px;
+    padding: 2em 2em 1.75em;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.500),
+        0 0 18px rgba(255, 47, 191, 0.400),
+        0 0 18px rgba(0, 234, 255, 0.18);
+}
+
+.login-card {
+    width: 100%;
+    max-width: 30em;
+    background: radial-gradient(circle at top, rgba(52, 63, 88, 0.847) 0, #0b0e19 55%);
+    border-radius: 18px;
+    padding: 2em 2em 1.75em;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.500),
+        0 0 18px rgba(255, 47, 191, 0.18),
+        0 0 18px rgba(0, 234, 255, 0.400);
+}
+
+.auth-card-header {
+    margin-bottom: 1.5em;
+}
+
+.auth-card-title {
+    font-family: "Brand", sans-serif;
+    font-size: 1.8em;
+    letter-spacing: 0.04em;
+    color: #f5f5f5;
+    margin: 0 0 6px;
+}
+
+.auth-card-subtitle {
+    margin: 0;
+    font-size: 1em;
+    color: #b3b3b3;
+}
+
+.auth-card-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9em;
+}
+
+.auth-field-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.reg-input, .login-input {
+    padding: 0.7em 0.8em;
+    border-radius: 0.5em;
+    border: 1px solid #2b2b2b;
+    background: transparent;
+    color: #f5f5f5;
+    font-size: 0.9em;
+    transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.reg-input::placeholder {
+    color: #666;
+}
+
+.login-input::placeholder {
+    color: #666;
+}
+
+.reg-input:focus {
+    outline: none;
+    border-color: #ff2fbf;
+    background: #101010;
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.500),
+        0 0 18px rgba(255, 47, 191, 0.400),
+        0 0 18px rgba(0, 234, 255, 0.18);
+}
+
+.login-input:focus {
+    outline: none;
+    border-color: #00eaff;
+    background: #101010;
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.500),
+        0 0 18px rgba(255, 47, 191, 0.18),
+        0 0 18px rgba(0, 234, 255, 0.400);
+}
+
+.reg-btn, .login-btn {
+    margin-top: 0.375em;
+    width: 100%;
+    padding: 0.7em;
+    border-radius: 999px;
+    border: 0.1em rgba(255, 255, 255, 0.180) solid;
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.180);
+    font-weight: 600;
+    font-size: 1em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.reg-btn:hover {
+    color: white;
+    border: 0.1em rgba(255, 255, 255, 0) solid;
+    background: rgba(255, 47, 191, 0.6);
+    box-shadow:
+        0 10px 24px rgba(0, 0, 0, 0.9),
+        0 0 14px rgba(255, 47, 191, 0.6),
+        0 0 14px rgba(255, 47, 191, 0.6);
+}
+
+.login-btn:hover {
+    color: white;
+    border: 0.1em rgba(255, 255, 255, 0) solid;
+    background: rgba(0, 234, 255, 0.6);
+    box-shadow:
+        0 10px 24px rgba(0, 0, 0, 0.9),
+        0 0 14px rgba(0, 234, 255, 0.6),
+        0 0 14px rgba(0, 234, 255, 0.6);
+}
+
+.auth-helper {
+    margin: 0.625em 0 0;
+    font-size: 0.8em;
+    color: #8a8a8a;
+    text-align: center;
+}
+
+.reg-link {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-left: 0.25em;
+    font-size: 1em;
+    color: #ff2fbf;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color .15s ease;
+}
+
+.reg-link:hover {
+    color: #00eaff;
+}
+
+.login-link {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-left: 0.25em;
+    font-size: 1em;
+    color: #00eaff;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color .15s ease;
+}
+
+.login-link:hover {
+    color: #ff2fbf;
 }

@@ -8,7 +8,7 @@ export function renderRegisterForm() {
     wrapper.className = "auth-page";
 
     const card = document.createElement("div");
-    card.className = "auth-card";
+    card.className = "reg-card";
 
     const header = document.createElement("div");
     header.className = "auth-card-header";
@@ -40,7 +40,7 @@ export function renderRegisterForm() {
         const input = document.createElement("input");
         input.type = f.type;
         input.placeholder = f.placeholder;
-        input.className = "auth-input";
+        input.className = "reg-input";
 
         group.appendChild(input);
         form.appendChild(group);
@@ -48,12 +48,12 @@ export function renderRegisterForm() {
 
     const btn = document.createElement("button");
     btn.type = "submit";
-    btn.className = "auth-btn";
+    btn.className = "reg-btn";
     btn.textContent = "Regisztráció";
 
     const helper = document.createElement("p");
     helper.className = "auth-helper";
-    helper.innerHTML = `Már van fiókod? <button type="button" class="auth-link" id="go-to-login">Belépés</button>`;
+    helper.innerHTML = `Már van fiókod? <button type="button" class="reg-link" id="go-to-login">Belépés</button>`;
 
     form.append(btn, helper);
     card.append(header, form);
@@ -70,7 +70,7 @@ export function renderLoginForm() {
     wrapper.className = "auth-page";
 
     const card = document.createElement("div");
-    card.className = "auth-card";
+    card.className = "login-card";
 
     const header = document.createElement("div");
     header.className = "auth-card-header";
@@ -101,7 +101,7 @@ export function renderLoginForm() {
         const input = document.createElement("input");
         input.type = f.type;
         input.placeholder = f.placeholder;
-        input.className = "auth-input";
+        input.className = "login-input";
 
         group.appendChild(input);
         form.appendChild(group);
@@ -109,12 +109,12 @@ export function renderLoginForm() {
 
     const btn = document.createElement("button");
     btn.type = "submit";
-    btn.className = "auth-btn";
+    btn.className = "login-btn";
     btn.textContent = "Belépés";
 
     const helper = document.createElement("p");
     helper.className = "auth-helper";
-    helper.innerHTML = `Még nincs fiókod? <button type="button" class="auth-link" id="go-to-reg">Regisztráció</button>`;
+    helper.innerHTML = `Még nincs fiókod? <button type="button" class="login-link" id="go-to-reg">Regisztráció</button>`;
 
     form.append(btn, helper);
     card.append(header, form);
