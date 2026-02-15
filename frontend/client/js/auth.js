@@ -1,3 +1,6 @@
+import { registerUser } from "./api.js";
+import { loginUser } from "./api.js";
+
 //Register and login form
 //Registration 
 export function renderRegisterForm() {
@@ -27,23 +30,50 @@ export function renderRegisterForm() {
     form.id = "register-form";
     form.className = "auth-card-form";
 
-    const fields = [
-        { type: "text", placeholder: "Felhasználónév" },
-        { type: "email", placeholder: "Email cím" },
-        { type: "password", placeholder: "Jelszó" }
-    ];
+    const nameInput = document.createElement("input"); 
+    nameInput.type = "text"; 
+    nameInput.placeholder = "Felhasználónév"; 
+    nameInput.className = "reg-input"; 
+    
+    const emailInput = document.createElement("input"); 
+    emailInput.type = "email"; 
+    emailInput.placeholder = "Email cím"; 
+    emailInput.className = "reg-input"; 
+    
+    const passwordInput = document.createElement("input"); 
+    passwordInput.type = "password"; 
+    passwordInput.placeholder = "Jelszó"; 
+    passwordInput.className = "reg-input";
 
-    fields.forEach(f => {
-        const group = document.createElement("div");
-        group.className = "auth-field-group";
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-        const input = document.createElement("input");
-        input.type = f.type;
-        input.placeholder = f.placeholder;
-        input.className = "reg-input";
+        const data = {
+            name: nameInput.value,
+            email: emailInput.value,
+            password: passwordInput.value
+        };
 
-        group.appendChild(input);
-        form.appendChild(group);
+        const response = await registerUser(data);
+
+        if (response.success) { 
+            form.reset(); 
+            alert(response.message);
+            localStorage.setItem("token", response.token);
+            location.reload();
+        } else { 
+            alert(`Hiba történt a regisztráció során! ${response.message}`);
+        }
+
+        console.log(response);
+    });
+
+    [nameInput, emailInput, passwordInput].forEach(input => { 
+        const group = document.createElement("div"); 
+        group.className = "auth-field-group"; 
+        
+        group.appendChild(input); 
+        form.appendChild(group); 
     });
 
     const btn = document.createElement("button");
@@ -104,20 +134,41 @@ export function renderLoginForm() {
     form.id = "login-form";
     form.className = "auth-card-form";
 
-    const fields = [
-        { type: "email", placeholder: "Email cím" },
-        { type: "password", placeholder: "Jelszó" }
-    ];
+    const emailInput = document.createElement("input");
+    emailInput.type = "email";
+    emailInput.placeholder = "Email cím";
+    emailInput.className = "login-input";
 
-    fields.forEach(f => {
+    const passwordInput = document.createElement("input");
+    passwordInput.type = "password";
+    passwordInput.placeholder = "Jelszó";
+    passwordInput.className = "login-input";
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const data = {
+            email: emailInput.value,
+            password: passwordInput.value
+        };
+
+        const response = await loginUser(data);
+
+        if (response.success) { 
+            form.reset(); 
+            alert(response.message);
+            localStorage.setItem("token", response.token);
+            location.reload();
+        } else { 
+            alert(`Hiba történt a bejelentkezés során! ${response.message}`);
+        }
+
+        console.log(response);
+    });
+
+    [emailInput, passwordInput].forEach(input => {
         const group = document.createElement("div");
         group.className = "auth-field-group";
-
-        const input = document.createElement("input");
-        input.type = f.type;
-        input.placeholder = f.placeholder;
-        input.className = "login-input";
-
         group.appendChild(input);
         form.appendChild(group);
     });
