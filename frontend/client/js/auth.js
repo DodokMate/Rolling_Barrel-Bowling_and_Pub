@@ -1,5 +1,8 @@
 import { registerUser } from "./api.js";
 import { loginUser } from "./api.js";
+import { tokenCountdown } from "./navbar.js";
+import { regAlert } from "./navbar.js";
+import { loginAlert } from "./navbar.js";
 
 //Register and login form
 //Registration 
@@ -57,15 +60,14 @@ export function renderRegisterForm() {
         const response = await registerUser(data);
 
         if (response.success) { 
-            form.reset(); 
-            alert(response.message);
+            console.log(response);
+            form.reset();
             localStorage.setItem("token", response.token);
-            location.reload();
+            regAlert(); 
+            tokenCountdown();
         } else { 
             alert(`Hiba történt a regisztráció során! ${response.message}`);
         }
-
-        console.log(response);
     });
 
     [nameInput, emailInput, passwordInput].forEach(input => { 
@@ -155,15 +157,14 @@ export function renderLoginForm() {
         const response = await loginUser(data);
 
         if (response.success) { 
+            console.log(response);
             form.reset(); 
-            alert(response.message);
             localStorage.setItem("token", response.token);
-            location.reload();
+            loginAlert();
+            tokenCountdown();
         } else { 
             alert(`Hiba történt a bejelentkezés során! ${response.message}`);
         }
-
-        console.log(response);
     });
 
     [emailInput, passwordInput].forEach(input => {
