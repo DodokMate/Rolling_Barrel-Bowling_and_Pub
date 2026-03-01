@@ -7,16 +7,13 @@ export function initNavbar() {
 
     const header = document.getElementById("header")
 
-    //nav
     const nav = document.createElement("nav");
     nav.id = "navbar";
     nav.className = "navbar navbar-expand-lg sticky-top";
 
-    //<div class="container-fluid">
     const container = document.createElement("div");
     container.className = "container-fluid";
 
-    //brand
     const brand = document.createElement("a");
     brand.href = "#";
     brand.className = "navbar-brand d-flex align-items-center m-0";
@@ -31,11 +28,9 @@ export function initNavbar() {
 
     brand.appendChild(logo);
 
-    //hamburger button + icons
     const iconsWrap = document.createElement("div");
     iconsWrap.className = "d-flex align-items-center justify-content-center ms-auto order-lg-3 dropdown";
 
-    //hamburger button
     const hamburgerBtn = document.createElement("button");
     hamburgerBtn.className = "navbar-toggler p-0";
     hamburgerBtn.id = "hamburgerBtn";
@@ -53,7 +48,6 @@ export function initNavbar() {
 
     hamburgerBtn.appendChild(hamburgerIcon);
 
-    //dark/light icons
     const darkIcon = document.createElement("span");
     darkIcon.id = "darkIcon";
     darkIcon.className = "bi bi-moon mx-2 navIcon d-none";
@@ -62,7 +56,6 @@ export function initNavbar() {
     lightIcon.id = "lightIcon";
     lightIcon.className = "bi bi-sun mx-2 navIcon";
 
-    //profile dropdown
     const profileLink = document.createElement("a");
     profileLink.href = "#";
     profileLink.className = "nav-link";
@@ -76,13 +69,10 @@ export function initNavbar() {
     profileIcon.className = "bi bi-person-circle ms-1 navIcon";
     profileLink.appendChild(profileIcon);
 
-    //---dropdown menu---
     const dropdownMenu = document.createElement("ul");
     dropdownMenu.className = "dropdown-menu dropdown-menu-end dropdown-wide mt-3 p-2";
 
     if (!token) {
-        //dropdown menu before login
-        //registration link
         const liReg = document.createElement("li");
         const aReg = document.createElement("a");
         aReg.href = "#";
@@ -96,7 +86,6 @@ export function initNavbar() {
 
         liReg.appendChild(aReg);
 
-        //login link
         const liLogin = document.createElement("li");
         const aLogin = document.createElement("a");
         aLogin.href = "#";
@@ -112,8 +101,6 @@ export function initNavbar() {
 
         dropdownMenu.append(liReg, liLogin);
     } else {
-        //dropdown menu after login
-        //profile link
         const liProfile = document.createElement("li");
 
         const aProfile = document.createElement("a");
@@ -129,11 +116,9 @@ export function initNavbar() {
         aProfile.append(iconProfile, textProfile)
         liProfile.appendChild(aProfile);
 
-        //top line
         const topLine = document.createElement("hr");
         topLine.className = "dropdown-divider";
 
-        //booking link
         const liBooking = document.createElement("li");
 
         const aBooking = document.createElement("a");
@@ -149,7 +134,6 @@ export function initNavbar() {
         aBooking.append(iconBooking, textBooking)
         liBooking.appendChild(aBooking);
 
-        //favourites link
         const liFavourites = document.createElement("li");
 
         const aFavourites = document.createElement("a");
@@ -165,11 +149,9 @@ export function initNavbar() {
         aFavourites.append(iconFavourites, textFavourites)
         liFavourites.appendChild(aFavourites);
 
-        //bottom line
         const bottomLine = document.createElement("hr");
         bottomLine.className = "dropdown-divider";
 
-        //logout
         const liLogOut = document.createElement("li");
         
         const aLogOut = document.createElement("a");
@@ -185,14 +167,11 @@ export function initNavbar() {
         aLogOut.append(iconLogOut, textLogOut)
         liLogOut.appendChild(aLogOut);
 
-        //Append all into dropdown menu
         dropdownMenu.append(liProfile, topLine, liBooking, liFavourites, bottomLine, liLogOut);
     }
 
-    //append all icon
     iconsWrap.append(hamburgerBtn, darkIcon, lightIcon, profileLink, dropdownMenu);
 
-    //nav links (collapse)
     const collapse = document.createElement("div");
     collapse.className = "collapse navbar-collapse order-lg-1";
     collapse.id = "navbarNav";
@@ -224,20 +203,76 @@ export function initNavbar() {
 
     collapse.appendChild(ulNav);
 
-    //concatenation
     container.append(brand, iconsWrap, collapse);
     nav.appendChild(container);
     header.appendChild(nav);
 
-    //logout event listener
     const logoutBtn = document.getElementById("logoutBtn");
     if (logoutBtn) {
         logoutBtn.addEventListener("click", logout);
     }
 }
 
+//Registration modal
+export function regAlert(){
+    const regMsgModal = document.getElementById("regMsgModal");
+    const Modal = new bootstrap.Modal(regMsgModal);
+    Modal.show();
+    
+    setTimeout(() => {
+        location.reload();
+    }, 3*1000);
+}
+
+//Login modal
+export function loginAlert(){
+    const loginMsgModal = document.getElementById("loginMsgModal");
+    const Modal = new bootstrap.Modal(loginMsgModal);
+    Modal.show();
+    
+    setTimeout(() => {
+        location.reload();
+    }, 3*1000);
+}
+
+//Logout function
 function logout() {
-    localStorage.removeItem('token');
-    location.reload();
-    alert("Sikeres kijelentkezés!");
+    localStorage.removeItem("token");
+
+    const logoutMsgModal = document.getElementById("logoutMsgModal");
+    const Modal = new bootstrap.Modal(logoutMsgModal);
+
+    Modal.show();
+
+    document.getElementById("logoutX").addEventListener("click", () => {
+        Modal.hide();
+        location.reload();
+    });
+}
+
+//Token countdown for automatic logout
+export function tokenCountdown(){
+    setTimeout(() => {
+        systemLogout();
+    }, 10*1000);
+}
+
+//Logout function if the system automatically logs the user out
+function systemLogout(){
+    localStorage.removeItem("token");
+
+    const sessionExpModal = document.getElementById("sessionExpModal");
+    const Modal = new bootstrap.Modal(sessionExpModal);
+
+    Modal.show();
+    
+    document.getElementById("sessionExpBtn").addEventListener("click", () => {
+        Modal.hide();
+        location.reload();
+    });
+
+    document.getElementById("sessionExpX").addEventListener("click", () => {
+        Modal.hide();
+        location.reload();
+    });
 }
