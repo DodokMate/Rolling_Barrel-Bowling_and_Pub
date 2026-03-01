@@ -8,7 +8,7 @@
     <meta keywords="Rolling Barrel, Bowling, Pub, Bowling and Pub">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rolling Barrel - Bowling & Pub</title>
-    <!--Bootstrap-->
+    <!--BOOTSTRAP-->
     <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css"/>
     <script src="./bootstrap/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="./bootstrap/bootstrap-icons-1.13.1/bootstrap-icons.min.css">
@@ -29,7 +29,65 @@
 
     </footer>
 
-    <!--JavaScript-->
+    <!--MODALS-->
+
+    <!--Successful registration-->
+    <div id="regMsgModal" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Sikeres regisztráció!</h2>
+                    <button type="button" id="regX" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Successful login-->
+    <div id="loginMsgModal" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Sikeres bejelentkezés!</h2>
+                    <button type="button" id="loginX" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Session expired-->
+    <div id="sessionExpModal" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Munkamenet lejárt!</h2>
+                    <button type="button" id="sessionExpX" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Kijelentkeztettük, mert a munkamenet érvényessége lejárt.</p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="sessionExpBtn">Bezárás</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Logout-->
+    <div id="logoutMsgModal" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Sikeres kijelentkezés!</h2>
+                    <button type="button" id="logoutX" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--JAVASCRIPT-->
     <script type="module" src="./js/main.js"></script>
 </body>
 
