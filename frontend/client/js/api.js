@@ -9,7 +9,7 @@ export async function registerUser(data){
         body: JSON.stringify(data)
     });
 
-    return res.json();
+    return await res.json();
 }
 
 //LOGIN
@@ -20,5 +20,33 @@ export async function loginUser(data){
         body: JSON.stringify(data)
     });
 
-    return res.json();
+    return await res.json();
+}
+
+//AUTHENTICATION TOKEN
+export async function tokenAuthentication(token) {
+    const res = await fetch(`${BASE_URL}/api/authToken`, {
+        method: "GET",
+        headers: { "Authorization": "Bearer " + token }
+    });
+
+    let data;
+
+    try {
+        data = await res.json();
+    } catch {
+        return { 
+            success: false, 
+            message: "Nem sikerült értelmezni a szerver válaszát." 
+        };
+    }
+
+    if (!res.ok) {
+        return {
+            success: false,
+            message: data.message || 'Token ellenőrzés sikertelen!'
+        };
+    }
+
+    return await data;
 }
