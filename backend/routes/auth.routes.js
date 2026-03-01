@@ -5,18 +5,20 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 //SETTINGS
-const database = require('../database');
+const database = require('../database.js');
+const authenticateToken = require('../middleware/authMiddleware.js');
 
 //REGISTRATION AND LOGIN
 
 //Registration
 router.post('/registration', async (req, res) => {
-    console.log(`[${new Date().toLocaleTimeString()}] - /registration call has been recived.`);
+    console.log(`[${new Date().toLocaleDateString()} - ${new Date().toLocaleTimeString()}] POST - /registration hívás érkezett.`);
 
     try {
         const { name, email, password } = req.body;
 
         if (!name || !email || !password) {
+            console.log('Sikertelen regisztráció: Hiányzó szükséges adatok!');
             return res.status(400).json({
                 success: false,
                 message: 'Hiányzó szükséges adatok!'
@@ -26,8 +28,7 @@ router.post('/registration', async (req, res) => {
         const existingEmail = await database.checkEmail(email);
 
         if (existingEmail) {
-            console.log('Felhasználói fiók ezzel az email címmel már létezik.');
-
+            console.log('Sikertelen regisztráció: Felhasználói fiók ezzel az email címmel már létezik.');
             return res.status(409).json({
                 success: false,
                 message: 'Felhasználói fiók ezzel az email címmel már létezik.'
@@ -36,15 +37,28 @@ router.post('/registration', async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        await database.registration({
-            name: name,
-            email: email,
+        const result = await database.registration({
+            name,
+            email,
             password: hashedPassword
-        });
+        }); 
+
+        const newUser = await database.checkEmail(email);
+
+        const token = jwt.sign({ 
+            id: newUser.id, 
+            role: newUser.role,
+            name: newUser.name, 
+            email: newUser.email 
+        }, 
+        process.env.JWT_SECRET, 
+        { expiresIn: '10s' });
 
         res.status(201).json({
             success: true,
-            message: 'Felhasználó sikeresen regisztrálva!'
+            message: 'Felhasználó sikeresen regisztrálva!',
+            user: newUser,
+            token
         });
         console.log('Felhasználó sikeresen regisztrálva!');
     } 
@@ -59,12 +73,13 @@ router.post('/registration', async (req, res) => {
 
 //Login
 router.post('/login', async (req, res) => {
-    console.log(`[${new Date().toLocaleTimeString()}] - /login call has been recived.`);
+    console.log(`[${new Date().toLocaleDateString()} - ${new Date().toLocaleTimeString()}] POST - /login hívás érkezett.`);
 
     try {
         const { email, password } = req.body;
 
         if (!email || !password) {
+            console.log('Sikertelen bejelentkezés: Hiányzó email vagy jelszó!');
             return res.status(400).json({
                 success: false,
                 message: 'Hiányzó email vagy jelszó!'
@@ -74,6 +89,7 @@ router.post('/login', async (req, res) => {
         const user = await database.checkEmail(email);
 
         if (!user) {
+            console.log('Sikertelen bejelentkezés: Helytelen email vagy jelszó!');
             return res.status(401).json({
                 success: false,
                 message: 'Helytelen email vagy jelszó!'
@@ -83,6 +99,7 @@ router.post('/login', async (req, res) => {
         const passwordMatch = await bcrypt.compare(password, user.password);
 
         if (!passwordMatch) {
+            console.log('Sikertelen bejelentkezés: Helytelen jelszó!');
             return res.status(401).json({
                 success: false,
                 message: 'Helytelen jelszó!'
@@ -93,17 +110,17 @@ router.post('/login', async (req, res) => {
             {
                 id: user.id,
                 role: user.role,
+                name: user.name,
                 email: user.email
             },
             process.env.JWT_SECRET,
-            { expiresIn: '2h' }
+            { expiresIn: '10s' }
         );
 
         res.status(200).json({
             success: true,
             message: 'Sikeres bejelentkezés!',
-            token,
-            role: user.role
+            token
         });
         console.log('Sikeres bejelentkezés!');
     } 
@@ -116,5 +133,13 @@ router.post('/login', async (req, res) => {
     }
 });
 
+//Authenticate token
+router.get('/authToken', authenticateToken, (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: 'Token érvényes!',
+        user: req.user
+    });
+});
 
 module.exports = router;
