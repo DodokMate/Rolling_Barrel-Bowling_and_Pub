@@ -9,7 +9,7 @@ function authenticateToken(req, res, next) {
     if (!token) {
         return res.status(401).json({
             success: false,
-            message: 'Missing token!'
+            message: 'Hiányzó token!'
         });
     }
 
@@ -17,7 +17,7 @@ function authenticateToken(req, res, next) {
         if (err) {
             return res.status(403).json({
                 success: false,
-                message: 'Invalid or expired token!'
+                message: 'Érvénytelen vagy hiányzó token!'
             });
         }
 

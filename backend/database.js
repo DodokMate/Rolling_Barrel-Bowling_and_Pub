@@ -23,12 +23,9 @@ async function test() {
 async function registration(user) {
     const query = 'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?);';
     const values = [user.name, user.email, user.password, 'user'];
-    await pool.execute(query, values);
-    const result = { 
-        success: true, 
-        username: user.name 
-    };
-    return result;
+    const [result] = await pool.execute(query, values);
+    const [rows] = await pool.execute( "SELECT id, name, email, role FROM users WHERE id = ?", [result.insertId] );
+    return rows[0];
 }
 
 //DETECTING EMAIL DUPLICATION + LOGIN

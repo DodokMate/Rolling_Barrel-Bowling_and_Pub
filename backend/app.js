@@ -1,5 +1,6 @@
 //MODULE IMPORTS
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 
 //SETTINGS
@@ -7,6 +8,7 @@ const database = require('./database');
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 //Static frontend
 app.use(express.static(path.join(__dirname, '../frontend/client')));
@@ -32,16 +34,16 @@ app.get('/api/testsql', async (request, response) => {
         const test = await database.test();
         response.status(200).json({
             success: true,
-            message: 'This endpoint is working.',
+            message: 'Ez a végpont működik.',
             results: test
         });
-        console.log('This endpoint is working.', test);
+        console.log('Ez a végpont működik.'+ test);
     } catch (error) {
         response.status(500).json({
             success: false,
-            message: 'This endpoint is not working. ' + error.message
+            message: 'Ez a végpont nem működik. ' + error.message
         });
-        console.log('This endpoint is not working. ' + error.message);
+        console.log('Ez a végpont nem működik. '+ error.message);
     }
 });
 
