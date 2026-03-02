@@ -3,6 +3,7 @@ import { loginUser } from "./api.js";
 import { tokenCountdown } from "./navbar.js";
 import { regAlert } from "./navbar.js";
 import { loginAlert } from "./navbar.js";
+import { validateRegisterForm } from "./utils/formValidation.js";
 
 //Register and login form
 //Registration 
@@ -36,20 +37,34 @@ export function renderRegisterForm() {
     const nameInput = document.createElement("input"); 
     nameInput.type = "text"; 
     nameInput.placeholder = "Felhasználónév"; 
-    nameInput.className = "reg-input"; 
+    nameInput.className = "reg-input";
+    nameInput.id = "regInput-name"; 
     
     const emailInput = document.createElement("input"); 
     emailInput.type = "email"; 
     emailInput.placeholder = "Email cím"; 
-    emailInput.className = "reg-input"; 
+    emailInput.className = "reg-input";
+    emailInput.id = "regInput-email";
     
     const passwordInput = document.createElement("input"); 
     passwordInput.type = "password"; 
     passwordInput.placeholder = "Jelszó"; 
     passwordInput.className = "reg-input";
+    passwordInput.id = "regInput-password";
 
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
+
+        const name = document.getElementById("regInput-name").value;
+        const email = document.getElementById("regInput-email").value;
+        const password = document.getElementById("regInput-password").value;
+        
+        const validation = validateRegisterForm(name, email, password);
+
+        if (!validation.success) { 
+            alert(validation.message); 
+            return;
+        }
 
         const data = {
             name: nameInput.value,
@@ -66,7 +81,7 @@ export function renderRegisterForm() {
             regAlert(); 
             tokenCountdown();
         } else { 
-            alert(`Hiba történt a regisztráció során! ${response.message}`);
+            alert(`${response.message}`);
         }
     });
 

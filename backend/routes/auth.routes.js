@@ -7,23 +7,16 @@ const jwt = require('jsonwebtoken');
 //SETTINGS
 const database = require('../database.js');
 const authenticateToken = require('../middleware/authMiddleware.js');
+const regFormValidate = require('../middleware/regFieldsMiddleware.js');
 
 //REGISTRATION AND LOGIN
 
 //Registration
-router.post('/registration', async (req, res) => {
+router.post('/registration', regFormValidate, async (req, res) => {
     console.log(`[${new Date().toLocaleDateString()} - ${new Date().toLocaleTimeString()}] POST - /registration hívás érkezett.`);
 
     try {
         const { name, email, password } = req.body;
-
-        if (!name || !email || !password) {
-            console.log('Sikertelen regisztráció: Hiányzó szükséges adatok!');
-            return res.status(400).json({
-                success: false,
-                message: 'Hiányzó szükséges adatok!'
-            });
-        }
 
         const existingEmail = await database.checkEmail(email);
 
@@ -135,11 +128,21 @@ router.post('/login', async (req, res) => {
 
 //Authenticate token
 router.get('/authToken', authenticateToken, (req, res) => {
-    res.status(200).json({
-        success: true,
-        message: 'Token érvényes!',
-        user: req.user
-    });
+    console.log(`[${new Date().toLocaleDateString()} - ${new Date().toLocaleTimeString()}] GET - /authToken hívás érkezett.`);
+    try{
+        res.status(200).json({
+            success: true,
+            message: 'Token érvényes!',
+            user: req.user
+        });
+    }
+    catch (error){
+        res.status(500).json({
+            success: false,
+            message: 'Hiba a token lekérése során! ' + error.message
+        });
+        console.log('Hiba a token lekérése során!');
+    }
 });
 
 module.exports = router;
