@@ -149,6 +149,21 @@ export function initNavbar() {
         aFavourites.append(iconFavourites, textFavourites)
         liFavourites.appendChild(aFavourites);
 
+        const liEvents = document.createElement("li");
+
+        const aEvents = document.createElement("a");
+        aEvents.href = "#";
+        aEvents.className = "dropdown-item d-flex align-items-center gap-2";
+        aEvents.id = "eventsBtn";
+
+        const iconEvents = document.createElement("span"); 
+        iconEvents.className = "bi bi-calendar3-event";
+        
+        const textEvents = document.createTextNode("Eseményeim");
+
+        aEvents.append(iconEvents, textEvents)
+        liEvents.appendChild(aEvents);
+
         const bottomLine = document.createElement("hr");
         bottomLine.className = "dropdown-divider";
 
@@ -167,7 +182,7 @@ export function initNavbar() {
         aLogOut.append(iconLogOut, textLogOut)
         liLogOut.appendChild(aLogOut);
 
-        dropdownMenu.append(liProfile, topLine, liBooking, liFavourites, bottomLine, liLogOut);
+        dropdownMenu.append(liProfile, topLine, liBooking, liFavourites, liEvents, bottomLine, liLogOut);
     }
 
     iconsWrap.append(hamburgerBtn, darkIcon, lightIcon, profileLink, dropdownMenu);
@@ -241,20 +256,18 @@ function logout() {
 
     const logoutMsgModal = document.getElementById("logoutMsgModal");
     const Modal = new bootstrap.Modal(logoutMsgModal);
-
     Modal.show();
 
-    document.getElementById("logoutX").addEventListener("click", () => {
-        Modal.hide();
+    setTimeout(() => {
         location.reload();
-    });
+    }, 3*1000);
 }
 
 //Token countdown for automatic logout
 export function tokenCountdown(){
     setTimeout(() => {
         systemLogout();
-    }, 10*1000);
+    }, 2*60*60*1000);
 }
 
 //Logout function if the system automatically logs the user out
