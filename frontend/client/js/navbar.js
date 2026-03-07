@@ -1,5 +1,6 @@
 import { renderRegisterForm } from "./auth.js";
 import { renderLoginForm } from "./auth.js";
+import { renderProfilePage } from "./profile.js";
 
 //Initialize the navbar with DOM
 export function initNavbar() {
@@ -112,6 +113,10 @@ export function initNavbar() {
         iconProfile.className = "bi bi-person";
         
         const textProfile = document.createTextNode("Profilom");
+
+        aProfile.addEventListener("click", () => {
+            renderProfilePage();
+        });
 
         aProfile.append(iconProfile, textProfile)
         liProfile.appendChild(aProfile);
