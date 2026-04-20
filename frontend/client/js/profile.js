@@ -163,3 +163,4 @@ export async function renderProfilePage() {
     container.append(topRow, bottomRow);
     profileContainer.append(container);
 }
+//Szerkezstés..?
