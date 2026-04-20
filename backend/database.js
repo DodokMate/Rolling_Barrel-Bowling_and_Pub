@@ -35,9 +35,17 @@ async function checkEmail(email) {
     return rows[0];
 }
 
+//USER'S DATA
+async function userData(email) {
+    const query = 'SELECT name, email FROM users WHERE email = ?';
+    const [rows] = await pool.execute(query, [email]);
+    return rows[0];
+}
+
 //Exports
 module.exports = {
     test,
     registration,
-    checkEmail
+    checkEmail,
+    userData
 };
