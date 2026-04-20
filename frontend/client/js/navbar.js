@@ -1,15 +1,16 @@
 import { renderRegisterForm } from "./auth.js";
 import { renderLoginForm } from "./auth.js";
+import { renderProfilePage } from "./profile.js";
 
 //Initialize the navbar with DOM
 export function initNavbar() {
     const token = localStorage.getItem('token');
 
-    const header = document.getElementById("header")
+    const headerNavbar = document.getElementById("headerNavbar")
 
     const nav = document.createElement("nav");
     nav.id = "navbar";
-    nav.className = "navbar navbar-expand-lg sticky-top";
+    nav.className = "navbar navbar-expand-lg";
 
     const container = document.createElement("div");
     container.className = "container-fluid";
@@ -17,13 +18,13 @@ export function initNavbar() {
     const brand = document.createElement("a");
     brand.href = "#";
     brand.className = "navbar-brand d-flex align-items-center m-0";
-    brand.innerHTML = "Rolling Barrel <br> Bowling & Pub";
 
-    const logo = document.createElement("img"); 
+    const logo = document.createElement("img");
     logo.src = "./assets/images/logo.png";
     logo.alt = "Rolling Barrel Logo";
     logo.className = "neon mb-2";
-    logo.style.height = "80px";
+    logo.id = "logo";
+    logo.style.height = "70px";
     logo.style.width = "auto";
 
     brand.appendChild(logo);
@@ -41,9 +42,9 @@ export function initNavbar() {
     const hamburgerIcon = document.createElement("span");
     hamburgerIcon.className = "bi bi-list";
 
-    hamburgerBtn.addEventListener("click", () => { 
-        hamburgerIcon.classList.toggle("bi-list"); 
-        hamburgerIcon.classList.toggle("bi-x-lg"); 
+    hamburgerBtn.addEventListener("click", () => {
+        hamburgerIcon.classList.toggle("bi-list");
+        hamburgerIcon.classList.toggle("bi-x-lg");
     });
 
     hamburgerBtn.appendChild(hamburgerIcon);
@@ -107,11 +108,22 @@ export function initNavbar() {
         aProfile.href = "#";
         aProfile.className = "dropdown-item d-flex align-items-center gap-2";
         aProfile.id = "profileBtn";
-        
-        const iconProfile = document.createElement("span"); 
+
+        const iconProfile = document.createElement("span");
         iconProfile.className = "bi bi-person";
-        
+
         const textProfile = document.createTextNode("Profilom");
+
+        aProfile.addEventListener("click", async () => {
+            localStorage.setItem("currentView", "profile");
+
+            document.getElementById("headerNavbar").classList.add("d-none");
+            document.getElementById("header").classList.add("d-none");
+            document.getElementById("main-content").classList.add("d-none");
+            document.getElementById("profile-container").classList.remove("d-none");
+
+            await renderProfilePage();
+        });
 
         aProfile.append(iconProfile, textProfile)
         liProfile.appendChild(aProfile);
@@ -125,10 +137,10 @@ export function initNavbar() {
         aBooking.href = "#";
         aBooking.className = "dropdown-item d-flex align-items-center gap-2";
         aBooking.id = "bookingBtn";
-        
-        const iconBooking = document.createElement("span"); 
+
+        const iconBooking = document.createElement("span");
         iconBooking.className = "bi bi-journal";
-        
+
         const textBooking = document.createTextNode("Foglalásaim");
 
         aBooking.append(iconBooking, textBooking)
@@ -141,33 +153,48 @@ export function initNavbar() {
         aFavourites.className = "dropdown-item d-flex align-items-center gap-2";
         aFavourites.id = "favouritesBtn";
 
-        const iconFavourites = document.createElement("span"); 
+        const iconFavourites = document.createElement("span");
         iconFavourites.className = "bi bi-heart";
-        
+
         const textFavourites = document.createTextNode("Kedvenceim");
 
         aFavourites.append(iconFavourites, textFavourites)
         liFavourites.appendChild(aFavourites);
 
+        const liEvents = document.createElement("li");
+
+        const aEvents = document.createElement("a");
+        aEvents.href = "#";
+        aEvents.className = "dropdown-item d-flex align-items-center gap-2";
+        aEvents.id = "eventsBtn";
+
+        const iconEvents = document.createElement("span");
+        iconEvents.className = "bi bi-calendar3-event";
+
+        const textEvents = document.createTextNode("Eseményeim");
+
+        aEvents.append(iconEvents, textEvents)
+        liEvents.appendChild(aEvents);
+
         const bottomLine = document.createElement("hr");
         bottomLine.className = "dropdown-divider";
 
         const liLogOut = document.createElement("li");
-        
+
         const aLogOut = document.createElement("a");
         aLogOut.href = "#";
         aLogOut.className = "dropdown-item d-flex align-items-center gap-2";
         aLogOut.id = "logoutBtn";
 
-        const iconLogOut = document.createElement("span"); 
+        const iconLogOut = document.createElement("span");
         iconLogOut.className = "bi bi-box-arrow-right";
-        
+
         const textLogOut = document.createTextNode("Kijelentkezés");
 
         aLogOut.append(iconLogOut, textLogOut)
         liLogOut.appendChild(aLogOut);
 
-        dropdownMenu.append(liProfile, topLine, liBooking, liFavourites, bottomLine, liLogOut);
+        dropdownMenu.append(liProfile, topLine, liBooking, liFavourites, liEvents, bottomLine, liLogOut);
     }
 
     iconsWrap.append(hamburgerBtn, darkIcon, lightIcon, profileLink, dropdownMenu);
@@ -205,7 +232,7 @@ export function initNavbar() {
 
     container.append(brand, iconsWrap, collapse);
     nav.appendChild(container);
-    header.appendChild(nav);
+    headerNavbar.appendChild(nav);
 
     const logoutBtn = document.getElementById("logoutBtn");
     if (logoutBtn) {
@@ -214,58 +241,58 @@ export function initNavbar() {
 }
 
 //Registration modal
-export function regAlert(){
+export function regAlert() {
     const regMsgModal = document.getElementById("regMsgModal");
     const Modal = new bootstrap.Modal(regMsgModal);
     Modal.show();
-    
+
     setTimeout(() => {
         location.reload();
-    }, 3*1000);
+    }, 3 * 1000);
 }
 
 //Login modal
-export function loginAlert(){
+export function loginAlert() {
     const loginMsgModal = document.getElementById("loginMsgModal");
     const Modal = new bootstrap.Modal(loginMsgModal);
     Modal.show();
-    
+
     setTimeout(() => {
         location.reload();
-    }, 3*1000);
+    }, 3 * 1000);
 }
 
 //Logout function
 function logout() {
     localStorage.removeItem("token");
+    console.log(`[${new Date().toLocaleDateString()} - ${new Date().toLocaleTimeString()}] - Sikeres kijelentkezés!`);
 
     const logoutMsgModal = document.getElementById("logoutMsgModal");
     const Modal = new bootstrap.Modal(logoutMsgModal);
-
     Modal.show();
 
-    document.getElementById("logoutX").addEventListener("click", () => {
-        Modal.hide();
+    setTimeout(() => {
         location.reload();
-    });
+    }, 3 * 1000);
 }
 
 //Token countdown for automatic logout
-export function tokenCountdown(){
+export function tokenCountdown() {
     setTimeout(() => {
         systemLogout();
-    }, 10*1000);
+    }, 2 * 60 * 60 * 1000);
 }
 
 //Logout function if the system automatically logs the user out
-function systemLogout(){
+function systemLogout() {
     localStorage.removeItem("token");
+    console.log(`[${new Date().toLocaleDateString()} - ${new Date().toLocaleTimeString()}] - Lejárt a munkamenet, automatikus kijelentkezés...`);
 
     const sessionExpModal = document.getElementById("sessionExpModal");
     const Modal = new bootstrap.Modal(sessionExpModal);
 
     Modal.show();
-    
+
     document.getElementById("sessionExpBtn").addEventListener("click", () => {
         Modal.hide();
         location.reload();
