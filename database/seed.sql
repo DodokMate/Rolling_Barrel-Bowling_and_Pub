@@ -68,4 +68,4 @@ INSERT INTO events (name, description, event_date, start_time, end_time) VALUES
 
 -- REVIEWS
 INSERT INTO reviews (user_id, rating, comment) VALUES
-(2, 5, 'Nagyon jó hely, szuper hangulat!'),
+(2, 5, 'Nagyon jó hely, szuper hangulat!')
