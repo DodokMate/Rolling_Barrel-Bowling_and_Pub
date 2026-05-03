@@ -29,7 +29,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (view === "logreg") {
         document.getElementById("headerNavbar").classList.add("d-none");
         document.getElementById("header").classList.add("d-none");
-        document.getElementById("main-content").classList.remove("d-none");
+        document.getElementById("main-content").classList.add("d-none");
+        
         document.getElementById("profile-container").classList.add("d-none");
 
         import("./auth.js").then(module => {
@@ -47,6 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById("headerNavbar").classList.remove("d-none");
             document.getElementById("header").classList.remove("d-none");
             document.getElementById("main-content").classList.remove("d-none");
+            document.getElementById("auth-container").classList.add("d-none");
             document.getElementById("profile-container").classList.add("d-none");
 
             document.body.classList.remove("preload");
@@ -69,6 +71,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById("headerNavbar").classList.add("d-none");
         document.getElementById("header").classList.add("d-none");
         document.getElementById("main-content").classList.add("d-none");
+        document.getElementById("auth-container").classList.add("d-none");
         document.getElementById("profile-container").classList.remove("d-none");
 
         import("./profile.js").then(module => {

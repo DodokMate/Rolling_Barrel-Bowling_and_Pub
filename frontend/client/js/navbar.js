@@ -24,7 +24,7 @@ export function initNavbar() {
     logo.alt = "Rolling Barrel Logo";
     logo.className = "neon mb-2";
     logo.id = "logo";
-    logo.style.height = "70px";
+    logo.style.height = "65px";
     logo.style.width = "auto";
 
     brand.appendChild(logo);
@@ -40,26 +40,7 @@ export function initNavbar() {
     const hamburgerIcon = document.createElement("span");
     hamburgerIcon.className = "bi bi-list";
 
-    hamburgerBtn.addEventListener("click", () => {
-        const navMenu = document.getElementById("navMenu");
-        const navbar = document.getElementById("navbar");
-
-        navMenu.classList.toggle("open");
-        navbar.classList.toggle("menu-open");
-
-        hamburgerIcon.classList.toggle("bi-list");
-        hamburgerIcon.classList.toggle("bi-x-lg");
-    });
-
     hamburgerBtn.appendChild(hamburgerIcon);
-
-    const darkIcon = document.createElement("span");
-    darkIcon.id = "darkIcon";
-    darkIcon.className = "bi bi-moon mx-2 navIcon d-none";
-
-    const lightIcon = document.createElement("span");
-    lightIcon.id = "lightIcon";
-    lightIcon.className = "bi bi-sun mx-2 navIcon";
 
     const profileLink = document.createElement("a");
     profileLink.href = "#";
@@ -71,7 +52,7 @@ export function initNavbar() {
 
     const profileIcon = document.createElement("span");
     profileIcon.id = "profileIcon";
-    profileIcon.className = "bi bi-person-circle ms-1 navIcon";
+    profileIcon.className = "bi bi-person-circle mx-1 navIcon";
     profileLink.appendChild(profileIcon);
 
     const dropdownMenu = document.createElement("ul");
@@ -87,7 +68,7 @@ export function initNavbar() {
 
         aReg.addEventListener("click", () => {
             localStorage.setItem("currentView", "logreg");
-            renderRegisterForm();
+            location.reload();
         });
 
         liReg.appendChild(aReg);
@@ -101,7 +82,7 @@ export function initNavbar() {
 
         aLogin.addEventListener("click", () => {
             localStorage.setItem("currentView", "logreg");
-            renderLoginForm();
+            location.reload();
         });
 
         liLogin.appendChild(aLogin);
@@ -203,7 +184,7 @@ export function initNavbar() {
         dropdownMenu.append(liProfile, topLine, liBooking, liFavourites, liEvents, bottomLine, liLogOut);
     }
 
-    iconsWrap.append(hamburgerBtn, darkIcon, lightIcon, profileLink, dropdownMenu);
+    iconsWrap.append(hamburgerBtn, profileLink, dropdownMenu);
 
     const collapse = document.createElement("div");
     collapse.className = "nav-menu";
@@ -240,10 +221,43 @@ export function initNavbar() {
     nav.appendChild(container);
     headerNavbar.appendChild(nav);
 
+    updateNavbarBackground();
+
+    const navMenu = document.getElementById("navMenu");
+    const navbar = document.getElementById("navbar");
+
+    hamburgerBtn.addEventListener("click", () => {
+        navMenu.classList.toggle("open");
+        navbar.classList.toggle("menu-open");
+
+        hamburgerIcon.classList.toggle("bi-list");
+        hamburgerIcon.classList.toggle("bi-x-lg");
+
+        if (navMenu.classList.contains("open")) {
+            document.body.style.overflowY = "hidden";
+        } else {
+            document.body.style.overflowY = "auto";
+        }
+    });
+
+    window.addEventListener("resize", () => {
+        if (window.innerWidth >= 992) {
+            navMenu.classList.remove("open");
+            navbar.classList.remove("menu-open");
+            hamburgerIcon.classList.add("bi-list");
+            hamburgerIcon.classList.remove("bi-x-lg");
+            document.body.style.overflowY = "auto";
+        }
+    });
+
     const logoutBtn = document.getElementById("logoutBtn");
     if (logoutBtn) {
         logoutBtn.addEventListener("click", logout);
     }
+
+    window.addEventListener("scroll", updateNavbarBackground);
+    window.addEventListener("DOMContentLoaded", updateNavbarBackground);
+
 }
 
 //Registration modal
@@ -308,4 +322,15 @@ function systemLogout() {
         Modal.hide();
         location.reload();
     });
+}
+
+//Adding a scroll effect to the navbar
+function updateNavbarBackground() {
+    const navbar = document.getElementById("navbar");
+
+    if (window.scrollY > 10) {
+        navbar.classList.add("scrolled");
+    } else {
+        navbar.classList.remove("scrolled");
+    }
 }
