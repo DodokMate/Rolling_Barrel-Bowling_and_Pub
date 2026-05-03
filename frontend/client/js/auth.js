@@ -14,15 +14,14 @@ export function renderRegisterForm() {
     document.getElementById("header").classList.add("d-none");
     document.getElementById("profile-container").classList.add("d-none");
 
-    const main = document.getElementById("main-content");
-    main.classList.remove("d-none");
-    main.innerHTML = "";
+    const authContainer = document.getElementById("auth-container");
+    authContainer.classList.remove("d-none");
+    authContainer.innerHTML = "";
 
     // --- FŐOLDAL GOMB ---
     const backBtn = document.createElement("button");
     backBtn.className = "btn logreg-back-btn mt-3";
     backBtn.innerHTML = `<i class="bi bi-arrow-bar-left me-2"></i> Főoldal`;
-
 
     backBtn.addEventListener("click", () => {
         localStorage.setItem("currentView", "home");
@@ -32,7 +31,7 @@ export function renderRegisterForm() {
         document.getElementById("main-content").classList.remove("d-none");
         document.getElementById("profile-container").classList.add("d-none");
 
-        main.innerHTML = "";
+        authContainer.classList.add("d-none");
     });
 
     const row = document.createElement("div");
@@ -161,7 +160,7 @@ export function renderRegisterForm() {
     colRight.append(card);
 
     row.append(colLeft, colRight);
-    main.append(row);
+    authContainer.append(row);
 }
 
 //Login
@@ -172,9 +171,9 @@ export function renderLoginForm() {
     document.getElementById("header").classList.add("d-none");
     document.getElementById("profile-container").classList.add("d-none");
 
-    const main = document.getElementById("main-content");
-    main.classList.remove("d-none");
-    main.innerHTML = "";
+    const authContainer = document.getElementById("auth-container");
+    authContainer.classList.remove("d-none");
+    authContainer.innerHTML = "";
 
     // --- FŐOLDAL GOMB ---
     const backBtn = document.createElement("button");
@@ -189,7 +188,7 @@ export function renderLoginForm() {
         document.getElementById("main-content").classList.remove("d-none");
         document.getElementById("profile-container").classList.add("d-none");
 
-        main.innerHTML = "";
+        authContainer.classList.add("d-none");
     });
 
     const row = document.createElement("div");
@@ -303,5 +302,5 @@ export function renderLoginForm() {
     colRight.append(card);
 
     row.append(colLeft, colRight);
-    main.append(row);
+    authContainer.append(row);
 }
