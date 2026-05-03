@@ -2,8 +2,11 @@
 body {
     margin: 0;
     padding: 0;
-    /* overflow-x: hidden; */
     background-image: linear-gradient(#151925, #151925);
+}
+
+body::-webkit-scrollbar {
+    display: none;
 }
 
 /*HEADER*/
@@ -22,6 +25,11 @@ header {
     transition: background 0.4s ease;
     width: 99.99%;
     z-index: 1000;
+}
+
+.navbar.scrolled {
+    background: rgba(10, 10, 20, 0.999);
+    backdrop-filter: blur(6px);
 }
 
 .neon {
@@ -47,8 +55,6 @@ header {
     flex-grow: 1;
 }
 
-
-
 #navMenu ul {
     gap: 0.5vw;
     margin: 0 auto;
@@ -63,6 +69,7 @@ header {
 
 #navMenu.open {
     transform: translateX(0);
+    transition: transform 0.4s ease;
 }
 
 /* Mobilon a nav linkek */
@@ -74,7 +81,7 @@ header {
 
 #navMenu ul li a {
     color: white;
-    font-family: "Maintitle", sans-serif;
+    font-family: "MainFont", sans-serif;
     font-size: 1.4em;
     font-weight: 200;
     letter-spacing: 1px;
@@ -89,13 +96,6 @@ header {
         0 0 8px rgba(255, 255, 255, 0.7),
         0 0 16px rgba(255, 255, 255, 0.5),
         0 0 32px rgba(255, 255, 255, 0.3);
-}
-
-#lightIcon,
-#lightIcon {
-    font-size: 1.5em;
-    display: flex;
-    cursor: pointer;
 }
 
 #profileIcon {
@@ -146,7 +146,7 @@ header {
 }
 
 #hero-title {
-    font-family: "Maintitle", sans-serif;
+    font-family: "MainFont", sans-serif;
     letter-spacing: 0.04em;
     font-size: 8vw;
     margin: 2vh 0;
@@ -169,7 +169,7 @@ header {
 }
 
 #hero-subtext {
-    font-family: "Subtitle";
+    font-family: "SubFont";
     font-size: 2vw;
     color: #ffffff;
     margin: 0 5vw;
@@ -185,7 +185,7 @@ header {
 
 #hero-btn-group button {
     color: white;
-    font-family: "Maintitle";
+    font-family: "MainFont";
     width: 18vw;
     height: 3.3vw;
     font-size: 1.5vw;
@@ -239,6 +239,128 @@ header {
 }
 
 /*MAIN*/
+#main-content {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.95), transparent);
+}
+
+#hub-title {
+    font-family: "MainFont", sans-serif;
+    font-size: 2.5rem;
+    color: #ffffff;
+    text-shadow:
+        0 0 8px rgba(0, 229, 255, 0.8),
+        0 0 16px rgba(0, 229, 255, 0.6),
+        0 0 32px rgba(0, 229, 255, 0.4);
+}
+
+#hub-hr {
+    width: 5rem;
+    border-top: 3px solid rgb(0, 229, 255);
+    margin-left: 0;
+    box-shadow:
+        0 0 8px rgba(0, 229, 255, 0.8),
+        0 0 16px rgba(0, 229, 255, 0.6),
+        0 0 32px rgba(0, 229, 255, 0.4);
+}
+
+.hub-card {
+    background: linear-gradient(120deg, rgba(20, 20, 40, 0.9), rgba(20, 20, 40, 0.1));
+    border: 1px solid rgba(255, 0, 170, 0.4);
+    border-radius: 1rem;
+    box-shadow: 0 0 20px rgba(255, 0, 170, 0.25);
+    backdrop-filter: blur(4px);
+    color: rgb(215, 215, 215);
+    min-height: 30vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.hub-card h3 {
+    font-family: "MainFont", sans-serif;
+    font-size: 1.5em;
+    color: white;
+}
+
+.hub-card-btn {
+    background-image: linear-gradient(120deg, rgba(255, 0, 170, 0.6), rgba(255, 0, 170, 0.2));
+    border: 1.5px solid rgba(255, 0, 170, 0.5);
+    transition: 0.7s;
+    color: rgb(211, 211, 211);
+    font-family: "SubFont";
+    padding: 0.7rem 1.4rem;
+    font-size: 0.9rem;
+    width: fit-content;
+    height: auto;
+    margin-top: auto;
+}
+
+#experienceCarousel {
+    min-height: 30vh;
+    height: 100%;
+    flex: 1;
+}
+
+#experienceCarousel .carousel-inner,
+#experienceCarousel .carousel-item {
+    min-height: 30vh;
+    height: 100%;
+}
+
+#experienceCarousel .carousel-item-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+/* Vertical carousel */
+.carousel.vertical .carousel-item {
+    transition: transform 0.6s ease-in-out;
+}
+
+.carousel.vertical .carousel-item-next.carousel-item-start,
+.carousel.vertical .carousel-item-prev.carousel-item-end {
+    transform: translateY(0);
+}
+
+.carousel.vertical .carousel-item-next,
+.carousel.vertical .active.carousel-item-end {
+    transform: translateY(100%);
+}
+
+.carousel.vertical .carousel-item-prev,
+.carousel.vertical .active.carousel-item-start {
+    transform: translateY(-100%);
+}
+
+/* Vertical indicators */
+.carousel.vertical .carousel-indicators {
+    position: absolute;
+    top: 50%;
+    left: auto;
+    right: -12%;
+    transform: translateY(-50%);
+    flex-direction: column;
+    gap: 8px;
+}
+
+.carousel.vertical .carousel-indicators [data-bs-target] {
+    width: 6px;
+    height: 30px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 3px;
+    border: none;
+}
+
+.carousel.vertical .carousel-indicators .active {
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 12px rgb(0, 229, 255);
+}
+
 .auth-wrapper {
     width: 100%;
     padding: 0;
@@ -292,13 +414,13 @@ header {
 }
 
 .neon-title {
-    font-family: "Maintitle";
+    font-family: "MainFont";
     font-size: 4.5rem;
     letter-spacing: 0.1rem;
 }
 
 .auth-neon-title {
-    background: linear-gradient(to right,#df22a0, #00eaff);
+    background: linear-gradient(to right, #df22a0, #00eaff);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -321,7 +443,6 @@ header {
     padding: 3rem;
     min-height: 100vh;
     /* background: radial-gradient(circle at top, rgba(52, 63, 88, 0.847) 0, #0b0e19 55%); */
-
 }
 
 .auth-page {
@@ -366,7 +487,7 @@ header {
 }
 
 .auth-card-title {
-    font-family: "Maintitle", sans-serif;
+    font-family: "MainFont", sans-serif;
     font-size: 1.8em;
     letter-spacing: 0.04em;
     color: #f5f5f5;
@@ -520,7 +641,7 @@ header {
     display: flex;
     align-items: center;
     transition: 0.2s ease;
-    font-family: "Maintitle";
+    font-family: "MainFont";
     letter-spacing: 0.1rem;
 }
 
@@ -569,7 +690,7 @@ header {
 }
 
 .modal-title {
-    font-family: "Maintitle", sans-serif;
+    font-family: "MainFont", sans-serif;
     font-size: 1.8em;
     letter-spacing: 0.04em;
     color: #f5f5f5;
@@ -804,14 +925,14 @@ body.preload {
 
 /*FONTS*/
 @font-face {
-    font-family: "Maintitle";
+    font-family: "MainFont";
     src: url("../assets/Fonts/Bebas_Neue/BebasNeue-Regular.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "Subtitle";
+    font-family: "SubFont";
     src: url("../assets/Fonts/Orbitron/Orbitron-VariableFont_wght.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
@@ -889,10 +1010,6 @@ body.preload {
     .auth-right {
         padding: 2rem 1rem;
     }
-
-    #navMenu{
-        transform: translateX(100%);
-    }
 }
 
 @media (max-width: 991px) {
@@ -920,5 +1037,6 @@ body.preload {
 
     #navMenu.open {
         transform: translateX(0);
+        transition: transform 0.4s ease;
     }
 }
