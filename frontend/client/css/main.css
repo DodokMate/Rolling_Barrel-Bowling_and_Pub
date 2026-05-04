@@ -256,6 +256,13 @@ header {
         0 0 32px rgba(0, 229, 255, 0.4);
 }
 
+.no-glow {
+    font-family: "MainFont", sans-serif;
+    font-size: 2.5rem;
+    color: #ffffff;
+    text-shadow: none;
+}
+
 .main-section-hr {
     width: 5rem;
     border-top: 3px solid rgb(0, 229, 255);
@@ -554,7 +561,8 @@ header {
 }
 
 /* LOGIN REQUIRED MODAL – Rolling Barrel neon style */
-#loginRequiredModal .modal-content {
+#loginRequiredModal .modal-content, 
+#loginRequiredModalReview .modal-content{
     background: rgb(40, 48, 62);
     border-radius: 18px;
     border: 1px solid rgba(255, 255, 255, 0.06);
@@ -566,7 +574,8 @@ header {
 }
 
 /* Header */
-#loginRequiredModal .modal-header {
+#loginRequiredModal .modal-header,
+#loginRequiredModalReview .modal-header {
     border-bottom: none;
     display: flex;
     justify-content: space-between;
@@ -574,7 +583,8 @@ header {
 }
 
 /* Szöveg */
-#loginRequiredModal .modal-header p {
+#loginRequiredModal .modal-header p, 
+#loginRequiredModalReview .modal-header p {
     font-size: 1.15em;
     color: #ffffff;
     margin: 0;
@@ -582,13 +592,15 @@ header {
 }
 
 /* X gomb */
-#loginRequiredModal .btn-close {
+#loginRequiredModal .btn-close, 
+#loginRequiredModalReview .btn-close {
     filter: invert(1);
     opacity: 0.8;
     transition: 0.2s ease;
 }
 
-#loginRequiredModal .btn-close:hover {
+#loginRequiredModal .btn-close:hover, 
+#loginRequiredlModaReview .btn-close:hover {
     opacity: 1;
     transform: scale(1.15);
 }
@@ -657,6 +669,229 @@ body.modal-open {
     text-align: start;
     margin-top: 0.5rem;
 }
+
+/* REVIEWS */
+
+#reviews-section, .hub-section {
+    background:
+        radial-gradient(circle at top left, rgba(180, 40, 255, 0.18), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(0, 221, 255, 0.14), transparent 35%),
+        #090813;
+    color: #fff;
+}
+
+#reviews-intro {
+    font-family: "SubFont";
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1.05rem;
+}
+
+.review-card {
+    max-height: 280px;
+    min-height: 280px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 24px;
+    background: linear-gradient(145deg, rgba(24, 20, 45, 0.96), rgba(14, 13, 29, 0.96));
+    color: #fff;
+    box-shadow: 0 0 28px rgba(147, 51, 234, 0.18);
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255, 0, 200, 0.35);
+    box-shadow: 0 0 36px rgba(255, 0, 200, 0.22);
+}
+
+.review-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 14px;
+    align-items: center;
+}
+
+.review-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    background-color: #137081;
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.2rem;
+    box-shadow: 0 0 18px rgba(0, 217, 255, 0.35);
+}
+
+.review-avatar-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.review-meta h5 {
+    margin: 0;
+    font-size: 1rem;
+    color: #fff;
+}
+
+.review-meta small {
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.review-rating {
+    white-space: nowrap;
+    color: #ffc107;
+    font-size: 0.95rem;
+    text-shadow: 0 0 10px rgba(255, 193, 7, 0.35);
+}
+
+.review-text {
+    max-height: 130px;
+    overflow-y: auto;
+    padding-right: 8px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.review-text::-webkit-scrollbar,
+.review-textarea::-webkit-scrollbar {
+    width: 6px;
+}
+
+.review-text::-webkit-scrollbar-thumb,
+.review-textarea::-webkit-scrollbar-thumb {
+    background: rgba(0, 217, 255, 0.45);
+    border-radius: 999px;
+}
+
+.review-form-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.review-form-card {
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 28px;
+    background: linear-gradient(145deg, rgba(18, 17, 36, 0.96), rgba(31, 22, 54, 0.96));
+    box-shadow: 0 0 40px rgba(0, 217, 255, 0.12);
+    color: #fff;
+}
+
+.review-form-title {
+    margin-bottom: 8px;
+    font-size: 1.7rem;
+    font-family: "MainFont";
+    letter-spacing: 0.1rem;
+}
+
+.review-form-subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 28px;
+}
+
+.review-label {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.review-textarea {
+    resize: vertical;
+    min-height: 150px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    padding: 16px;
+}
+
+.review-textarea:focus {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border-color: rgba(0, 217, 255, 0.7);
+    box-shadow: 0 0 0 0.2rem rgba(0, 217, 255, 0.15);
+}
+
+.review-textarea::placeholder {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.review-submit-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.review-star-picker {
+    display: flex;
+    gap: 6px;
+}
+
+.star-btn {
+    border: none;
+    background: transparent;
+    color: #ffc107;
+    font-size: 2rem;
+    line-height: 1;
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.18s ease, text-shadow 0.18s ease;
+}
+
+.star-btn:hover {
+    transform: scale(1.16);
+    text-shadow: 0 0 15px rgba(255, 193, 7, 0.65);
+}
+
+#review-rating-text {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.95rem;
+}
+
+#review-submit-btn {
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    background-image: linear-gradient(120deg, rgba(255, 0, 170, 0.6), rgba(255, 0, 170, 0.2));
+    border: 1.5px solid rgba(255, 0, 170, 0.5);
+    transition: 0.7s;
+    color: rgb(211, 211, 211);
+    font-family: "SubFont";
+    padding: 0.7rem 1.4rem;
+    font-size: 0.9rem;
+    width: fit-content;
+    height: auto;
+}
+
+#review-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 34px rgba(255, 43, 214, 0.35);
+}
+
+@media (max-width: 768px) {
+    .review-card {
+        height: 300px;
+    }
+
+    .review-header {
+        grid-template-columns: auto 1fr;
+    }
+
+    .review-rating {
+        grid-column: 1 / -1;
+    }
+
+    .review-submit-row {
+        align-items: flex-start;
+    }
+
+    #review-submit-btn {
+        width: 100%;
+    }
+}
+
 
 
 .auth-wrapper {

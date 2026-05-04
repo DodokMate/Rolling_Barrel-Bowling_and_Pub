@@ -47,7 +47,7 @@
             <!--HUB-->
             <section class="hub-section py-5">
                 <div class="container">
-                    <h2 class="text-center text-md-start main-section-title">Hangolódj rá</h2>
+                    <h2 class="text-center text-md-start main-section-title"><span class="no-glow">Hangolódj</span> Rá</h2>
 
                     <hr class="mb-5 mt-0 main-section-hr">
 
@@ -123,7 +123,7 @@
             <section id="events-section" class="py-5">
 
                 <div class="container">
-                    <h2 class="main-section-title text-center text-md-start">Közelgő események</h2>
+                    <h2 class="main-section-title text-center text-md-start"><span class="no-glow">Közelgő</span> Események</h2>
                     <hr class="mb-0 mt-0 main-section-hr">
 
                     <div class="event-tags mt-3">
@@ -158,6 +158,65 @@
             </section>
 
             <!--VELEMENYEK-->
+            <section id="reviews-section" class="py-5">
+                <div class="container">
+                    <h2 class="main-section-title text-center text-md-start"><span class="no-glow">Rólunk</span> Mondták</h2>
+                    <hr class="mb-4 mt-0 main-section-hr">
+
+                    <p id="reviews-intro" class="mb-5">
+                        Fontos számunkra a véleményed, mert ezek alapján tudjuk még jobbá tenni a Rolling Barrel
+                        élményt.
+                    </p>
+
+                    <div id="reviews-list" class="row g-4 mb-5">
+
+                    </div>
+
+                    <div class="review-form-wrapper">
+                        <div class="card review-form-card p-4 p-md-5">
+                            <h3 class="review-form-title">Értékelj minket!</h3>
+                            <p class="review-form-subtitle">
+                                Írd meg, milyen volt nálunk a hangulat, a bowling vagy a pub élmény.
+                            </p>
+
+                            <div class="mb-3">
+                                <label for="review-comment" class="form-label review-label">Véleményed</label>
+                                <textarea id="review-comment" class="form-control review-textarea" rows="5"
+                                    maxlength="1000" placeholder="Írd ide a véleményed..."></textarea>
+                            </div>
+
+                            <div class="review-submit-row">
+                                <div>
+                                    <div id="review-stars" class="review-star-picker"
+                                        aria-label="Értékelés csillagokkal">
+                                        <button type="button" class="star-btn" data-value="1" aria-label="1 csillag">
+                                            <i class="bi bi-star"></i>
+                                        </button>
+                                        <button type="button" class="star-btn" data-value="2" aria-label="2 csillag">
+                                            <i class="bi bi-star"></i>
+                                        </button>
+                                        <button type="button" class="star-btn" data-value="3" aria-label="3 csillag">
+                                            <i class="bi bi-star"></i>
+                                        </button>
+                                        <button type="button" class="star-btn" data-value="4" aria-label="4 csillag">
+                                            <i class="bi bi-star"></i>
+                                        </button>
+                                        <button type="button" class="star-btn" data-value="5" aria-label="5 csillag">
+                                            <i class="bi bi-star"></i>
+                                        </button>
+                                    </div>
+
+                                    <p id="review-rating-text" class="mb-0 mt-2">Válassz csillagot</p>
+                                </div>
+
+                                <button id="review-submit-btn" class="btn" type="button">
+                                    Küldés
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
 
         <div id="auth-container" class="d-none"></div>
@@ -235,6 +294,17 @@
                 <div class="modal-header">
                     <p>Az eseményre való jelentkezéshez előbb be kell lépned.</p>
                     <button type="button" id="loginRequiredModalX" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="loginRequiredModalReview" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p>Az értékeléshez előbb be kell lépned.</p>
+                    <button type="button" id="loginRequiredModalReviewX" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
             </div>
         </div>
