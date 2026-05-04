@@ -45,7 +45,7 @@ router.post('/registration', regFormValidate, async (req, res) => {
             email: newUser.email 
         }, 
         process.env.JWT_SECRET, 
-        { expiresIn: '10s' });
+        { expiresIn: '2h' });
 
         res.status(201).json({
             success: true,
@@ -107,7 +107,7 @@ router.post('/login', async (req, res) => {
                 email: user.email
             },
             process.env.JWT_SECRET,
-            { expiresIn: '10s' }
+            { expiresIn: '2h' }
         );
 
         res.status(200).json({
