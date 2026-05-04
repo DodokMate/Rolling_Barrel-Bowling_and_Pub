@@ -43,11 +43,13 @@
 
         <!--MAIN CONTENT-->
         <main id="main-content">
+
+            <!--HUB-->
             <section class="hub-section py-5">
                 <div class="container">
-                    <!-- <h2 class="text-left" id="hub-title">Hangolódj rá</h2>
+                    <h2 class="text-center text-md-start main-section-title">Hangolódj rá</h2>
 
-                    <hr id="hub-hr" class="mb-5 mt-0"> -->
+                    <hr class="mb-5 mt-0 main-section-hr">
 
                     <div class="row g-4">
                         <div class="col-lg-8 col-md-12 col-sm-12">
@@ -65,20 +67,22 @@
                                     <div class="carousel-item active p-4" id="carousel-slide1">
                                         <div class="carousel-item-content">
                                             <h3 class="card-title">Bowling Pályák</h3>
-                                        <p class="card-text">5 neon‑fényes pálya, garantált szórakozás. it, amet
-                                            consectetur adipisicing elit. Aliquid error, iure earum harum veritatis
-                                            iusto voluptatem mag</p>
-                                        <a href="#" class="btn hub-card-btn mt-3">Fedezd fel</a>
+                                            <p class="card-text">5 neon‑fényes pálya, garantált szórakozás. it, amet
+                                                consectetur adipisicing elit. Aliquid error, iure earum harum veritatis
+                                                iusto voluptatem mag</p>
+                                            <a href="#" class="btn hub-card-btn mt-3">Fedezd fel</a>
                                         </div>
                                     </div>
 
                                     <div class="carousel-item p-4" id="carousel-slide2">
                                         <div class="carousel-item-content">
                                             <h3 class="card-title">Pub Lounge</h3>
-                                        <p class="card-text">Kézműves koktélok és futurisztikus bárhangulat. Lorem ipsum
-                                            dolor sit amet, Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                                            Repudiandae, volu</p>
-                                        <a href="#" class="btn hub-card-btn mt-3">Láss többet</a>
+                                            <p class="card-text">Kézműves koktélok és futurisztikus bárhangulat. Lorem
+                                                ipsum
+                                                dolor sit amet, Lorem, ipsum dolor sit amet consectetur adipisicing
+                                                elit.
+                                                Repudiandae, volu</p>
+                                            <a href="#" class="btn hub-card-btn mt-3">Láss többet</a>
                                         </div>
                                     </div>
                                 </div>
@@ -114,7 +118,45 @@
                     </div>
                 </div>
             </section>
-            <!--PROGRAMOK-->
+
+            <!--EVENTS-->
+            <section id="events-section" class="py-5">
+
+                <div class="container">
+                    <h2 class="main-section-title text-center text-md-start">Közelgő események</h2>
+                    <hr class="mb-0 mt-0 main-section-hr">
+
+                    <div class="event-tags mt-3">
+                        <span id="reset-badges" class="badge filter-badge event-tag-all" data-cat="all">Összes</span>
+                        <span class="badge filter-badge event-tag-bowling" data-cat="bowling">Bowling</span>
+                        <span class="badge filter-badge event-tag-pub" data-cat="pub">Pub</span>
+                        <span class="badge filter-badge event-tag-competition" data-cat="competition">Verseny</span>
+                        <span class="badge filter-badge event-tag-music" data-cat="music">Zene</span>
+                    </div>
+                </div>
+
+                <div class="events-wrapper">
+                    <button id="events-left" class="scroll-btn left-btn">
+                        <span class="bi bi-chevron-left"></span>
+                    </button>
+
+                    <div id="events-row" class="events-scroll-row">
+                        <!-- JS tölti be -->
+                    </div>
+
+                    <button id="events-right" class="scroll-btn right-btn">
+                        <span class="bi bi-chevron-right"></span>
+                    </button>
+                </div>
+
+                <div class="container">
+                    <p id="events-info-p">
+                        * Az eseményekre való jelentkezéshez be kell jelentkezned.
+                    </p>
+                </div>
+
+            </section>
+
             <!--VELEMENYEK-->
         </main>
 
@@ -185,6 +227,19 @@
             </div>
         </div>
     </div>
+
+    <!--Login required-->
+    <div class="modal fade" id="loginRequiredModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p>Az eseményre való jelentkezéshez előbb be kell lépned.</p>
+                    <button type="button" id="loginRequiredModalX" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!--JAVASCRIPT-->
     <script type="module" src="./js/main.js"></script>
