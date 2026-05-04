@@ -19,6 +19,13 @@ export function initNavbar() {
     brand.href = "#";
     brand.className = "navbar-brand d-flex align-items-center m-0";
 
+    brand.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        localStorage.setItem("currentView", "home");
+        location.reload();
+    });
+
     const logo = document.createElement("img");
     logo.src = "./assets/images/logo.png";
     logo.alt = "Rolling Barrel Logo";
@@ -211,6 +218,26 @@ export function initNavbar() {
         a.href = link.href;
         a.textContent = link.text;
 
+        if (link.text === "Főoldal") {
+            a.addEventListener("click", (e) => {
+                e.preventDefault();
+
+                localStorage.setItem("currentView", "home");
+                closeMobileMenu();
+                location.reload();
+            });
+        }
+
+        if (link.text === "Menü") {
+            a.addEventListener("click", (e) => {
+                e.preventDefault();
+
+                localStorage.setItem("currentView", "menu");
+                closeMobileMenu();
+                location.reload();
+            });
+        }
+
         li.appendChild(a);
         ulNav.appendChild(li);
     });
@@ -225,6 +252,16 @@ export function initNavbar() {
 
     const navMenu = document.getElementById("navMenu");
     const navbar = document.getElementById("navbar");
+
+    function closeMobileMenu() {
+        navMenu.classList.remove("open");
+        navbar.classList.remove("menu-open");
+
+        hamburgerIcon.classList.add("bi-list");
+        hamburgerIcon.classList.remove("bi-x-lg");
+
+        document.body.style.overflowY = "auto";
+    }
 
     hamburgerBtn.addEventListener("click", () => {
         navMenu.classList.toggle("open");
