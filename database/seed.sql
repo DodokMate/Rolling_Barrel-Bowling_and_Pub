@@ -49,22 +49,31 @@ INSERT INTO menu_items (name, description, price, category) VALUES
 ('Whiskey', 'Premium whiskey 4cl', 2490, 'drink');
 
 -- EVENTS
-INSERT INTO events (name, description, event_date, start_time, end_time) VALUES
-(
-    'Bowling Tournament',
-    'Weekly bowling competition',
-    '2026-02-15',
-    '18:00',
-    '22:00'
-),
+INSERT INTO events (name, description, event_date, start_time, end_time, free_slots, category)
+VALUES
+('Weekly Bowling Night', 'Heti baráti bowling est neon hangulattal és jó zenékkel.', '2026-02-14', '18:00', '22:00', 100, 'bowling'),
 
-(
-    'Live Music Night',
-    'Local band live performance',
-    '2026-02-22',
-    '20:00',
-    '23:00'
-);
+('Rolling Barrel Championship', 'Havi bajnokság profi és amatőr játékosoknak értékes nyereményekkel.', '2026-02-28', '17:00', '23:00', 64, 'competition'),
+
+('Retro Synthwave Night', '80-as évek synthwave hangulat neon fényekkel és DJ-szettel.', '2026-02-20', '21:00', '01:00', 150, 'music'),
+
+('Craft Beer Tasting', 'Kézműves sörkóstoló helyi főzdékkel és limitált tételekkel.', '2026-02-18', '18:00', '21:00', 50, 'pub'),
+
+('Glow Strike Party', 'UV-fényes bowling buli, ahol minden strike után fényshow indul.', '2026-03-02', '20:00', '23:00', 80, 'bowling'),
+
+('Duo Strike Tournament', 'Kétfős csapatverseny, ahol a csapatmunka dönt mindent.', '2026-03-15', '18:00', '22:00', 40, 'competition'),
+
+('Acoustic Chill Evening', 'Élő akusztikus est, tökéletes lazuláshoz és baráti beszélgetésekhez.', '2026-03-07', '19:00', '22:00', 90, 'music'),
+
+('Pub Quiz Night', 'Csapatok versenyeznek tudásban, humorban és gyorsaságban.', '2026-03-04', '19:00', '22:00', 80, 'pub'),
+
+('Family Bowling Sunday', 'Családi délután kedvezményes pályákkal és gyerekbarát programokkal.', '2026-03-09', '14:00', '18:00', 120, 'bowling'),
+
+('Midnight Knockout Cup', 'Éjszakai kieséses torna, csak a legkitartóbbaknak.', '2026-04-05', '22:00', '02:00', 32, 'competition'),
+
+('Neon Beats Live DJ', 'Elektronikus DJ-szett neon fényekkel és táncos hangulattal.', '2026-03-21', '22:00', '02:00', 200, 'music'),
+
+('Whiskey & Vinyl Evening', 'Prémium whiskey kóstoló klasszikus vinyl zenékkel.', '2026-03-18', '20:00', '23:00', 60, 'pub');
 
 -- REVIEWS
 INSERT INTO reviews (user_id, rating, comment) VALUES

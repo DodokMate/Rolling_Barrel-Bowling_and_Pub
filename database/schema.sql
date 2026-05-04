@@ -13,7 +13,8 @@ CREATE TABLE users (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role ENUM('admin', 'user') DEFAULT 'user'
+    role ENUM('admin', 'user') DEFAULT 'user',
+    registered_events TEXT NULL
 );
 
 -- LANES
@@ -65,7 +66,9 @@ CREATE TABLE events (
     description TEXT,
     event_date DATE NOT NULL,
     start_time TIME,
-    end_time TIME
+    end_time TIME,
+    free_slots INT DEFAULT 100,
+    category VARCHAR(50) NOT NULL DEFAULT 'bowling';
 );
 
 -- REVIEWS
