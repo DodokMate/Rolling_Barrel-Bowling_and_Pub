@@ -264,3 +264,49 @@ export async function createReservation(reservationData, token) {
         };
     }
 }
+
+// UPDATE USER PROFILE
+export async function updateUserProfile(name, token) {
+    try {
+        const res = await fetch(`${BASE_URL}/api/profile`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ name })
+        });
+
+        return await res.json();
+    } catch (err) {
+        console.error("Update profile error:", err);
+
+        return {
+            success: false,
+            message: "Nem sikerült frissíteni a profilt."
+        };
+    }
+}
+
+// FETCH PROFILE RESERVATIONS
+export async function fetchProfileReservations(token) {
+    try {
+        const res = await fetch(`${BASE_URL}/api/profile/reservations`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        return await res.json();
+    } catch (err) {
+        console.error("Fetch profile reservations error:", err);
+
+        return {
+            success: false,
+            message: "Nem sikerült lekérni a foglalásokat.",
+            lane_reservations: [],
+            table_reservations: []
+        };
+    }
+}
