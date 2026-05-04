@@ -66,7 +66,7 @@ async function updateUserRegisteredEvents(userId, eventsId) {
 //USER'S REGISTERED EVENTS (ALL)
 async function getUserRegisteredEvents(userId) {
     const query = "SELECT registered_events FROM users WHERE id = ?";
-    const [rows] = await pool.query(query,[userId]);
+    const [rows] = await pool.query(query, [userId]);
     return rows[0]?.registered_events || "[]";
 }
 
@@ -103,6 +103,91 @@ async function addReview(userId, rating, comment) {
     return result.insertId;
 }
 
+// MENU ITEMS
+async function getMenuItems() {
+    const query = `
+        SELECT 
+            id,
+            name,
+            description,
+            price,
+            category,
+            subcategory
+        FROM menu_items
+        ORDER BY 
+            FIELD(category, 'food', 'drink'),
+            FIELD(subcategory, 'burger', 'pizza', 'pasta', 'alcoholic', 'non_alcoholic'),
+            name ASC
+    `;
+
+    const [rows] = await pool.execute(query);
+    return rows;
+}
+
+// GET USER MENU FAVOURITES
+async function getUserMenuFavourites(userId) {
+    const query = `
+        SELECT menu_item_id
+        FROM menu_favourites
+        WHERE user_id = ?
+    `;
+
+    const [rows] = await pool.execute(query, [userId]);
+    return rows.map(row => Number(row.menu_item_id));
+}
+
+// CHECK MENU FAVOURITE
+async function isMenuFavourite(userId, menuItemId) {
+    const query = `
+        SELECT id
+        FROM menu_favourites
+        WHERE user_id = ? AND menu_item_id = ?
+        LIMIT 1
+    `;
+
+    const [rows] = await pool.execute(query, [userId, menuItemId]);
+    return rows.length > 0;
+}
+
+// ADD MENU FAVOURITE
+async function addMenuFavourite(userId, menuItemId) {
+    const query = `
+        INSERT IGNORE INTO menu_favourites (user_id, menu_item_id)
+        VALUES (?, ?)
+    `;
+
+    await pool.execute(query, [userId, menuItemId]);
+}
+
+// REMOVE MENU FAVOURITE
+async function removeMenuFavourite(userId, menuItemId) {
+    const query = `
+        DELETE FROM menu_favourites
+        WHERE user_id = ? AND menu_item_id = ?
+    `;
+
+    await pool.execute(query, [userId, menuItemId]);
+}
+
+// TOGGLE MENU FAVOURITE
+async function toggleMenuFavourite(userId, menuItemId) {
+    const favourite = await isMenuFavourite(userId, menuItemId);
+
+    if (favourite) {
+        await removeMenuFavourite(userId, menuItemId);
+
+        return {
+            action: "removed"
+        };
+    }
+
+    await addMenuFavourite(userId, menuItemId);
+
+    return {
+        action: "added"
+    };
+}
+
 //Exports
 module.exports = {
     test,
@@ -115,5 +200,11 @@ module.exports = {
     updateEventFreeSlots,
     getEventById,
     getReviews,
-    addReview
+    addReview,
+    getMenuItems,
+    getUserMenuFavourites,
+    isMenuFavourite,
+    addMenuFavourite,
+    removeMenuFavourite,
+    toggleMenuFavourite
 };
