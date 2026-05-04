@@ -24,7 +24,7 @@ async function registration(user) {
     const query = 'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?);';
     const values = [user.name, user.email, user.password, 'user'];
     const [result] = await pool.execute(query, values);
-    const [rows] = await pool.execute( "SELECT id, name, email, role FROM users WHERE id = ?", [result.insertId] );
+    const [rows] = await pool.execute("SELECT id, name, email, role FROM users WHERE id = ?", [result.insertId]);
     return rows[0];
 }
 
@@ -37,9 +37,44 @@ async function checkEmail(email) {
 
 //USER'S DATA
 async function userData(email) {
-    const query = 'SELECT name, email FROM users WHERE email = ?';
+    const query = 'SELECT name, email, registered_events FROM users WHERE email = ?';
     const [rows] = await pool.execute(query, [email]);
     return rows[0];
+}
+
+//EVENTS 
+async function getEvents() {
+    const query = 'SELECT * FROM events ORDER BY event_date ASC';
+    const [rows] = await pool.execute(query);
+    return rows;
+}
+
+//GET EVENT BY ID
+async function getEventById(eventId) {
+    const query = "SELECT id, free_slots FROM events WHERE id = ?";
+    const [rows] = await pool.execute(query, [eventId]);
+    return rows[0];
+}
+
+//UPDATE USER'S REGISTERED EVENTS
+async function updateUserRegisteredEvents(userId, eventsId) {
+    const query = "UPDATE users SET registered_events = ? WHERE id = ?";
+    const [rows] = await pool.query(query, [eventsId, userId]);
+    return rows;
+}
+
+//USER'S REGISTERED EVENTS (ALL)
+async function getUserRegisteredEvents(userId) {
+    const query = "SELECT registered_events FROM users WHERE id = ?";
+    const [rows] = await pool.query(query,[userId]);
+    return rows[0]?.registered_events || "[]";
+}
+
+//UPDATE EVENT FREE SLOTS
+async function updateEventFreeSlots(eventId, delta) {
+    const query = "UPDATE events SET free_slots = free_slots + ? WHERE id = ? AND free_slots + ? >= 0";
+    const [result] = await pool.execute(query, [delta, eventId, delta]);
+    return result.affectedRows;
 }
 
 //Exports
@@ -47,5 +82,10 @@ module.exports = {
     test,
     registration,
     checkEmail,
-    userData
+    userData,
+    getEvents,
+    updateUserRegisteredEvents,
+    getUserRegisteredEvents,
+    updateEventFreeSlots,
+    getEventById
 };
