@@ -1,10 +1,21 @@
 import { renderRegisterForm } from "./auth.js";
 import { renderLoginForm } from "./auth.js";
 import { renderProfilePage } from "./profile.js";
+import { userData } from "./api.js";
 
 //Initialize the navbar with DOM
-export function initNavbar() {
+export async function initNavbar() {
+
     const token = localStorage.getItem('token');
+    let currentUser = null;
+
+    if (token) {
+        const userResponse = await userData();
+
+        if (userResponse.success) {
+            currentUser = userResponse.user;
+        }
+    }
 
     const headerNavbar = document.getElementById("headerNavbar")
 
@@ -19,12 +30,19 @@ export function initNavbar() {
     brand.href = "#";
     brand.className = "navbar-brand d-flex align-items-center m-0";
 
+    brand.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        localStorage.setItem("currentView", "home");
+        location.reload();
+    });
+
     const logo = document.createElement("img");
     logo.src = "./assets/images/logo.png";
     logo.alt = "Rolling Barrel Logo";
     logo.className = "neon mb-2";
     logo.id = "logo";
-    logo.style.height = "70px";
+    logo.style.height = "65px";
     logo.style.width = "auto";
 
     brand.appendChild(logo);
@@ -36,26 +54,11 @@ export function initNavbar() {
     hamburgerBtn.className = "navbar-toggler p-0";
     hamburgerBtn.id = "hamburgerBtn";
     hamburgerBtn.type = "button";
-    hamburgerBtn.setAttribute("data-bs-toggle", "collapse");
-    hamburgerBtn.setAttribute("data-bs-target", "#navbarNav");
 
     const hamburgerIcon = document.createElement("span");
     hamburgerIcon.className = "bi bi-list";
 
-    hamburgerBtn.addEventListener("click", () => {
-        hamburgerIcon.classList.toggle("bi-list");
-        hamburgerIcon.classList.toggle("bi-x-lg");
-    });
-
     hamburgerBtn.appendChild(hamburgerIcon);
-
-    const darkIcon = document.createElement("span");
-    darkIcon.id = "darkIcon";
-    darkIcon.className = "bi bi-moon mx-2 navIcon d-none";
-
-    const lightIcon = document.createElement("span");
-    lightIcon.id = "lightIcon";
-    lightIcon.className = "bi bi-sun mx-2 navIcon";
 
     const profileLink = document.createElement("a");
     profileLink.href = "#";
@@ -67,7 +70,7 @@ export function initNavbar() {
 
     const profileIcon = document.createElement("span");
     profileIcon.id = "profileIcon";
-    profileIcon.className = "bi bi-person-circle ms-1 navIcon";
+    profileIcon.className = "bi bi-person-circle mx-1 navIcon";
     profileLink.appendChild(profileIcon);
 
     const dropdownMenu = document.createElement("ul");
@@ -82,7 +85,8 @@ export function initNavbar() {
         aReg.textContent = "Regisztráció";
 
         aReg.addEventListener("click", () => {
-            renderRegisterForm();
+            localStorage.setItem("currentView", "logreg");
+            location.reload();
         });
 
         liReg.appendChild(aReg);
@@ -95,7 +99,8 @@ export function initNavbar() {
         aLogin.textContent = "Belépés";
 
         aLogin.addEventListener("click", () => {
-            renderLoginForm();
+            localStorage.setItem("currentView", "logreg");
+            location.reload();
         });
 
         liLogin.appendChild(aLogin);
@@ -114,15 +119,11 @@ export function initNavbar() {
 
         const textProfile = document.createTextNode("Profilom");
 
-        aProfile.addEventListener("click", async () => {
+        aProfile.addEventListener("click", (e) => {
+            e.preventDefault();
+
             localStorage.setItem("currentView", "profile");
-
-            document.getElementById("headerNavbar").classList.add("d-none");
-            document.getElementById("header").classList.add("d-none");
-            document.getElementById("main-content").classList.add("d-none");
-            document.getElementById("profile-container").classList.remove("d-none");
-
-            await renderProfilePage();
+            location.reload();
         });
 
         aProfile.append(iconProfile, textProfile)
@@ -194,24 +195,55 @@ export function initNavbar() {
         aLogOut.append(iconLogOut, textLogOut)
         liLogOut.appendChild(aLogOut);
 
-        dropdownMenu.append(liProfile, topLine, liBooking, liFavourites, liEvents, bottomLine, liLogOut);
+        let liAdmin = null;
+
+        if (currentUser && currentUser.role === "admin") {
+            liAdmin = document.createElement("li");
+
+            const aAdmin = document.createElement("a");
+            aAdmin.href = "#";
+            aAdmin.className = "dropdown-item d-flex align-items-center gap-2";
+            aAdmin.id = "adminBtn";
+
+            const iconAdmin = document.createElement("span");
+            iconAdmin.className = "bi bi-shield-lock";
+
+            const textAdmin = document.createTextNode("Admin felület");
+
+            aAdmin.append(iconAdmin, textAdmin);
+
+            aAdmin.addEventListener("click", (e) => {
+                e.preventDefault();
+
+                localStorage.setItem("currentView", "admin");
+                location.reload();
+            });
+
+            liAdmin.appendChild(aAdmin);
+        }
+
+        if (liAdmin) {
+            dropdownMenu.append(liProfile, liAdmin, bottomLine, liLogOut);
+        } else {
+            dropdownMenu.append(liProfile, bottomLine, liLogOut);
+        }
     }
 
-    iconsWrap.append(hamburgerBtn, darkIcon, lightIcon, profileLink, dropdownMenu);
+    iconsWrap.append(hamburgerBtn, profileLink, dropdownMenu);
 
     const collapse = document.createElement("div");
-    collapse.className = "collapse navbar-collapse order-lg-1";
-    collapse.id = "navbarNav";
+    collapse.className = "nav-menu";
+    collapse.id = "navMenu";
 
     const ulNav = document.createElement("ul");
     ulNav.className = "navbar-nav d-flex m-auto";
 
     const links = [
         { text: "Főoldal", href: "#" },
+        { text: "Rólunk", href: "#" },
         { text: "Foglalás", href: "#" },
         { text: "Menü", href: "#" },
         { text: "Események", href: "#" },
-        { text: "Rólunk", href: "#" },
         { text: "Kapcsolat", href: "#" },
     ];
 
@@ -224,6 +256,35 @@ export function initNavbar() {
         a.href = link.href;
         a.textContent = link.text;
 
+        if (link.text === "Főoldal") {
+            a.addEventListener("click", (e) => {
+                e.preventDefault();
+
+                localStorage.setItem("currentView", "home");
+                closeMobileMenu();
+                location.reload();
+            });
+        }
+
+        if (link.text === "Foglalás") {
+            a.addEventListener("click", (e) => {
+                e.preventDefault();
+
+                localStorage.setItem("currentView", "reservation");
+                location.reload();
+            });
+        }
+
+        if (link.text === "Menü") {
+            a.addEventListener("click", (e) => {
+                e.preventDefault();
+
+                localStorage.setItem("currentView", "menu");
+                closeMobileMenu();
+                location.reload();
+            });
+        }
+
         li.appendChild(a);
         ulNav.appendChild(li);
     });
@@ -234,10 +295,53 @@ export function initNavbar() {
     nav.appendChild(container);
     headerNavbar.appendChild(nav);
 
+    updateNavbarBackground();
+
+    const navMenu = document.getElementById("navMenu");
+    const navbar = document.getElementById("navbar");
+
+    function closeMobileMenu() {
+        navMenu.classList.remove("open");
+        navbar.classList.remove("menu-open");
+
+        hamburgerIcon.classList.add("bi-list");
+        hamburgerIcon.classList.remove("bi-x-lg");
+
+        document.body.style.overflowY = "auto";
+    }
+
+    hamburgerBtn.addEventListener("click", () => {
+        navMenu.classList.toggle("open");
+        navbar.classList.toggle("menu-open");
+
+        hamburgerIcon.classList.toggle("bi-list");
+        hamburgerIcon.classList.toggle("bi-x-lg");
+
+        if (navMenu.classList.contains("open")) {
+            document.body.style.overflowY = "hidden";
+        } else {
+            document.body.style.overflowY = "auto";
+        }
+    });
+
+    window.addEventListener("resize", () => {
+        if (window.innerWidth >= 992) {
+            navMenu.classList.remove("open");
+            navbar.classList.remove("menu-open");
+            hamburgerIcon.classList.add("bi-list");
+            hamburgerIcon.classList.remove("bi-x-lg");
+            document.body.style.overflowY = "auto";
+        }
+    });
+
     const logoutBtn = document.getElementById("logoutBtn");
     if (logoutBtn) {
         logoutBtn.addEventListener("click", logout);
     }
+
+    window.addEventListener("scroll", updateNavbarBackground);
+    window.addEventListener("DOMContentLoaded", updateNavbarBackground);
+
 }
 
 //Registration modal
@@ -248,7 +352,7 @@ export function regAlert() {
 
     setTimeout(() => {
         location.reload();
-    }, 3 * 1000);
+    }, 1.5 * 1000);
 }
 
 //Login modal
@@ -259,11 +363,11 @@ export function loginAlert() {
 
     setTimeout(() => {
         location.reload();
-    }, 3 * 1000);
+    }, 1.5 * 1000);
 }
 
 //Logout function
-function logout() {
+export function logout() {
     localStorage.removeItem("token");
     console.log(`[${new Date().toLocaleDateString()} - ${new Date().toLocaleTimeString()}] - Sikeres kijelentkezés!`);
 
@@ -273,7 +377,7 @@ function logout() {
 
     setTimeout(() => {
         location.reload();
-    }, 3 * 1000);
+    }, 1.5 * 1000);
 }
 
 //Token countdown for automatic logout
@@ -302,4 +406,15 @@ function systemLogout() {
         Modal.hide();
         location.reload();
     });
+}
+
+//Adding a scroll effect to the navbar
+function updateNavbarBackground() {
+    const navbar = document.getElementById("navbar");
+
+    if (window.scrollY > 10) {
+        navbar.classList.add("scrolled");
+    } else {
+        navbar.classList.remove("scrolled");
+    }
 }

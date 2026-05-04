@@ -13,7 +13,8 @@ CREATE TABLE users (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role ENUM('admin', 'user') DEFAULT 'user'
+    role ENUM('admin', 'user') DEFAULT 'user',
+    registered_events TEXT NULL
 );
 
 -- LANES
@@ -55,7 +56,20 @@ CREATE TABLE menu_items (
     name VARCHAR(100) NOT NULL,
     description TEXT,
     price DECIMAL(10,2) NOT NULL,
-    category ENUM('food', 'drink') DEFAULT 'food'
+    category ENUM('food', 'drink') NOT NULL,
+    subcategory ENUM('burger', 'pizza', 'pasta', 'alcoholic', 'non_alcoholic') NULL DEFAULT NULL
+);
+
+--MENU FAVOURITES   
+CREATE TABLE menu_favourites (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    menu_item_id INT NOT NULL,
+
+    UNIQUE KEY unique_user_menu_favourite (user_id, menu_item_id),
+
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (menu_item_id) REFERENCES menu_items(id) ON DELETE CASCADE
 );
 
 -- EVENTS
@@ -65,7 +79,9 @@ CREATE TABLE events (
     description TEXT,
     event_date DATE NOT NULL,
     start_time TIME,
-    end_time TIME
+    end_time TIME,
+    free_slots INT DEFAULT 100,
+    category VARCHAR(50) NOT NULL DEFAULT 'bowling'
 );
 
 -- REVIEWS
@@ -74,6 +90,7 @@ CREATE TABLE reviews (
     user_id INT NOT NULL,
     rating TINYINT NOT NULL,
     comment TEXT,
-    
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
     FOREIGN KEY (user_id) REFERENCES users(id)
 );

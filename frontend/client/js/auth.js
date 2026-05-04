@@ -5,14 +5,56 @@ import { regAlert } from "./navbar.js";
 import { loginAlert } from "./navbar.js";
 import { validateRegisterForm } from "./utils/formValidation.js";
 
-//Register and login form
-//Registration 
+//REGISTER AND LOGIN FORM
+//REGISTRATION 
 export function renderRegisterForm() {
-    const main = document.getElementById("main-content");
-    main.innerHTML = "";
+    localStorage.setItem("currentView", "logreg");
 
-    const wrapper = document.createElement("div");
-    wrapper.className = "auth-page";
+    document.getElementById("headerNavbar").classList.add("d-none");
+    document.getElementById("header").classList.add("d-none");
+    document.getElementById("profile-container").classList.add("d-none");
+
+    const authContainer = document.getElementById("auth-container");
+    authContainer.classList.remove("d-none");
+    authContainer.innerHTML = "";
+
+    const backBtn = document.createElement("button");
+    backBtn.className = "btn logreg-back-btn mt-3";
+    backBtn.innerHTML = `<i class="bi bi-arrow-bar-left me-2"></i> Főoldal`;
+
+    backBtn.addEventListener("click", () => {
+        localStorage.setItem("currentView", "home");
+
+        document.getElementById("headerNavbar").classList.remove("d-none");
+        document.getElementById("header").classList.remove("d-none");
+        document.getElementById("main-content").classList.remove("d-none");
+        document.getElementById("profile-container").classList.add("d-none");
+
+        authContainer.classList.add("d-none");
+    });
+
+    const row = document.createElement("div");
+    row.className = "row auth-row";
+
+    const colLeft = document.createElement("div");
+    colLeft.className = "col-lg-5 col-md-5 col-sm-12 auth-left";
+
+    const overlay = document.createElement("div");
+    overlay.className = "auth-left-overlay";
+
+    const neonTitle = document.createElement("h2");
+    neonTitle.className = "neon-title";
+    neonTitle.innerHTML = "A <span class='auth-neon-title'>NEON</span> PÁLYÁK <br> VILÁGA MÁR VÁR";
+
+    const neonSubtitle = document.createElement("p");
+    neonSubtitle.className = "neon-subtitle";
+    neonSubtitle.innerHTML = "A fények ritmusa és a mozgás energiája körülölel, ahogy belépsz a neon világába. Itt minden gurítás egy új impulzus, minden pillanat egy villanásnyi élmény.";
+
+    overlay.append(neonTitle, neonSubtitle, backBtn);
+    colLeft.append(overlay);
+
+    const colRight = document.createElement("div");
+    colRight.className = "col-lg-7 col-md-7 col-sm-12 auth-right d-flex flex-column justify-content-center align-items-center";
 
     const card = document.createElement("div");
     card.className = "reg-card";
@@ -26,7 +68,7 @@ export function renderRegisterForm() {
 
     const subtitle = document.createElement("p");
     subtitle.className = "auth-card-subtitle";
-    subtitle.textContent = "Regisztrálj fiókot, hogy igénybe vehesd a Rolling Barrel - Bowling & Pub szolgáltatásait";
+    subtitle.textContent = "Regisztrálj fiókot, hogy igénybe vehesd a Rolling Barrel szolgáltatásait";
 
     header.append(title, subtitle);
 
@@ -34,63 +76,55 @@ export function renderRegisterForm() {
     form.id = "register-form";
     form.className = "auth-card-form";
 
-    const nameInput = document.createElement("input"); 
-    nameInput.type = "text"; 
-    nameInput.placeholder = "Felhasználónév"; 
+    const nameInput = document.createElement("input");
+    nameInput.type = "text";
+    nameInput.placeholder = "Felhasználónév";
     nameInput.className = "reg-input";
-    nameInput.id = "regInput-name"; 
-    
-    const emailInput = document.createElement("input"); 
-    emailInput.type = "email"; 
-    emailInput.placeholder = "Email cím"; 
+    nameInput.id = "regInput-name";
+
+    const emailInput = document.createElement("input");
+    emailInput.type = "email";
+    emailInput.placeholder = "Email cím";
     emailInput.className = "reg-input";
     emailInput.id = "regInput-email";
-    
-    const passwordInput = document.createElement("input"); 
-    passwordInput.type = "password"; 
-    passwordInput.placeholder = "Jelszó"; 
+
+    const passwordInput = document.createElement("input");
+    passwordInput.type = "password";
+    passwordInput.placeholder = "Jelszó";
     passwordInput.className = "reg-input";
     passwordInput.id = "regInput-password";
 
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const name = document.getElementById("regInput-name").value;
-        const email = document.getElementById("regInput-email").value;
-        const password = document.getElementById("regInput-password").value;
-        
-        const validation = validateRegisterForm(name, email, password);
+        const name = nameInput.value;
+        const email = emailInput.value;
+        const password = passwordInput.value;
 
-        if (!validation.success) { 
-            alert(validation.message); 
+        const validation = validateRegisterForm(name, email, password);
+        if (!validation.success) {
+            alert(validation.message);
             return;
         }
 
-        const data = {
-            name: nameInput.value,
-            email: emailInput.value,
-            password: passwordInput.value
-        };
+        const response = await registerUser({ name, email, password });
 
-        const response = await registerUser(data);
-
-        if (response.success) { 
-            console.log(response);
+        if (response.success) {
             form.reset();
             localStorage.setItem("token", response.token);
-            regAlert(); 
+            localStorage.setItem("currentView", "home");
+            regAlert();
             tokenCountdown();
-        } else { 
-            alert(`${response.message}`);
+        } else {
+            alert(response.message);
         }
     });
 
-    [nameInput, emailInput, passwordInput].forEach(input => { 
-        const group = document.createElement("div"); 
-        group.className = "auth-field-group"; 
-        
-        group.appendChild(input); 
-        form.appendChild(group); 
+    [nameInput, emailInput, passwordInput].forEach(input => {
+        const group = document.createElement("div");
+        group.className = "auth-field-group";
+        group.appendChild(input);
+        form.appendChild(group);
     });
 
     const btn = document.createElement("button");
@@ -100,7 +134,6 @@ export function renderRegisterForm() {
 
     const helper = document.createElement("div");
     helper.className = "helper";
-    helper.id = "reg-helper";
 
     const helperText = document.createElement("p");
     helperText.className = "auth-helper";
@@ -108,7 +141,6 @@ export function renderRegisterForm() {
 
     const goToLogin = document.createElement("button");
     goToLogin.type = "button";
-    goToLogin.className = "reg-link";
     goToLogin.id = "go-to-login";
     goToLogin.textContent = "Belépés";
 
@@ -118,18 +150,63 @@ export function renderRegisterForm() {
 
     helper.append(helperText, goToLogin);
     form.append(btn, helper);
+
     card.append(header, form);
-    wrapper.append(card);
-    main.append(wrapper);
+    colRight.append(card);
+
+    row.append(colLeft, colRight);
+    authContainer.append(row);
 }
 
-//Login
+//LOGIN
 export function renderLoginForm() {
-    const main = document.getElementById("main-content");
-    main.innerHTML = "";
+    localStorage.setItem("currentView", "logreg");
 
-    const wrapper = document.createElement("div");
-    wrapper.className = "auth-page";
+    document.getElementById("headerNavbar").classList.add("d-none");
+    document.getElementById("header").classList.add("d-none");
+    document.getElementById("profile-container").classList.add("d-none");
+
+    const authContainer = document.getElementById("auth-container");
+    authContainer.classList.remove("d-none");
+    authContainer.innerHTML = "";
+
+    const backBtn = document.createElement("button");
+    backBtn.className = "btn logreg-back-btn mt-3";
+    backBtn.innerHTML = `<i class="bi bi-arrow-bar-left me-2"></i> Főoldal`;
+
+    backBtn.addEventListener("click", () => {
+        localStorage.setItem("currentView", "home");
+
+        document.getElementById("headerNavbar").classList.remove("d-none");
+        document.getElementById("header").classList.remove("d-none");
+        document.getElementById("main-content").classList.remove("d-none");
+        document.getElementById("profile-container").classList.add("d-none");
+
+        authContainer.classList.add("d-none");
+    });
+
+    const row = document.createElement("div");
+    row.className = "row auth-row";
+
+    const colLeft = document.createElement("div");
+    colLeft.className = "col-lg-5 col-md-5 col-sm-12 auth-left";
+
+    const overlay = document.createElement("div");
+    overlay.className = "auth-left-overlay";
+
+    const neonTitle = document.createElement("h2");
+    neonTitle.className = "neon-title";
+    neonTitle.innerHTML = "A <span class='auth-neon-title'>NEON</span> PÁLYÁK <br> VILÁGA MÁR VÁR";
+
+    const neonSubtitle = document.createElement("p");
+    neonSubtitle.className = "neon-subtitle";
+    neonSubtitle.textContent = "A fények ritmusa és a mozgás energiája körülölel, ahogy belépsz a neon világába. Itt minden gurítás egy új impulzus, minden pillanat egy villanásnyi élmény.";
+
+    overlay.append(neonTitle, neonSubtitle, backBtn);
+    colLeft.append(overlay);
+
+    const colRight = document.createElement("div");
+    colRight.className = "col-lg-7 col-md-7 col-sm-12 auth-right d-flex flex-column justify-content-center align-items-center";
 
     const card = document.createElement("div");
     card.className = "login-card";
@@ -143,7 +220,7 @@ export function renderLoginForm() {
 
     const subtitle = document.createElement("p");
     subtitle.className = "auth-card-subtitle";
-    subtitle.textContent = "Foglalj pályákat, asztalokat, tekintsd meg kedvencid, és élvezd a kínálatot";
+    subtitle.textContent = "Foglalj pályákat, asztalokat, kedvenceket és még sok mást";
 
     header.append(title, subtitle);
 
@@ -164,21 +241,19 @@ export function renderLoginForm() {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const data = {
+        const response = await loginUser({
             email: emailInput.value,
             password: passwordInput.value
-        };
+        });
 
-        const response = await loginUser(data);
-
-        if (response.success) { 
-            console.log(response);
-            form.reset(); 
+        if (response.success) {
+            form.reset();
             localStorage.setItem("token", response.token);
+            localStorage.setItem("currentView", "home");
             loginAlert();
             tokenCountdown();
-        } else { 
-            alert(`Hiba történt a bejelentkezés során! ${response.message}`);
+        } else {
+            alert(`Hiba történt: ${response.message}`);
         }
     });
 
@@ -196,15 +271,13 @@ export function renderLoginForm() {
 
     const helper = document.createElement("div");
     helper.className = "helper";
-    helper.id = "reg-helper"
 
     const helperText = document.createElement("p");
     helperText.className = "auth-helper";
-    helperText.textContent = "Már van fiókod?";
+    helperText.textContent = "Nincs még fiókod?";
 
     const goToReg = document.createElement("button");
     goToReg.type = "button";
-    goToReg.className = "login-link";
     goToReg.id = "go-to-reg";
     goToReg.textContent = "Regisztráció";
 
@@ -214,7 +287,10 @@ export function renderLoginForm() {
 
     helper.append(helperText, goToReg);
     form.append(btn, helper);
+
     card.append(header, form);
-    wrapper.append(card);
-    main.append(wrapper);
+    colRight.append(card);
+
+    row.append(colLeft, colRight);
+    authContainer.append(row);
 }

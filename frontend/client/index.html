@@ -26,30 +26,307 @@
         <header id="header" class="">
             <div class="row" id="headerHero">
                 <div class="col-12" id="headerHeroContent">
-                    <h1 id="hero-title"><span id="titleSpan1">Rolling Barrel</span> <span id="titleSpan2">Bowling & Pub</span></h1>
+                    <h1 id="hero-title"><span id="titleSpan1">Rolling Barrel</span> <span id="titleSpan2">Bowling &
+                            Pub</span></h1>
                     <h2 id="hero-subtext">Fények, ritmus, lendület. Merülj el a Rolling Barrel neon világában.</h2>
                     <div id="hero-btn-group">
                         <button id="booking-ctab">Foglalj Most!</button>
-                        <button id="prices-ctab">Árak</button>
+                        <button id="prices-ctab">Kapcsolat</button>
                     </div>
                 </div>
+            </div>
 
-                <!-- <div id="arrow-div">
-                    <span id="arrow-down-icon" class="bi bi-arrow-down"></span>
-                </div> -->
+            <div id="arrow-div">
+                <span id="arrow-down-icon" class="bi bi-arrow-down"></span>
             </div>
         </header>
 
         <!--MAIN CONTENT-->
         <main id="main-content">
-            <!--Main content and menu dropdown menu sites generated with DOM-->
+
+            <!--RÓLUNK-->
+            <section id="about-section" class="py-5">
+                <div class="container">
+                    <h2 class="main-section-title text-center text-md-start">
+                        <span class="no-glow">Rólunk</span>
+                    </h2>
+
+                    <hr class="mb-4 mt-0 main-section-hr">
+
+                    <div class="row align-items-center g-4">
+                        <div class="col-lg-6">
+                            <div class="about-text-card">
+                                <h3>Rolling Barrel élmény</h3>
+
+                                <p>
+                                    A Rolling Barrel Bowling & Pub egy olyan hely, ahol a neonfényes bowling pályák,
+                                    a lendületes zene és a modern pub hangulat találkozik. Nálunk nem csak játszani
+                                    jössz,
+                                    hanem kikapcsolódni, feltöltődni és közös élményeket gyűjteni.
+                                </p>
+
+                                <p>
+                                    Legyen szó baráti estéről, családi programról, randiról vagy céges eseményről,
+                                    nálunk mindenki megtalálja a saját ritmusát. A bowling mellett frissítő italok,
+                                    hangulatos asztalok és pub ételek várnak.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="about-highlight-card">
+                                <div class="about-highlight-item">
+                                    <span class="bi bi-bullseye"></span>
+                                    <div>
+                                        <h4>5 bowling pálya</h4>
+                                        <p>Neonfényes, lendületes pályák kezdőknek és profiknak.</p>
+                                    </div>
+                                </div>
+
+                                <div class="about-highlight-item">
+                                    <span class="bi bi-cup-straw"></span>
+                                    <div>
+                                        <h4>Pub hangulat</h4>
+                                        <p>Italok, ételek és laza atmoszféra egy helyen.</p>
+                                    </div>
+                                </div>
+
+                                <div class="about-highlight-item">
+                                    <span class="bi bi-people"></span>
+                                    <div>
+                                        <h4>Közös élmények</h4>
+                                        <p>Barátoknak, családoknak és csapatépítőknek is tökéletes választás.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!--HUB-->
+            <section class="hub-section py-5">
+                <div class="container">
+                    <h2 class="text-center text-md-start main-section-title"><span class="no-glow">Hangolódj</span> Rá
+                    </h2>
+
+                    <hr class="mb-5 mt-0 main-section-hr">
+
+                    <div class="row g-4">
+                        <div class="col-lg-8 col-md-12 col-sm-12">
+                            <div id="experienceCarousel" class="carousel vertical slide card hub-card"
+                                data-bs-ride="carousel" data-bs-interval="10000">
+
+                                <div class="carousel-indicators">
+                                    <button type="button" data-bs-target="#experienceCarousel" data-bs-slide-to="0"
+                                        class="active"></button>
+                                    <button type="button" data-bs-target="#experienceCarousel"
+                                        data-bs-slide-to="1"></button>
+                                </div>
+
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active p-4" id="carousel-slide1">
+                                        <div class="carousel-item-content">
+                                            <h3 class="card-title">Bowling Pályák</h3>
+                                            <p class="card-text">5 neon‑fényes pálya, garantált szórakozás. it, amet
+                                                consectetur adipisicing elit. Aliquid error, iure earum harum veritatis
+                                                iusto voluptatem mag</p>
+                                            <a href="#" class="btn hub-card-btn mt-3">Fedezd fel</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="carousel-item p-4" id="carousel-slide2">
+                                        <div class="carousel-item-content">
+                                            <h3 class="card-title">Pub Lounge</h3>
+                                            <p class="card-text">Kézműves koktélok és futurisztikus bárhangulat. Lorem
+                                                ipsum
+                                                dolor sit amet, Lorem, ipsum dolor sit amet consectetur adipisicing
+                                                elit.
+                                                Repudiandae, volu</p>
+                                            <a href="#" class="btn hub-card-btn mt-3">Láss többet</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-12 col-sm-12">
+                            <div class="card p-4 hub-card">
+                                <h3 class="card-title">Vault VIP</h3>
+                                <p class="card-text">Exkluzív privát lounge, zárt eseményekhez
+                                </p>
+                                <a href="#" class="btn hub-card-btn mt-3">Csatlakozz</a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5 col-md-12 col-sm-12">
+                            <div class="card p-4 hub-card">
+                                <h3 class="card-title">Gourmet Alley Eats</h3>
+                                <p class="card-text">Neon‑drizzled desszertek és truffle slider – a klasszikus pub étel
+                                    újragondolva.</p>
+                                <a href="#" class="btn hub-card-btn mt-3">Menü megtekintése</a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-7 col-md-12 col-sm-12">
+                            <div class="card p-4 hub-card">
+                                <h3 class="card-title">Live Atmosphere Hub</h3>
+                                <p class="card-text">DJ esték, élő zene és közösségi események a Rolling Barrel
+                                    szívében. Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                                <a href="#" class="btn hub-card-btn mt-3">Programok</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!--EVENTS-->
+            <section id="events-section" class="py-5">
+
+                <div class="container">
+                    <h2 class="main-section-title text-center text-md-start"><span class="no-glow">Közelgő</span>
+                        Események</h2>
+                    <hr class="mb-0 mt-0 main-section-hr">
+
+                    <div class="event-tags mt-3">
+                        <span id="reset-badges" class="badge filter-badge event-tag-all" data-cat="all">Összes</span>
+                        <span class="badge filter-badge event-tag-bowling" data-cat="bowling">Bowling</span>
+                        <span class="badge filter-badge event-tag-pub" data-cat="pub">Pub</span>
+                        <span class="badge filter-badge event-tag-competition" data-cat="competition">Verseny</span>
+                        <span class="badge filter-badge event-tag-music" data-cat="music">Zene</span>
+                    </div>
+                </div>
+
+                <div class="events-wrapper">
+                    <button id="events-left" class="scroll-btn left-btn">
+                        <span class="bi bi-chevron-left"></span>
+                    </button>
+
+                    <div id="events-row" class="events-scroll-row">
+                        <!-- JS tölti be -->
+                    </div>
+
+                    <button id="events-right" class="scroll-btn right-btn">
+                        <span class="bi bi-chevron-right"></span>
+                    </button>
+                </div>
+
+                <div class="container">
+                    <p id="events-info-p">
+                        * Az eseményekre való jelentkezéshez be kell jelentkezned.
+                    </p>
+                </div>
+
+            </section>
+
+            <!--VELEMENYEK-->
+            <section id="reviews-section" class="py-5">
+                <div class="container">
+                    <h2 class="main-section-title text-center text-md-start"><span class="no-glow">Rólunk</span> Mondták
+                    </h2>
+                    <hr class="mb-4 mt-0 main-section-hr">
+
+                    <p id="reviews-intro" class="mb-5">
+                        Fontos számunkra a véleményed, mert ezek alapján tudjuk még jobbá tenni a Rolling Barrel
+                        élményt.
+                    </p>
+
+                    <div id="reviews-list" class="row g-4 mb-5">
+
+                    </div>
+
+                    <div class="review-form-wrapper">
+                        <div class="card review-form-card p-4 p-md-5">
+                            <h3 class="review-form-title">Értékelj minket!</h3>
+                            <p class="review-form-subtitle">
+                                Írd meg, milyen volt nálunk a hangulat, a bowling vagy a pub élmény.
+                            </p>
+
+                            <div class="mb-3">
+                                <label for="review-comment" class="form-label review-label">Véleményed</label>
+                                <textarea id="review-comment" class="form-control review-textarea" rows="5"
+                                    maxlength="1000" placeholder="Írd ide a véleményed..."></textarea>
+                            </div>
+
+                            <div class="review-submit-row">
+                                <div>
+                                    <div id="review-stars" class="review-star-picker"
+                                        aria-label="Értékelés csillagokkal">
+                                        <button type="button" class="star-btn" data-value="1" aria-label="1 csillag">
+                                            <i class="bi bi-star"></i>
+                                        </button>
+                                        <button type="button" class="star-btn" data-value="2" aria-label="2 csillag">
+                                            <i class="bi bi-star"></i>
+                                        </button>
+                                        <button type="button" class="star-btn" data-value="3" aria-label="3 csillag">
+                                            <i class="bi bi-star"></i>
+                                        </button>
+                                        <button type="button" class="star-btn" data-value="4" aria-label="4 csillag">
+                                            <i class="bi bi-star"></i>
+                                        </button>
+                                        <button type="button" class="star-btn" data-value="5" aria-label="5 csillag">
+                                            <i class="bi bi-star"></i>
+                                        </button>
+                                    </div>
+
+                                    <p id="review-rating-text" class="mb-0 mt-2">Válassz csillagot</p>
+                                </div>
+
+                                <button id="review-submit-btn" class="btn" type="button">
+                                    Küldés
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
 
+        <div id="auth-container" class="d-none"></div>
         <div id="profile-container" class="d-none"></div>
+        <div id="reservation-container" class="d-none"></div>
+        <div id="menu-container" class="d-none"></div>
+        <div id="admin-container" class="d-none"></div>
 
         <!--FOOTER-->
-        <footer id="footer">
-            <!--Footer generated with DOM-->
+        <footer id="footer" class="py-5">
+            <div class="container">
+                <div class="row g-4 align-items-start">
+                    <div class="col-lg-4 col-md-6">
+                        <h3 class="footer-title">Rolling Barrel</h3>
+                        <p class="footer-text">
+                            Bowling & Pub neon hangulatban. Foglalj pályát, ülj be egy italra, vagy gyere el egy
+                            eseményre.
+                        </p>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6">
+                        <h4 class="footer-subtitle">Kapcsolat</h4>
+                        <p class="footer-text mb-1">
+                            <span class="bi bi-geo-alt"></span> 1111 Budapest, Neon utca 7.
+                        </p>
+                        <p class="footer-text mb-1">
+                            <span class="bi bi-telephone"></span> +36 30 123 4567
+                        </p>
+                        <p class="footer-text mb-1">
+                            <span class="bi bi-envelope"></span> info@rollingbarrel.hu
+                        </p>
+                    </div>
+
+                    <div class="col-lg-4 col-md-12">
+                        <h4 class="footer-subtitle">Nyitvatartás</h4>
+                        <p class="footer-text mb-1">Hétfő - Csütörtök: 14:00 - 22:00</p>
+                        <p class="footer-text mb-1">Péntek - Szombat: 14:00 - 01:00</p>
+                        <p class="footer-text mb-0">Vasárnap: 12:00 - 22:00</p>
+                    </div>
+                </div>
+
+                <hr class="footer-line">
+
+                <p class="footer-copy mb-0">
+                    © 2026 Rolling Barrel Bowling & Pub. Minden jog fenntartva.
+                </p>
+            </div>
         </footer>
     </div>
 
@@ -110,6 +387,32 @@
             </div>
         </div>
     </div>
+
+    <!--Login required-->
+    <div class="modal fade" id="loginRequiredModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p>Az eseményre való jelentkezéshez előbb be kell lépned.</p>
+                    <button type="button" id="loginRequiredModalX" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="loginRequiredModalReview" tabindex="-1" data-bs-backdrop="static"
+        data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p>Az értékeléshez előbb be kell lépned.</p>
+                    <button type="button" id="loginRequiredModalReviewX" class="btn-close"
+                        data-bs-dismiss="modal"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!--JAVASCRIPT-->
     <script type="module" src="./js/main.js"></script>
