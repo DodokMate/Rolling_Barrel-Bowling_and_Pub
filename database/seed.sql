@@ -18,18 +18,24 @@ INSERT INTO users (name, email, password, role) VALUES
 
 -- LANES
 INSERT INTO lanes (name, is_active) VALUES
-('Lane 1', TRUE),
-('Lane 2', TRUE),
-('Lane 3', TRUE),
-('Lane 4', TRUE);
+('Pálya 1', TRUE),
+('Pálya 2', TRUE),
+('Pálya 3', TRUE),
+('Pálya 4', TRUE),
+('Pálya 5', TRUE);
 
 -- TABLES (pub)
 INSERT INTO tables (table_number, capacity, is_active) VALUES
-(1, 4, TRUE),
-(2, 4, TRUE),
-(3, 6, TRUE),
-(4, 2, TRUE),
-(5, 8, TRUE);
+(1, 2, TRUE),
+(2, 2, TRUE),
+(3, 4, TRUE),
+(4, 4, TRUE),
+(5, 4, TRUE),
+(6, 6, TRUE),
+(7, 6, TRUE),
+(8, 6, TRUE),
+(9, 6, TRUE),
+(10, 6, TRUE);
 
 -- RESERVATIONS
 INSERT INTO reservations (user_id, lane_id, table_id, reservation_date, start_time, end_time, guests, notes) VALUES
