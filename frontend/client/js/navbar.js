@@ -228,6 +228,15 @@ export function initNavbar() {
             });
         }
 
+        if (link.text === "Foglalás") {
+            a.addEventListener("click", (e) => {
+                e.preventDefault();
+
+                localStorage.setItem("currentView", "reservation");
+                location.reload();
+            });
+        }
+
         if (link.text === "Menü") {
             a.addEventListener("click", (e) => {
                 e.preventDefault();
