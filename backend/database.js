@@ -77,6 +77,32 @@ async function updateEventFreeSlots(eventId, delta) {
     return result.affectedRows;
 }
 
+//REVIEWS (LAST 3)
+async function getReviews(limit = 3) {
+    const query = `
+        SELECT 
+            r.id,
+            r.rating,
+            r.comment,
+            r.created_at,
+            u.name AS user_name
+        FROM reviews r
+        JOIN users u ON u.id = r.user_id
+        ORDER BY r.created_at DESC
+        LIMIT ?
+    `;
+
+    const [rows] = await pool.execute(query, [Number(limit)]);
+    return rows;
+}
+
+//ADD REVIEW
+async function addReview(userId, rating, comment) {
+    const query = `INSERT INTO reviews (user_id, rating, comment) VALUES (?, ?, ?)`;
+    const [result] = await pool.execute(query, [userId, Number(rating), comment]);
+    return result.insertId;
+}
+
 //Exports
 module.exports = {
     test,
@@ -87,5 +113,7 @@ module.exports = {
     updateUserRegisteredEvents,
     getUserRegisteredEvents,
     updateEventFreeSlots,
-    getEventById
+    getEventById,
+    getReviews,
+    addReview
 };
