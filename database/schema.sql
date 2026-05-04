@@ -77,6 +77,7 @@ CREATE TABLE reviews (
     user_id INT NOT NULL,
     rating TINYINT NOT NULL,
     comment TEXT,
-    
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
