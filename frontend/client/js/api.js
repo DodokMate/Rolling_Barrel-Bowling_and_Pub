@@ -212,3 +212,55 @@ export async function toggleMenuFavourite(menuItemId, token) {
         };
     }
 }
+
+// FETCH AVAILABLE RESERVATION RESOURCES
+export async function fetchAvailableReservationResources(type, date, time, guests, token) {
+    try {
+        const query = new URLSearchParams({
+            type,
+            date,
+            time,
+            guests
+        });
+
+        const res = await fetch(`${BASE_URL}/api/reservations/available?${query.toString()}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        return await res.json();
+    } catch (err) {
+        console.error("Fetch available reservation resources error:", err);
+
+        return {
+            success: false,
+            message: "Nem sikerült lekérni a szabad helyeket.",
+            results: []
+        };
+    }
+}
+
+// CREATE RESERVATION
+export async function createReservation(reservationData, token) {
+    try {
+        const res = await fetch(`${BASE_URL}/api/reservations`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(reservationData)
+        });
+
+        return await res.json();
+    } catch (err) {
+        console.error("Create reservation error:", err);
+
+        return {
+            success: false,
+            message: "Nem sikerült elküldeni a foglalást."
+        };
+    }
+}
