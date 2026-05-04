@@ -360,6 +360,77 @@ async function isTableAvailable(tableId, reservationDate, startTime, endTime) {
     return rows.length === 0;
 }
 
+// UPDATE USER NAME
+async function updateUserName(userId, name) {
+    const query = `
+        UPDATE users
+        SET name = ?
+        WHERE id = ?
+    `;
+
+    await pool.execute(query, [name, userId]);
+}
+
+// GET USER BY ID
+async function getUserById(userId) {
+    const query = `
+        SELECT id, name, email, role, registered_events
+        FROM users
+        WHERE id = ?
+        LIMIT 1
+    `;
+
+    const [rows] = await pool.execute(query, [userId]);
+    return rows[0];
+}
+
+// GET USER LAST LANE RESERVATIONS
+async function getUserLastLaneReservations(userId, limit = 3) {
+    const query = `
+        SELECT 
+            r.id,
+            r.reservation_date,
+            r.start_time,
+            r.end_time,
+            r.guests,
+            r.status,
+            l.name AS lane_name
+        FROM reservations r
+        JOIN lanes l ON l.id = r.lane_id
+        WHERE r.user_id = ?
+        AND r.lane_id IS NOT NULL
+        ORDER BY r.reservation_date DESC, r.start_time DESC
+        LIMIT ?
+    `;
+
+    const [rows] = await pool.execute(query, [userId, Number(limit)]);
+    return rows;
+}
+
+// GET USER LAST TABLE RESERVATIONS
+async function getUserLastTableReservations(userId, limit = 3) {
+    const query = `
+        SELECT 
+            r.id,
+            r.reservation_date,
+            r.start_time,
+            r.end_time,
+            r.guests,
+            r.status,
+            t.table_number,
+            t.capacity
+        FROM reservations r
+        JOIN tables t ON t.id = r.table_id
+        WHERE r.user_id = ?
+        AND r.table_id IS NOT NULL
+        ORDER BY r.reservation_date DESC, r.start_time DESC
+        LIMIT ?
+    `;
+
+    const [rows] = await pool.execute(query, [userId, Number(limit)]);
+    return rows;
+}
+
 //Exports
 module.exports = {
     test,
@@ -386,5 +457,9 @@ module.exports = {
     createLaneReservation,
     createTableReservation,
     isLaneAvailable,
-    isTableAvailable
+    isTableAvailable,
+    updateUserName,
+    getUserById,
+    getUserLastLaneReservations,
+    getUserLastTableReservations
 };
