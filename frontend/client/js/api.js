@@ -89,11 +89,12 @@ export async function fetchEvents() {
 
         return data.results;
     } catch (err) {
-        console.error("Fetch error:", err);
+        console.error("Fetch hiba:", err);
         return [];
     }
 }
 
+//TOGGLE JOIN
 export async function toggleJoin(eventId, token) {
     const res = await fetch(`${BASE_URL}/api/toggleJoin`, {
         method: "POST",
@@ -105,4 +106,40 @@ export async function toggleJoin(eventId, token) {
     });
 
     return await res.json();
+}
+
+//FETCH REVIEWS
+export async function fetchReviews() {
+    try {
+        const res = await fetch(`${BASE_URL}/api/reviews`);
+        const data = await res.json();
+
+        return data.results || [];
+    } catch (err) {
+        console.error("Fetch hiba:", err);
+        return [];
+    }
+}
+
+//SUBMIT REVIEW
+export async function submitReview(rating, comment, token) {
+    try {
+        const res = await fetch(`${BASE_URL}/api/reviews`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ rating, comment })
+        });
+
+        return await res.json();
+    } catch (err) {
+        console.error("Küldés hiba:", err);
+
+        return {
+            success: false,
+            message: "Nem sikerült elküldeni a véleményt."
+        };
+    }
 }

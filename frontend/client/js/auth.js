@@ -5,8 +5,8 @@ import { regAlert } from "./navbar.js";
 import { loginAlert } from "./navbar.js";
 import { validateRegisterForm } from "./utils/formValidation.js";
 
-//Register and login form
-//Registration 
+//REGISTER AND LOGIN FORM
+//REGISTRATION 
 export function renderRegisterForm() {
     localStorage.setItem("currentView", "logreg");
 
@@ -18,7 +18,6 @@ export function renderRegisterForm() {
     authContainer.classList.remove("d-none");
     authContainer.innerHTML = "";
 
-    // --- FŐOLDAL GOMB ---
     const backBtn = document.createElement("button");
     backBtn.className = "btn logreg-back-btn mt-3";
     backBtn.innerHTML = `<i class="bi bi-arrow-bar-left me-2"></i> Főoldal`;
@@ -37,12 +36,9 @@ export function renderRegisterForm() {
     const row = document.createElement("div");
     row.className = "row auth-row";
 
-    // --- BAL OLDALI KÉP (4 oszlop) ---
-    // --- BAL OLDALI NEONOS HÁTTÉR ---
     const colLeft = document.createElement("div");
     colLeft.className = "col-lg-5 col-md-5 col-sm-12 auth-left";
 
-    // overlay + szöveg
     const overlay = document.createElement("div");
     overlay.className = "auth-left-overlay";
 
@@ -57,7 +53,6 @@ export function renderRegisterForm() {
     overlay.append(neonTitle, neonSubtitle, backBtn);
     colLeft.append(overlay);
 
-    // --- JOBB OLDALI KÁRTYA (8 oszlop) ---
     const colRight = document.createElement("div");
     colRight.className = "col-lg-7 col-md-7 col-sm-12 auth-right d-flex flex-column justify-content-center align-items-center";
 
@@ -163,7 +158,7 @@ export function renderRegisterForm() {
     authContainer.append(row);
 }
 
-//Login
+//LOGIN
 export function renderLoginForm() {
     localStorage.setItem("currentView", "logreg");
 
@@ -175,7 +170,6 @@ export function renderLoginForm() {
     authContainer.classList.remove("d-none");
     authContainer.innerHTML = "";
 
-    // --- FŐOLDAL GOMB ---
     const backBtn = document.createElement("button");
     backBtn.className = "btn logreg-back-btn mt-3";
     backBtn.innerHTML = `<i class="bi bi-arrow-bar-left me-2"></i> Főoldal`;
@@ -194,12 +188,9 @@ export function renderLoginForm() {
     const row = document.createElement("div");
     row.className = "row auth-row";
 
-    // --- BAL OLDALI KÉP (4 oszlop) ---
-    // --- BAL OLDALI NEONOS HÁTTÉR ---
     const colLeft = document.createElement("div");
     colLeft.className = "col-lg-5 col-md-5 col-sm-12 auth-left";
 
-    // overlay + szöveg
     const overlay = document.createElement("div");
     overlay.className = "auth-left-overlay";
 
@@ -214,7 +205,6 @@ export function renderLoginForm() {
     overlay.append(neonTitle, neonSubtitle, backBtn);
     colLeft.append(overlay);
 
-    // --- JOBB OLDALI KÁRTYA ---
     const colRight = document.createElement("div");
     colRight.className = "col-lg-7 col-md-7 col-sm-12 auth-right d-flex flex-column justify-content-center align-items-center";
 
