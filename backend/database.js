@@ -188,6 +188,178 @@ async function toggleMenuFavourite(userId, menuItemId) {
     };
 }
 
+// GET ACTIVE LANES
+async function getActiveLanes() {
+    const query = `
+        SELECT id, name
+        FROM lanes
+        WHERE is_active = TRUE
+        ORDER BY id ASC
+    `;
+
+    const [rows] = await pool.execute(query);
+    return rows;
+}
+
+// GET ACTIVE TABLES
+async function getActiveTables() {
+    const query = `
+        SELECT id, table_number, capacity
+        FROM tables
+        WHERE is_active = TRUE
+        ORDER BY table_number ASC
+    `;
+
+    const [rows] = await pool.execute(query);
+    return rows;
+}
+
+// GET AVAILABLE LANES
+async function getAvailableLanes(reservationDate, startTime, endTime) {
+    const query = `
+        SELECT l.id, l.name
+        FROM lanes l
+        WHERE l.is_active = TRUE
+        AND l.id NOT IN (
+            SELECT r.lane_id
+            FROM reservations r
+            WHERE r.lane_id IS NOT NULL
+            AND r.status = 'active'
+            AND r.reservation_date = ?
+            AND r.start_time < ?
+            AND r.end_time > ?
+        )
+        ORDER BY l.id ASC
+    `;
+
+    const [rows] = await pool.execute(query, [
+        reservationDate,
+        endTime,
+        startTime
+    ]);
+
+    return rows;
+}
+
+// GET AVAILABLE TABLES
+async function getAvailableTables(reservationDate, startTime, endTime, guests) {
+    const query = `
+        SELECT t.id, t.table_number, t.capacity
+        FROM tables t
+        WHERE t.is_active = TRUE
+        AND t.capacity >= ?
+        AND t.id NOT IN (
+            SELECT r.table_id
+            FROM reservations r
+            WHERE r.table_id IS NOT NULL
+            AND r.status = 'active'
+            AND r.reservation_date = ?
+            AND r.start_time < ?
+            AND r.end_time > ?
+        )
+        ORDER BY t.capacity ASC, t.table_number ASC
+    `;
+
+    const [rows] = await pool.execute(query, [
+        guests,
+        reservationDate,
+        endTime,
+        startTime
+    ]);
+
+    return rows;
+}
+
+// CREATE LANE RESERVATION
+async function createLaneReservation(userId, laneId, reservationDate, startTime, endTime, guests, notes = '') {
+    const query = `
+        INSERT INTO reservations 
+            (user_id, lane_id, table_id, reservation_date, start_time, end_time, guests, notes)
+        VALUES 
+            (?, ?, NULL, ?, ?, ?, ?, ?)
+    `;
+
+    const [result] = await pool.execute(query, [
+        userId,
+        laneId,
+        reservationDate,
+        startTime,
+        endTime,
+        guests,
+        notes
+    ]);
+
+    return result.insertId;
+}
+
+// CREATE TABLE RESERVATION
+async function createTableReservation(userId, tableId, reservationDate, startTime, endTime, guests, notes = '') {
+    const query = `
+        INSERT INTO reservations 
+            (user_id, lane_id, table_id, reservation_date, start_time, end_time, guests, notes)
+        VALUES 
+            (?, NULL, ?, ?, ?, ?, ?, ?)
+    `;
+
+    const [result] = await pool.execute(query, [
+        userId,
+        tableId,
+        reservationDate,
+        startTime,
+        endTime,
+        guests,
+        notes
+    ]);
+
+    return result.insertId;
+}
+
+// CHECK IF LANE IS AVAILABLE
+async function isLaneAvailable(laneId, reservationDate, startTime, endTime) {
+    const query = `
+        SELECT id
+        FROM reservations
+        WHERE lane_id = ?
+        AND status = 'active'
+        AND reservation_date = ?
+        AND start_time < ?
+        AND end_time > ?
+        LIMIT 1
+    `;
+
+    const [rows] = await pool.execute(query, [
+        laneId,
+        reservationDate,
+        endTime,
+        startTime
+    ]);
+
+    return rows.length === 0;
+}
+
+// CHECK IF TABLE IS AVAILABLE
+async function isTableAvailable(tableId, reservationDate, startTime, endTime) {
+    const query = `
+        SELECT id
+        FROM reservations
+        WHERE table_id = ?
+        AND status = 'active'
+        AND reservation_date = ?
+        AND start_time < ?
+        AND end_time > ?
+        LIMIT 1
+    `;
+
+    const [rows] = await pool.execute(query, [
+        tableId,
+        reservationDate,
+        endTime,
+        startTime
+    ]);
+
+    return rows.length === 0;
+}
+
 //Exports
 module.exports = {
     test,
@@ -206,5 +378,13 @@ module.exports = {
     isMenuFavourite,
     addMenuFavourite,
     removeMenuFavourite,
-    toggleMenuFavourite
+    toggleMenuFavourite,
+    getActiveLanes,
+    getActiveTables,
+    getAvailableLanes,
+    getAvailableTables,
+    createLaneReservation,
+    createTableReservation,
+    isLaneAvailable,
+    isTableAvailable
 };
