@@ -1,11 +1,13 @@
 //Main js file with the components
 import { initNavbar, tokenCountdown } from './navbar.js';
-import { userData, fetchEvents, toggleJoin, tokenAuthentication } from './api.js';
+import { userData, fetchEvents, toggleJoin, tokenAuthentication, fetchReviews, submitReview } from './api.js';
 import { renderEvents, filterByCategory } from './events.js';
+import{loadReviews} from './reviews.js';
 
 let allEvents = [];
 let registeredEvents = [];
 let currentFilter = 'all';
+let selectedRating = 0;
 
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem("token");
@@ -29,6 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     initNavbar();
     await loadEvents();
+    await loadReviews();
 
     function showLoginModal() {
         console.log(`[${new Date().toLocaleDateString()} - ${new Date().toLocaleTimeString()}] - Regisztráljon vagy jelentkezzen be fiókjába az eseményre való jelentkezéshez.`);
@@ -39,6 +42,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         modal.show();
 
         document.getElementById("loginRequiredModalX").addEventListener("click", () => {
+            modal.hide();
+        });
+    }
+
+    function showLoginModalReview() {
+        console.log(`[${new Date().toLocaleDateString()} - ${new Date().toLocaleTimeString()}] - Regisztráljon vagy jelentkezzen be fiókjába az értékelés leadásához.`);
+
+        const loginRequiredModalReview = document.getElementById("loginRequiredModalReview");
+        const modal = new bootstrap.Modal(loginRequiredModalReview);
+
+        modal.show();
+
+        document.getElementById("loginRequiredModalReviewX").addEventListener("click", () => {
             modal.hide();
         });
     }
@@ -57,6 +73,43 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     document.addEventListener("click", async (e) => {
+        const reviewStar = e.target.closest(".star-btn");
+        if (reviewStar) {
+            const value = Number(reviewStar.dataset.value);
+            updateReviewStars(value);
+            return;
+        }
+
+        const reviewSubmit = e.target.closest("#review-submit-btn");
+        if (reviewSubmit) {
+            const token = localStorage.getItem("token");
+            const reviewComment = document.getElementById("review-comment");
+            const reviewText = document.getElementById("review-rating-text");
+
+            if (!token) {
+                if (reviewText) reviewText.textContent = 'Be kell jelentkezned a vélemény beküldéséhez.';
+                showLoginModalReview();
+                return;
+            }
+
+            if (!selectedRating) {
+                if (reviewText) reviewText.textContent = 'Válassz legalább egy csillagot.';
+                return;
+            }
+
+            const response = await submitReview(selectedRating, reviewComment.value.trim(), token);
+            if (!response.success) {
+                if (reviewText) reviewText.textContent = response.message || 'Nem sikerült elküldeni a véleményedet.';
+                return;
+            }
+
+            reviewComment.value = '';
+            updateReviewStars(0);
+            if (reviewText) reviewText.textContent = 'Köszönjük az értékelésedet!';
+            await loadReviews();
+            return;
+        }
+
         const btn = e.target.closest(".event-join-btn");
         if (!btn) return;
 
@@ -71,7 +124,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const data = await toggleJoin(eventId, token);
 
         if (!data.success) {
-            console.error("toggleJoin failed:", data.message);
+            console.error("toggleJoin hiba:", data.message);
             return;
         }
 
@@ -92,7 +145,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             filterByCategory(currentFilter, allEvents, registeredEvents);
         }
     });
-
 
     const row = document.getElementById("events-row");
     const left = document.getElementById("events-left");
@@ -207,4 +259,28 @@ export async function loadEvents() {
 
     allEvents = await fetchEvents();
     renderEvents(allEvents, registeredEvents);
+}
+
+// UPDATE REVIEW STARS
+export function updateReviewStars(rating) {
+    selectedRating = rating;
+
+    document.querySelectorAll("#review-stars .star-btn").forEach(button => {
+        const value = Number(button.dataset.value);
+        const icon = button.querySelector("i");
+
+        if (icon) {
+            icon.className = value <= rating
+                ? "bi bi-star-fill"
+                : "bi bi-star";
+        }
+    });
+
+    const ratingText = document.getElementById("review-rating-text");
+
+    if (ratingText) {
+        ratingText.textContent = rating
+            ? `${rating} / 5 csillag`
+            : 'Válassz csillagot';
+    }
 }
