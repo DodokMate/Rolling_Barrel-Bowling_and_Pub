@@ -2,7 +2,7 @@
 import { initNavbar, tokenCountdown } from './navbar.js';
 import { userData, fetchEvents, toggleJoin, tokenAuthentication, fetchReviews, submitReview } from './api.js';
 import { renderEvents, filterByCategory } from './events.js';
-import{loadReviews} from './reviews.js';
+import { loadReviews } from './reviews.js';
 
 let allEvents = [];
 let registeredEvents = [];
@@ -190,6 +190,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById("main-content").classList.add("d-none");
 
         document.getElementById("profile-container").classList.add("d-none");
+        document.getElementById("menu-container").classList.add("d-none");
 
         import("./auth.js").then(module => {
             module.renderLoginForm();
@@ -208,6 +209,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById("main-content").classList.remove("d-none");
             document.getElementById("auth-container").classList.add("d-none");
             document.getElementById("profile-container").classList.add("d-none");
+            document.getElementById("menu-container").classList.add("d-none");
 
             await loadEvents();
 
@@ -222,7 +224,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById("headerNavbar").classList.remove("d-none");
             document.getElementById("header").classList.remove("d-none");
             document.getElementById("main-content").classList.remove("d-none");
+            document.getElementById("auth-container").classList.add("d-none");
             document.getElementById("profile-container").classList.add("d-none");
+            document.getElementById("menu-container").classList.add("d-none");
 
             await loadEvents();
 
@@ -241,6 +245,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+    if (view === "menu") {
+        document.getElementById("headerNavbar").classList.remove("d-none");
+        document.getElementById("header").classList.add("d-none");
+        document.getElementById("main-content").classList.add("d-none");
+        document.getElementById("auth-container").classList.add("d-none");
+        document.getElementById("profile-container").classList.add("d-none");
+        document.getElementById("reservation-container").classList.add("d-none");
+        document.getElementById("menu-container").classList.remove("d-none");
+
+        import("./menu.js").then(module => {
+            module.renderMenuPage();
+        });
+
+        document.body.classList.remove("preload");
+        return;
+    }
+
     document.body.classList.remove("preload");
 });
 
@@ -250,7 +271,7 @@ export async function loadEvents() {
 
     if (token) {
         const user = await userData();
-        registeredEvents = user.user.registered_events 
+        registeredEvents = user.user.registered_events
             ? JSON.parse(user.user.registered_events).map(Number)
             : [];
     } else {
