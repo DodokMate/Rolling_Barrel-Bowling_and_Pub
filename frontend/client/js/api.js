@@ -143,3 +143,72 @@ export async function submitReview(rating, comment, token) {
         };
     }
 }
+
+// FETCH MENU ITEMS
+export async function fetchMenuItems() {
+    try {
+        const res = await fetch(`${BASE_URL}/api/menu`);
+        const data = await res.json();
+
+        if (!data.success) {
+            console.error("Menu fetch failed:", data.message);
+            return [];
+        }
+
+        return data.results || [];
+    } catch (err) {
+        console.error("Fetch menu error:", err);
+        return [];
+    }
+}
+
+// FETCH MENU FAVOURITES
+export async function fetchMenuFavourites(token) {
+    if (!token) return [];
+
+    try {
+        const res = await fetch(`${BASE_URL}/api/menu/favourites`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        const data = await res.json();
+
+        if (!data.success) {
+            console.error("Menu favourites fetch failed:", data.message);
+            return [];
+        }
+
+        return data.results || [];
+    } catch (err) {
+        console.error("Fetch menu favourites error:", err);
+        return [];
+    }
+}
+
+// TOGGLE MENU FAVOURITE
+export async function toggleMenuFavourite(menuItemId, token) {
+    try {
+        const res = await fetch(`${BASE_URL}/api/menu/favourites/toggle`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                menu_item_id: menuItemId
+            })
+        });
+
+        return await res.json();
+    } catch (err) {
+        console.error("Toggle menu favourite error:", err);
+
+        return {
+            success: false,
+            message: "Nem sikerült módosítani a kedvencet."
+        };
+    }
+}
