@@ -195,10 +195,10 @@ export function initNavbar() {
 
     const links = [
         { text: "Főoldal", href: "#" },
+        { text: "Rólunk", href: "#" },
         { text: "Foglalás", href: "#" },
         { text: "Menü", href: "#" },
         { text: "Események", href: "#" },
-        { text: "Rólunk", href: "#" },
         { text: "Kapcsolat", href: "#" },
     ];
 
