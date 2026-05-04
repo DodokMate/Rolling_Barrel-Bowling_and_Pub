@@ -20,6 +20,9 @@ app.use('/api', authRoutes);
 const profileRoutes = require('./routes/profile.routes.js');
 app.use('/api', profileRoutes);
 
+const eventsRoutes = require('./routes/events.routes.js');
+app.use('/api', eventsRoutes);
+
 /* Test
 app.get('/', (req, res) => {
     res.send('Rolling Barrel backend is running');
