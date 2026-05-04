@@ -2036,6 +2036,98 @@ body.modal-open {
     /* background: radial-gradient(circle at top, rgba(52, 63, 88, 0.847) 0, #0b0e19 55%); */
 }
 
+#titleSpan2 {
+    color: white;
+    text-shadow:
+        0 0 8px rgba(255, 0, 170, 0.8),
+        0 0 16px rgba(255, 0, 170, 0.6),
+        0 0 32px rgba(255, 0, 170, 0.4);
+}
+
+#hero-subtext {
+    font-family: "Subtitle";
+    font-size: 2vw;
+    color: #ffffff;
+    margin: 0 5vw;
+}
+
+#hero-btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0.5em;
+    margin: 0.5em 0;
+}
+
+#hero-btn-group button {
+    color: white;
+    font-family: "Maintitle";
+    width: 20vw;
+    height: 6vh;
+    font-size: 1.5vw;
+    margin: 0.3em 0.5em;
+    border-radius: 2em;
+    backdrop-filter: blur(2px);
+    background-color: transparent;
+}
+
+#booking-ctab {
+    background-image: linear-gradient(120deg, rgba(0, 229, 255, 0.6), rgba(0, 229, 255, 0.2));
+    border: 1.5px solid rgba(0, 229, 255, 0.3);
+    transition: 0.7s;
+    animation: fadeUp 0.5s ease;
+}
+
+#booking-ctab:hover {
+    transition: 0.7s;
+    box-shadow:
+        0 0 8px rgba(0, 229, 255, 0.6),
+        0 0 16px rgba(0, 229, 255, 0.4),
+        0 0 32px rgba(0, 229, 255, 0.2);
+}
+
+#prices-ctab {
+    background-image: linear-gradient(120deg, rgba(255, 0, 170, 0.6), rgba(255, 0, 170, 0.2));
+    border: 1.5px solid rgba(255, 0, 170, 0.5);
+    transition: 0.7s;
+    animation: fadeUp 0.8s ease;
+}
+
+#prices-ctab:hover {
+    transition: 0.7s;
+    box-shadow:
+        0 0 8px rgba(255, 0, 170, 0.6),
+        0 0 16px rgba(255, 0, 170, 0.4),
+        0 0 32px rgba(255, 0, 170, 0.2);
+}
+
+/* #arrow-down-icon {
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    top: 18.5em;
+    font-size: 2em;
+    color: white;
+    overflow: hidden;
+    transform: translatey(0px);
+    animation: float 3s ease-in-out infinite;
+} */
+
+#arrow-div{
+    display: flex;
+    justify-content: center;
+    height: 5em;
+    border: 1px solid red;
+}
+
+#arrow-down-icon {
+    display: flex;
+    font-size: 4vh;
+    color: white;
+    animation: float 3s ease-in-out infinite;
+}
+
+/*MAIN*/
 .auth-page {
     min-height: calc(100vh - 140px);
     display: flex;
