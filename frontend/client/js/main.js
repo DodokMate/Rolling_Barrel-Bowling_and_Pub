@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        document.getElementById("headerNavbar").classList.add("d-none");
+        document.getElementById("headerNavbar").classList.remove("d-none");
         document.getElementById("header").classList.add("d-none");
         document.getElementById("main-content").classList.add("d-none");
         document.getElementById("auth-container").classList.add("d-none");

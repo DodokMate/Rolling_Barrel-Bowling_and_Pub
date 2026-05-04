@@ -272,6 +272,95 @@ header {
         0 0 32px rgba(0, 229, 255, 0.4);
 }
 
+/* ABOUT */
+
+#about-section {
+    background:
+        radial-gradient(circle at top left, rgba(0, 217, 255, 0.1), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(255, 43, 214, 0.11), transparent 36%),
+        #090813;
+    color: #ffffff;
+}
+
+.about-text-card,
+.about-highlight-card {
+    min-height: 23rem;
+    border-radius: 26px;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    background:
+        linear-gradient(145deg, rgba(25, 21, 47, 0.94), rgba(12, 12, 28, 0.94));
+    box-shadow:
+        0 0 30px rgba(0, 217, 255, 0.1),
+        0 0 20px rgba(255, 43, 214, 0.08);
+    padding: 2rem;
+}
+
+.about-text-card h3 {
+    font-size: 1.7rem;
+    font-weight: 900;
+    margin-bottom: 1.2rem;
+    color: #ffffff;
+    text-shadow:
+        0 0 8px rgba(0, 217, 255, 0.65),
+        0 0 18px rgba(0, 217, 255, 0.35);
+}
+
+.about-text-card p {
+    color: rgba(255, 255, 255, 0.74);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+}
+
+.about-highlight-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.about-highlight-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1rem;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.about-highlight-item span {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    font-size: 1.35rem;
+    color: #00d9ff;
+    background: rgba(0, 217, 255, 0.14);
+    border: 1px solid rgba(0, 217, 255, 0.55);
+    box-shadow: 0 0 18px rgba(0, 217, 255, 0.22);
+}
+
+.about-highlight-item:nth-child(2) span {
+    color: #ff2bd6;
+    background: rgba(255, 43, 214, 0.14);
+    border-color: rgba(255, 43, 214, 0.55);
+    box-shadow: 0 0 18px rgba(255, 43, 214, 0.22);
+}
+
+.about-highlight-item h4 {
+    margin: 0 0 0.35rem;
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #ffffff;
+}
+
+.about-highlight-item p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.68);
+    line-height: 1.55;
+}
+
 .hub-card {
     background: linear-gradient(120deg, rgba(20, 20, 40, 0.9), rgba(20, 20, 40, 0.1));
     border: 1px solid rgba(255, 0, 170, 0.4);
@@ -2278,7 +2367,7 @@ body.preload {
     }
 
     .main-section-hr {
-        margin: auto;
+        display: none;
     }
 
     .card.event-card {
@@ -2416,6 +2505,15 @@ body.preload {
     .profile-status {
         grid-column: 1 / -1;
         width: fit-content;
+    }
+
+    .about-text-card,
+    .about-highlight-card {
+        padding: 1.4rem;
+    }
+
+    .about-highlight-item {
+        flex-direction: column;
     }
 }
 
