@@ -108,15 +108,11 @@ export function initNavbar() {
 
         const textProfile = document.createTextNode("Profilom");
 
-        aProfile.addEventListener("click", async () => {
+        aProfile.addEventListener("click", (e) => {
+            e.preventDefault();
+
             localStorage.setItem("currentView", "profile");
-
-            document.getElementById("headerNavbar").classList.add("d-none");
-            document.getElementById("header").classList.add("d-none");
-            document.getElementById("main-content").classList.add("d-none");
-            document.getElementById("profile-container").classList.remove("d-none");
-
-            await renderProfilePage();
+            location.reload();
         });
 
         aProfile.append(iconProfile, textProfile)

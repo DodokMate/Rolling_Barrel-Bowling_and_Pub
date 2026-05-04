@@ -188,7 +188,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById("headerNavbar").classList.add("d-none");
         document.getElementById("header").classList.add("d-none");
         document.getElementById("main-content").classList.add("d-none");
-
         document.getElementById("profile-container").classList.add("d-none");
         document.getElementById("menu-container").classList.add("d-none");
 
@@ -240,6 +239,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById("main-content").classList.add("d-none");
         document.getElementById("auth-container").classList.add("d-none");
         document.getElementById("profile-container").classList.remove("d-none");
+        document.getElementById("reservation-container").classList.add("d-none");
+        document.getElementById("menu-container").classList.add("d-none");
 
         import("./profile.js").then(module => {
             module.renderProfilePage();
@@ -265,7 +266,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById("headerNavbar").classList.remove("d-none");
         document.getElementById("header").classList.add("d-none");
         document.getElementById("main-content").classList.add("d-none");
-
         document.getElementById("auth-container").classList.add("d-none");
         document.getElementById("profile-container").classList.add("d-none");
         document.getElementById("menu-container").classList.add("d-none");

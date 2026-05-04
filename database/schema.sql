@@ -81,7 +81,7 @@ CREATE TABLE events (
     start_time TIME,
     end_time TIME,
     free_slots INT DEFAULT 100,
-    category VARCHAR(50) NOT NULL DEFAULT 'bowling';
+    category VARCHAR(50) NOT NULL DEFAULT 'bowling'
 );
 
 -- REVIEWS
