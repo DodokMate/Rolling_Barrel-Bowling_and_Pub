@@ -310,3 +310,90 @@ export async function fetchProfileReservations(token) {
         };
     }
 }
+
+// ADMIN DASHBOARD
+export async function fetchAdminDashboard(token) {
+    try {
+        const res = await fetch(`${BASE_URL}/api/admin/dashboard`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        return await res.json();
+    } catch (err) {
+        console.error("Fetch admin dashboard error:", err);
+
+        return {
+            success: false,
+            message: "Nem sikerült lekérni az admin dashboard adatait."
+        };
+    }
+}
+
+// ADMIN USERS
+export async function fetchAdminUsers(token) {
+    try {
+        const res = await fetch(`${BASE_URL}/api/admin/users`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        return await res.json();
+    } catch (err) {
+        console.error("Fetch admin users error:", err);
+
+        return {
+            success: false,
+            message: "Nem sikerült lekérni a felhasználókat.",
+            results: []
+        };
+    }
+}
+
+// ADMIN MENU
+export async function fetchAdminMenuItems(token) {
+    try {
+        const res = await fetch(`${BASE_URL}/api/admin/menu`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        return await res.json();
+    } catch (err) {
+        console.error("Fetch admin menu error:", err);
+
+        return {
+            success: false,
+            message: "Nem sikerült lekérni a menüelemeket.",
+            results: []
+        };
+    }
+}
+
+// ADMIN EVENTS
+export async function fetchAdminEvents(token) {
+    try {
+        const res = await fetch(`${BASE_URL}/api/admin/events`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        return await res.json();
+    } catch (err) {
+        console.error("Fetch admin events error:", err);
+
+        return {
+            success: false,
+            message: "Nem sikerült lekérni az eseményeket.",
+            results: []
+        };
+    }
+}

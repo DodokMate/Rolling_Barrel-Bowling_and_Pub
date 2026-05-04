@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    initNavbar();
+    await initNavbar();
     await loadEvents();
     await loadReviews();
 
@@ -190,6 +190,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById("main-content").classList.add("d-none");
         document.getElementById("profile-container").classList.add("d-none");
         document.getElementById("menu-container").classList.add("d-none");
+        document.getElementById("admin-container").classList.add("d-none");
 
         import("./auth.js").then(module => {
             module.renderLoginForm();
@@ -209,6 +210,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById("auth-container").classList.add("d-none");
             document.getElementById("profile-container").classList.add("d-none");
             document.getElementById("menu-container").classList.add("d-none");
+            document.getElementById("admin-container").classList.add("d-none");
 
             await loadEvents();
 
@@ -227,6 +229,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById("profile-container").classList.add("d-none");
             document.getElementById("reservation-container").classList.add("d-none");
             document.getElementById("menu-container").classList.add("d-none");
+            document.getElementById("admin-container").classList.add("d-none");
 
             await loadEvents();
 
@@ -241,6 +244,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById("profile-container").classList.remove("d-none");
         document.getElementById("reservation-container").classList.add("d-none");
         document.getElementById("menu-container").classList.add("d-none");
+        document.getElementById("admin-container").classList.add("d-none");
 
         import("./profile.js").then(module => {
             module.renderProfilePage();
@@ -258,6 +262,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById("profile-container").classList.add("d-none");
             document.getElementById("reservation-container").classList.add("d-none");
             document.getElementById("menu-container").classList.add("d-none");
+            document.getElementById("admin-container").classList.add("d-none");
 
             document.body.classList.remove("preload");
             return;
@@ -270,6 +275,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById("profile-container").classList.add("d-none");
         document.getElementById("menu-container").classList.add("d-none");
         document.getElementById("reservation-container").classList.remove("d-none");
+        document.getElementById("admin-container").classList.add("d-none");
 
         import("./reservation.js").then(module => {
             module.renderReservationPage();
@@ -287,9 +293,46 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById("profile-container").classList.add("d-none");
         document.getElementById("reservation-container").classList.add("d-none");
         document.getElementById("menu-container").classList.remove("d-none");
+        document.getElementById("admin-container").classList.add("d-none");
 
         import("./menu.js").then(module => {
             module.renderMenuPage();
+        });
+
+        document.body.classList.remove("preload");
+        return;
+    }
+
+    if (view === "admin") {
+        if (!token || !res.success || res.user.role !== "admin") {
+            localStorage.setItem("currentView", "home");
+
+            document.getElementById("headerNavbar").classList.remove("d-none");
+            document.getElementById("header").classList.remove("d-none");
+            document.getElementById("main-content").classList.remove("d-none");
+
+            document.getElementById("auth-container").classList.add("d-none");
+            document.getElementById("profile-container").classList.add("d-none");
+            document.getElementById("reservation-container").classList.add("d-none");
+            document.getElementById("menu-container").classList.add("d-none");
+            document.getElementById("admin-container").classList.add("d-none");
+
+            document.body.classList.remove("preload");
+            return;
+        }
+
+        document.getElementById("headerNavbar").classList.remove("d-none");
+        document.getElementById("header").classList.add("d-none");
+        document.getElementById("main-content").classList.add("d-none");
+
+        document.getElementById("auth-container").classList.add("d-none");
+        document.getElementById("profile-container").classList.add("d-none");
+        document.getElementById("reservation-container").classList.add("d-none");
+        document.getElementById("menu-container").classList.add("d-none");
+        document.getElementById("admin-container").classList.remove("d-none");
+
+        import("./admin.js").then(module => {
+            module.renderAdminPage();
         });
 
         document.body.classList.remove("preload");

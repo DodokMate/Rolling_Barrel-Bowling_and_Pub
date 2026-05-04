@@ -431,6 +431,123 @@ async function getUserLastTableReservations(userId, limit = 3) {
     return rows;
 }
 
+// ADMIN STATS
+async function getAdminStats() {
+    const usersQuery = `
+        SELECT COUNT(*) AS total_users
+        FROM users
+    `;
+
+    const reservationsQuery = `
+        SELECT COUNT(*) AS total_active_reservations
+        FROM reservations
+        WHERE status = 'active'
+    `;
+
+    const menuQuery = `
+        SELECT COUNT(*) AS total_menu_items
+        FROM menu_items
+    `;
+
+    const eventsQuery = `
+        SELECT COUNT(*) AS total_events
+        FROM events
+    `;
+
+    const [[users]] = await pool.execute(usersQuery);
+    const [[reservations]] = await pool.execute(reservationsQuery);
+    const [[menuItems]] = await pool.execute(menuQuery);
+    const [[events]] = await pool.execute(eventsQuery);
+
+    return {
+        total_users: users.total_users,
+        total_active_reservations: reservations.total_active_reservations,
+        total_menu_items: menuItems.total_menu_items,
+        total_events: events.total_events
+    };
+}
+
+// ADMIN RECENT RESERVATIONS
+async function getAdminRecentReservations(limit = 10) {
+    const query = `
+        SELECT 
+            r.id,
+            r.reservation_date,
+            r.start_time,
+            r.end_time,
+            r.guests,
+            r.status,
+            u.name AS user_name,
+            u.email AS user_email,
+            l.name AS lane_name,
+            t.table_number,
+            t.capacity
+        FROM reservations r
+        JOIN users u ON u.id = r.user_id
+        LEFT JOIN lanes l ON l.id = r.lane_id
+        LEFT JOIN tables t ON t.id = r.table_id
+        ORDER BY r.reservation_date DESC, r.start_time DESC
+        LIMIT ?
+    `;
+
+    const [rows] = await pool.execute(query, [Number(limit)]);
+    return rows;
+}
+
+// ADMIN USERS
+async function getAdminUsers() {
+    const query = `
+        SELECT 
+            id,
+            name,
+            email,
+            role
+        FROM users
+        ORDER BY id DESC
+    `;
+
+    const [rows] = await pool.execute(query);
+    return rows;
+}
+
+// ADMIN MENU ITEMS
+async function getAdminMenuItems() {
+    const query = `
+        SELECT 
+            id,
+            name,
+            description,
+            price,
+            category,
+            subcategory
+        FROM menu_items
+        ORDER BY id DESC
+    `;
+
+    const [rows] = await pool.execute(query);
+    return rows;
+}
+
+// ADMIN EVENTS
+async function getAdminEvents() {
+    const query = `
+        SELECT 
+            id,
+            name,
+            description,
+            event_date,
+            start_time,
+            end_time,
+            free_slots,
+            category
+        FROM events
+        ORDER BY event_date DESC, start_time DESC
+    `;
+
+    const [rows] = await pool.execute(query);
+    return rows;
+}
+
 //Exports
 module.exports = {
     test,
@@ -461,5 +578,10 @@ module.exports = {
     updateUserName,
     getUserById,
     getUserLastLaneReservations,
-    getUserLastTableReservations
+    getUserLastTableReservations,
+    getAdminStats,
+    getAdminRecentReservations,
+    getAdminUsers,
+    getAdminMenuItems,
+    getAdminEvents
 };

@@ -1,10 +1,21 @@
 import { renderRegisterForm } from "./auth.js";
 import { renderLoginForm } from "./auth.js";
 import { renderProfilePage } from "./profile.js";
+import { userData } from "./api.js";
 
 //Initialize the navbar with DOM
-export function initNavbar() {
+export async function initNavbar() {
+
     const token = localStorage.getItem('token');
+    let currentUser = null;
+
+    if (token) {
+        const userResponse = await userData();
+
+        if (userResponse.success) {
+            currentUser = userResponse.user;
+        }
+    }
 
     const headerNavbar = document.getElementById("headerNavbar")
 
@@ -184,7 +195,38 @@ export function initNavbar() {
         aLogOut.append(iconLogOut, textLogOut)
         liLogOut.appendChild(aLogOut);
 
-        dropdownMenu.append(liProfile, topLine, liBooking, liFavourites, liEvents, bottomLine, liLogOut);
+        let liAdmin = null;
+
+        if (currentUser && currentUser.role === "admin") {
+            liAdmin = document.createElement("li");
+
+            const aAdmin = document.createElement("a");
+            aAdmin.href = "#";
+            aAdmin.className = "dropdown-item d-flex align-items-center gap-2";
+            aAdmin.id = "adminBtn";
+
+            const iconAdmin = document.createElement("span");
+            iconAdmin.className = "bi bi-shield-lock";
+
+            const textAdmin = document.createTextNode("Admin felület");
+
+            aAdmin.append(iconAdmin, textAdmin);
+
+            aAdmin.addEventListener("click", (e) => {
+                e.preventDefault();
+
+                localStorage.setItem("currentView", "admin");
+                location.reload();
+            });
+
+            liAdmin.appendChild(aAdmin);
+        }
+
+        if (liAdmin) {
+            dropdownMenu.append(liProfile, liAdmin, bottomLine, liLogOut);
+        } else {
+            dropdownMenu.append(liProfile, bottomLine, liLogOut);
+        }
     }
 
     iconsWrap.append(hamburgerBtn, profileLink, dropdownMenu);

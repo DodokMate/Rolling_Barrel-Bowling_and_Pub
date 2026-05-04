@@ -35,6 +35,9 @@ app.use('/api', reservationRouter);
 const profileRouter = require('./routes/profile.routes.js');
 app.use('/api', profileRouter);
 
+const adminRouter = require('./routes/admin.routes.js');
+app.use('/api', adminRouter);
+
 /* Test
 app.get('/', (req, res) => {
     res.send('Rolling Barrel backend is running');
