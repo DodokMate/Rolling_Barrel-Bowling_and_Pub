@@ -37,16 +37,22 @@ INSERT INTO reservations (user_id, lane_id, table_id, reservation_date, start_ti
 (2, NULL, 3, '2026-02-11', '19:00', '21:00', 4, 'Test table reservation');
 
 -- MENU ITEMS
-INSERT INTO menu_items (name, description, price, category) VALUES
--- Foods
-('Classic Burger', 'Beef burger with fries', 3490, 'food'),
-('Chicken Wings', 'Spicy wings with dip', 2990, 'food'),
-('French Fries', 'Crispy fries', 1490, 'food'),
+INSERT INTO menu_items (name, description, price, category, subcategory) VALUES
+-- FOODS
+('Barrel Burger', 'Szaftos marhahúspogácsa, cheddar sajt, bacon, házi szósz és ropogós saláta.', 3290, 'food', 'burger'),
+('Neon Cheese Burger', 'Dupla cheddar, grillezett húspogácsa, savanyított uborka és füstös szósz.', 3490, 'food', 'burger'),
+('Classic Pepperoni Pizza', 'Paradicsomos alap, mozzarella, pepperoni és oregánó.', 2990, 'food', 'pizza'),
+('Rolling BBQ Pizza', 'BBQ alap, csirke, bacon, lilahagyma és mozzarella.', 3390, 'food', 'pizza'),
+('Creamy Chicken Pasta', 'Tejszínes csirkés tészta parmezánnal és friss petrezselyemmel.', 2890, 'food', 'pasta'),
+('Spicy Arrabbiata', 'Paradicsomos, fokhagymás, csípős tészta olívaolajjal.', 2590, 'food', 'pasta'),
 
--- Drinks
-('Craft Beer', 'Local craft beer 0.5l', 1890, 'drink'),
-('Cola', '0.33l', 690, 'drink'),
-('Whiskey', 'Premium whiskey 4cl', 2490, 'drink');
+-- DRINKS
+('Barrel Mojito', 'Friss menta, lime, rum, szóda és jég.', 2490, 'drink', 'alcoholic'),
+('Neon Gin Tonic', 'Gin, tonic, citrus és neon hangulat.', 2690, 'drink', 'alcoholic'),
+('Craft Lager', 'Hideg csapolt lager sör.', 1490, 'drink', 'alcoholic'),
+('Virgin Berry Lemonade', 'Erdei gyümölcsös alkoholmentes limonádé.', 1590, 'drink', 'non_alcoholic'),
+('Classic Lemonade', 'Citromos házi limonádé friss mentával.', 1390, 'drink', 'non_alcoholic'),
+('Cola', 'Szénsavas üdítőital jéggel.', 890, 'drink', 'non_alcoholic');
 
 -- EVENTS
 INSERT INTO events (name, description, event_date, start_time, end_time, free_slots, category)

@@ -56,7 +56,20 @@ CREATE TABLE menu_items (
     name VARCHAR(100) NOT NULL,
     description TEXT,
     price DECIMAL(10,2) NOT NULL,
-    category ENUM('food', 'drink') DEFAULT 'food'
+    category ENUM('food', 'drink') NOT NULL,
+    subcategory ENUM('burger', 'pizza', 'pasta', 'alcoholic', 'non_alcoholic') NULL DEFAULT NULL
+);
+
+--MENU FAVOURITES   
+CREATE TABLE menu_favourites (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    menu_item_id INT NOT NULL,
+
+    UNIQUE KEY unique_user_menu_favourite (user_id, menu_item_id),
+
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (menu_item_id) REFERENCES menu_items(id) ON DELETE CASCADE
 );
 
 -- EVENTS
