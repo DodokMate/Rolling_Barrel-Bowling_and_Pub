@@ -226,6 +226,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById("main-content").classList.remove("d-none");
             document.getElementById("auth-container").classList.add("d-none");
             document.getElementById("profile-container").classList.add("d-none");
+            document.getElementById("reservation-container").classList.add("d-none");
             document.getElementById("menu-container").classList.add("d-none");
 
             await loadEvents();
@@ -243,6 +244,39 @@ document.addEventListener('DOMContentLoaded', async () => {
         import("./profile.js").then(module => {
             module.renderProfilePage();
         });
+    }
+
+    if (view === "reservation") {
+        if (!token) {
+            localStorage.setItem("currentView", "home");
+
+            document.getElementById("headerNavbar").classList.remove("d-none");
+            document.getElementById("header").classList.remove("d-none");
+            document.getElementById("main-content").classList.remove("d-none");
+            document.getElementById("auth-container").classList.add("d-none");
+            document.getElementById("profile-container").classList.add("d-none");
+            document.getElementById("reservation-container").classList.add("d-none");
+            document.getElementById("menu-container").classList.add("d-none");
+
+            document.body.classList.remove("preload");
+            return;
+        }
+
+        document.getElementById("headerNavbar").classList.remove("d-none");
+        document.getElementById("header").classList.add("d-none");
+        document.getElementById("main-content").classList.add("d-none");
+
+        document.getElementById("auth-container").classList.add("d-none");
+        document.getElementById("profile-container").classList.add("d-none");
+        document.getElementById("menu-container").classList.add("d-none");
+        document.getElementById("reservation-container").classList.remove("d-none");
+
+        import("./reservation.js").then(module => {
+            module.renderReservationPage();
+        });
+
+        document.body.classList.remove("preload");
+        return;
     }
 
     if (view === "menu") {
@@ -264,6 +298,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     document.body.classList.remove("preload");
 });
+
+const bookingCta = document.getElementById("booking-ctab");
+
+if (bookingCta) {
+    bookingCta.addEventListener("click", () => {
+        localStorage.setItem("currentView", "reservation");
+        location.reload();
+    });
+}
 
 //LOAD EVENTS
 export async function loadEvents() {
