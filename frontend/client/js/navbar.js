@@ -33,8 +33,16 @@ export async function initNavbar() {
     brand.addEventListener("click", (e) => {
         e.preventDefault();
 
-        localStorage.setItem("currentView", "home");
-        location.reload();
+        const currentView = localStorage.getItem("currentView") || "home";
+
+        if (currentView !== "home") {
+            localStorage.setItem("currentView", "home");
+            sessionStorage.setItem("scrollTarget", "header");
+            location.reload();
+            return;
+        }
+
+        scrollToSection("header");
     });
 
     const logo = document.createElement("img");
@@ -238,6 +246,22 @@ export async function initNavbar() {
     const ulNav = document.createElement("ul");
     ulNav.className = "navbar-nav d-flex m-auto";
 
+    function scrollToSection(sectionId) {
+        const targetElement = document.getElementById(sectionId);
+
+        if (!targetElement) return;
+
+        const navbar = document.getElementById("navbar");
+        const navbarHeight = navbar ? navbar.offsetHeight : 0;
+
+        const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - navbarHeight - 20;
+
+        window.scrollTo({
+            top: targetPosition,
+            behavior: "smooth"
+        });
+    }
+
     const links = [
         { text: "Főoldal", href: "#" },
         { text: "Rólunk", href: "#" },
@@ -260,9 +284,33 @@ export async function initNavbar() {
             a.addEventListener("click", (e) => {
                 e.preventDefault();
 
-                localStorage.setItem("currentView", "home");
+                const currentView = localStorage.getItem("currentView") || "home";
+
+                if (currentView !== "home") {
+                    localStorage.setItem("currentView", "home");
+                    sessionStorage.setItem("scrollTarget", "header");
+                    location.reload();
+                    return;
+                }
+
                 closeMobileMenu();
-                location.reload();
+                scrollToSection("header");
+            });
+        }
+
+        if (link.text === "Rólunk") {
+            a.addEventListener("click", (e) => {
+                e.preventDefault();
+
+                if (localStorage.getItem("currentView") !== "home") {
+                    localStorage.setItem("currentView", "home");
+                    sessionStorage.setItem("scrollTarget", "about-section");
+                    location.reload();
+                    return;
+                }
+
+                closeMobileMenu();
+                scrollToSection("about-section");
             });
         }
 
@@ -271,6 +319,8 @@ export async function initNavbar() {
                 e.preventDefault();
 
                 localStorage.setItem("currentView", "reservation");
+                sessionStorage.setItem("scrollTopAfterLoad", "true");
+                closeMobileMenu();
                 location.reload();
             });
         }
@@ -280,8 +330,41 @@ export async function initNavbar() {
                 e.preventDefault();
 
                 localStorage.setItem("currentView", "menu");
+                sessionStorage.setItem("scrollTopAfterLoad", "true");
                 closeMobileMenu();
                 location.reload();
+            });
+        }
+
+        if (link.text === "Események") {
+            a.addEventListener("click", (e) => {
+                e.preventDefault();
+
+                if (localStorage.getItem("currentView") !== "home") {
+                    localStorage.setItem("currentView", "home");
+                    sessionStorage.setItem("scrollTarget", "events-section");
+                    location.reload();
+                    return;
+                }
+
+                closeMobileMenu();
+                scrollToSection("events-section");
+            });
+        }
+
+        if (link.text === "Kapcsolat") {
+            a.addEventListener("click", (e) => {
+                e.preventDefault();
+
+                if (localStorage.getItem("currentView") !== "home") {
+                    localStorage.setItem("currentView", "home");
+                    sessionStorage.setItem("scrollTarget", "footer");
+                    location.reload();
+                    return;
+                }
+
+                closeMobileMenu();
+                scrollToSection("footer");
             });
         }
 

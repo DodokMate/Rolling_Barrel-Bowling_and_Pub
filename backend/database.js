@@ -49,13 +49,6 @@ async function getEvents() {
     return rows;
 }
 
-//GET EVENT BY ID
-async function getEventById(eventId) {
-    const query = "SELECT id, free_slots FROM events WHERE id = ?";
-    const [rows] = await pool.execute(query, [eventId]);
-    return rows[0];
-}
-
 //UPDATE USER'S REGISTERED EVENTS
 async function updateUserRegisteredEvents(userId, eventsId) {
     const query = "UPDATE users SET registered_events = ? WHERE id = ?";
@@ -548,6 +541,246 @@ async function getAdminEvents() {
     return rows;
 }
 
+// CREATE MENU ITEM
+async function createMenuItem(name, description, price, category, subcategory) {
+    const query = `
+        INSERT INTO menu_items 
+            (name, description, price, category, subcategory)
+        VALUES 
+            (?, ?, ?, ?, ?)
+    `;
+
+    const [result] = await pool.execute(query, [
+        name,
+        description,
+        price,
+        category,
+        subcategory || null
+    ]);
+
+    return result.insertId;
+}
+
+// UPDATE MENU ITEM
+async function updateMenuItem(id, name, description, price, category, subcategory) {
+    const query = `
+        UPDATE menu_items
+        SET 
+            name = ?,
+            description = ?,
+            price = ?,
+            category = ?,
+            subcategory = ?
+        WHERE id = ?
+    `;
+
+    const [result] = await pool.execute(query, [
+        name,
+        description,
+        price,
+        category,
+        subcategory || null,
+        id
+    ]);
+
+    return result.affectedRows;
+}
+
+// DELETE MENU ITEM
+async function deleteMenuItem(id) {
+    const query = `
+        DELETE FROM menu_items
+        WHERE id = ?
+    `;
+
+    const [result] = await pool.execute(query, [id]);
+    return result.affectedRows;
+}
+
+// GET MENU ITEM BY ID
+async function getMenuItemById(id) {
+    const query = `
+        SELECT 
+            id,
+            name,
+            description,
+            price,
+            category,
+            subcategory
+        FROM menu_items
+        WHERE id = ?
+        LIMIT 1
+    `;
+
+    const [rows] = await pool.execute(query, [id]);
+    return rows[0];
+}
+
+// ADMIN REVIEWS
+async function getAdminReviews() {
+    const query = `
+        SELECT 
+            r.id,
+            r.rating,
+            r.comment,
+            r.created_at,
+            u.name AS user_name,
+            u.email AS user_email
+        FROM reviews r
+        JOIN users u ON u.id = r.user_id
+        ORDER BY r.created_at DESC
+    `;
+
+    const [rows] = await pool.execute(query);
+    return rows;
+}
+
+// GET REVIEW BY ID
+async function getReviewById(id) {
+    const query = `
+        SELECT 
+            id,
+            user_id,
+            rating,
+            comment,
+            created_at
+        FROM reviews
+        WHERE id = ?
+        LIMIT 1
+    `;
+
+    const [rows] = await pool.execute(query, [id]);
+    return rows[0];
+}
+
+// DELETE REVIEW
+async function deleteReview(id) {
+    const query = `
+        DELETE FROM reviews
+        WHERE id = ?
+    `;
+
+    const [result] = await pool.execute(query, [id]);
+    return result.affectedRows;
+}
+
+// CREATE EVENT
+async function createEvent(name, description, eventDate, startTime, endTime, freeSlots, category) {
+    const query = `
+        INSERT INTO events 
+            (name, description, event_date, start_time, end_time, free_slots, category)
+        VALUES 
+            (?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    const [result] = await pool.execute(query, [
+        name,
+        description,
+        eventDate,
+        startTime,
+        endTime,
+        freeSlots,
+        category
+    ]);
+
+    return result.insertId;
+}
+
+// UPDATE EVENT
+async function updateEvent(id, name, description, eventDate, startTime, endTime, freeSlots, category) {
+    const query = `
+        UPDATE events
+        SET 
+            name = ?,
+            description = ?,
+            event_date = ?,
+            start_time = ?,
+            end_time = ?,
+            free_slots = ?,
+            category = ?
+        WHERE id = ?
+    `;
+
+    const [result] = await pool.execute(query, [
+        name,
+        description,
+        eventDate,
+        startTime,
+        endTime,
+        freeSlots,
+        category,
+        id
+    ]);
+
+    return result.affectedRows;
+}
+
+// DELETE EVENT
+async function deleteEvent(id) {
+    const query = `
+        DELETE FROM events
+        WHERE id = ?
+    `;
+
+    const [result] = await pool.execute(query, [id]);
+    return result.affectedRows;
+}
+
+// GET EVENT BY ID
+async function getEventById(id) {
+    const query = `
+        SELECT 
+            id,
+            name,
+            description,
+            event_date,
+            start_time,
+            end_time,
+            free_slots,
+            category
+        FROM events
+        WHERE id = ?
+        LIMIT 1
+    `;
+
+    const [rows] = await pool.execute(query, [id]);
+    return rows[0];
+}
+
+// GET RESERVATION BY ID
+async function getReservationById(id) {
+    const query = `
+        SELECT 
+            id,
+            user_id,
+            lane_id,
+            table_id,
+            reservation_date,
+            start_time,
+            end_time,
+            guests,
+            notes,
+            status
+        FROM reservations
+        WHERE id = ?
+        LIMIT 1
+    `;
+
+    const [rows] = await pool.execute(query, [id]);
+    return rows[0];
+}
+
+// DELETE RESERVATION
+async function deleteReservation(id) {
+    const query = `
+        DELETE FROM reservations
+        WHERE id = ?
+    `;
+
+    const [result] = await pool.execute(query, [id]);
+    return result.affectedRows;
+}
+
 //Exports
 module.exports = {
     test,
@@ -583,5 +816,17 @@ module.exports = {
     getAdminRecentReservations,
     getAdminUsers,
     getAdminMenuItems,
-    getAdminEvents
+    getAdminEvents,
+    getMenuItemById,
+    createMenuItem,
+    updateMenuItem,
+    deleteMenuItem,
+    getAdminReviews,
+    getReviewById,
+    deleteReview,
+    createEvent,
+    updateEvent,
+    deleteEvent,
+    getReservationById,
+    deleteReservation
 };

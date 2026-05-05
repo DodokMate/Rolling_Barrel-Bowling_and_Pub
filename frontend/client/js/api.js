@@ -214,7 +214,7 @@ export async function toggleMenuFavourite(menuItemId, token) {
 }
 
 // FETCH AVAILABLE RESERVATION RESOURCES
-export async function fetchAvailableReservationResources(type, date, time, guests, token) {
+export async function fetchAvailableReservationResources(type, date, time, guests, token = null) {
     try {
         const query = new URLSearchParams({
             type,
@@ -223,11 +223,15 @@ export async function fetchAvailableReservationResources(type, date, time, guest
             guests
         });
 
+        const headers = {};
+
+        if (token) {
+            headers["Authorization"] = `Bearer ${token}`;
+        }
+
         const res = await fetch(`${BASE_URL}/api/reservations/available?${query.toString()}`, {
             method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
+            headers
         });
 
         return await res.json();
@@ -394,6 +398,204 @@ export async function fetchAdminEvents(token) {
             success: false,
             message: "Nem sikerült lekérni az eseményeket.",
             results: []
+        };
+    }
+}
+
+// ADMIN CREATE MENU ITEM
+export async function createAdminMenuItem(menuItem, token) {
+    try {
+        const res = await fetch(`${BASE_URL}/api/admin/menu`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(menuItem)
+        });
+
+        return await res.json();
+    } catch (err) {
+        console.error("Create admin menu item error:", err);
+
+        return {
+            success: false,
+            message: "Nem sikerült létrehozni a menüelemet."
+        };
+    }
+}
+
+// ADMIN UPDATE MENU ITEM
+export async function updateAdminMenuItem(id, menuItem, token) {
+    try {
+        const res = await fetch(`${BASE_URL}/api/admin/menu/${id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(menuItem)
+        });
+
+        return await res.json();
+    } catch (err) {
+        console.error("Update admin menu item error:", err);
+
+        return {
+            success: false,
+            message: "Nem sikerült frissíteni a menüelemet."
+        };
+    }
+}
+
+// ADMIN DELETE MENU ITEM
+export async function deleteAdminMenuItem(id, token) {
+    try {
+        const res = await fetch(`${BASE_URL}/api/admin/menu/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        return await res.json();
+    } catch (err) {
+        console.error("Delete admin menu item error:", err);
+
+        return {
+            success: false,
+            message: "Nem sikerült törölni a menüelemet."
+        };
+    }
+}
+
+// ADMIN REVIEWS
+export async function fetchAdminReviews(token) {
+    try {
+        const res = await fetch(`${BASE_URL}/api/admin/reviews`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        return await res.json();
+    } catch (err) {
+        console.error("Fetch admin reviews error:", err);
+
+        return {
+            success: false,
+            message: "Nem sikerült lekérni a véleményeket.",
+            results: []
+        };
+    }
+}
+
+// ADMIN DELETE REVIEW
+export async function deleteAdminReview(id, token) {
+    try {
+        const res = await fetch(`${BASE_URL}/api/admin/reviews/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        return await res.json();
+    } catch (err) {
+        console.error("Delete admin review error:", err);
+
+        return {
+            success: false,
+            message: "Nem sikerült törölni a véleményt."
+        };
+    }
+}
+
+// ADMIN CREATE EVENT
+export async function createAdminEvent(eventData, token) {
+    try {
+        const res = await fetch(`${BASE_URL}/api/admin/events`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(eventData)
+        });
+
+        return await res.json();
+    } catch (err) {
+        console.error("Create admin event error:", err);
+
+        return {
+            success: false,
+            message: "Nem sikerült létrehozni az eseményt."
+        };
+    }
+}
+
+// ADMIN UPDATE EVENT
+export async function updateAdminEvent(id, eventData, token) {
+    try {
+        const res = await fetch(`${BASE_URL}/api/admin/events/${id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(eventData)
+        });
+
+        return await res.json();
+    } catch (err) {
+        console.error("Update admin event error:", err);
+
+        return {
+            success: false,
+            message: "Nem sikerült frissíteni az eseményt."
+        };
+    }
+}
+
+// ADMIN DELETE EVENT
+export async function deleteAdminEvent(id, token) {
+    try {
+        const res = await fetch(`${BASE_URL}/api/admin/events/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        return await res.json();
+    } catch (err) {
+        console.error("Delete admin event error:", err);
+
+        return {
+            success: false,
+            message: "Nem sikerült törölni az eseményt."
+        };
+    }
+}
+
+// ADMIN DELETE RESERVATION
+export async function deleteAdminReservation(id, token) {
+    try {
+        const res = await fetch(`${BASE_URL}/api/admin/reservations/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        return await res.json();
+    } catch (err) {
+        console.error("Delete admin reservation error:", err);
+
+        return {
+            success: false,
+            message: "Nem sikerült törölni a foglalást."
         };
     }
 }

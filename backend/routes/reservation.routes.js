@@ -13,7 +13,7 @@ function addOneHour(time) {
 }
 
 // GET AVAILABLE RESOURCES
-router.get('/reservations/available', authenticateToken, async (req, res) => {
+router.get('/reservations/available', async (req, res) => {
     console.log(`[${new Date().toLocaleDateString()} - ${new Date().toLocaleTimeString()}] GET - /reservations/available hívás érkezett.`);
 
     try {

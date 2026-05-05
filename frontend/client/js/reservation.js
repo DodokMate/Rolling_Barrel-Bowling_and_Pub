@@ -10,23 +10,17 @@ export async function renderReservationPage() {
 
     const token = localStorage.getItem("token");
 
-    if (!token) {
-        showLoginRequiredModal("A foglaláshoz előbb be kell jelentkezned.");
-        localStorage.setItem("currentView", "home");
-        location.reload();
-        return;
+    currentUser = null;
+
+    if (token) {
+        const userResponse = await userData();
+
+        if (userResponse.success) {
+            currentUser = userResponse.user;
+        } else {
+            localStorage.removeItem("token");
+        }
     }
-
-    const userResponse = await userData();
-
-    if (!userResponse.success) {
-        localStorage.removeItem("token");
-        localStorage.setItem("currentView", "home");
-        location.reload();
-        return;
-    }
-
-    currentUser = userResponse.user;
 
     reservationContainer.innerHTML = '';
     reservationContainer.classList.remove("d-none");
@@ -117,160 +111,110 @@ function createTypeSwitch() {
     return wrapper;
 }
 
-function createReservationForm() {
-    const form = document.createElement("div");
-    form.id = "reservation-form";
+function createReservationsTable(reservations) {
+    const block = createAdminBlock("Legutóbbi foglalások");
 
-    const userRow = document.createElement("div");
-    userRow.className = "row g-3 mb-3";
-
-    const nameCol = document.createElement("div");
-    nameCol.className = "col-md-6";
-
-    const nameLabel = document.createElement("label");
-    nameLabel.className = "form-label reservation-label";
-    nameLabel.textContent = "Név";
-
-    const nameInput = document.createElement("input");
-    nameInput.className = "form-control reservation-input";
-    nameInput.type = "text";
-    nameInput.value = currentUser.name || "";
-    nameInput.disabled = true;
-
-    nameCol.append(nameLabel, nameInput);
-
-    const emailCol = document.createElement("div");
-    emailCol.className = "col-md-6";
-
-    const emailLabel = document.createElement("label");
-    emailLabel.className = "form-label reservation-label";
-    emailLabel.textContent = "Email";
-
-    const emailInput = document.createElement("input");
-    emailInput.className = "form-control reservation-input";
-    emailInput.type = "email";
-    emailInput.value = currentUser.email || "";
-    emailInput.disabled = true;
-
-    emailCol.append(emailLabel, emailInput);
-    userRow.append(nameCol, emailCol);
-
-    const detailsRow = document.createElement("div");
-    detailsRow.className = "row g-3 mb-4";
-
-    const dateCol = document.createElement("div");
-    dateCol.className = "col-md-4";
-
-    const dateLabel = document.createElement("label");
-    dateLabel.className = "form-label reservation-label";
-    dateLabel.setAttribute("for", "reservation-date");
-    dateLabel.textContent = "Dátum";
-
-    const dateInput = document.createElement("input");
-    dateInput.id = "reservation-date";
-    dateInput.className = "form-control reservation-input";
-    dateInput.type = "date";
-
-    dateCol.append(dateLabel, dateInput);
-
-    const timeCol = document.createElement("div");
-    timeCol.className = "col-md-4";
-
-    const timeLabel = document.createElement("label");
-    timeLabel.className = "form-label reservation-label";
-    timeLabel.setAttribute("for", "reservation-time");
-    timeLabel.textContent = "Időpont";
-
-    const timeSelect = document.createElement("select");
-    timeSelect.id = "reservation-time";
-    timeSelect.className = "form-select reservation-input";
-
-    createTimeOptions(timeSelect);
-
-    timeCol.append(timeLabel, timeSelect);
-
-    const guestsCol = document.createElement("div");
-    guestsCol.className = "col-md-4";
-
-    const guestsLabel = document.createElement("label");
-    guestsLabel.className = "form-label reservation-label";
-    guestsLabel.setAttribute("for", "reservation-guests");
-    guestsLabel.textContent = "Hány fő?";
-
-    const guestsSelect = document.createElement("select");
-    guestsSelect.id = "reservation-guests";
-    guestsSelect.className = "form-select reservation-input";
-
-    for (let i = 1; i <= 6; i += 1) {
-        const option = document.createElement("option");
-        option.value = i;
-        option.textContent = `${i} fő`;
-        guestsSelect.appendChild(option);
+    if (!reservations.length) {
+        block.appendChild(createEmptyText("Még nincs foglalás."));
+        return block;
     }
 
-    guestsCol.append(guestsLabel, guestsSelect);
-    detailsRow.append(dateCol, timeCol, guestsCol);
+    const tableWrapper = createTable();
+    const table = tableWrapper.querySelector("table");
 
-    const resourceHeader = document.createElement("div");
-    resourceHeader.className = "reservation-resource-header";
+    const thead = document.createElement("thead");
+    const headerRow = document.createElement("tr");
 
-    const resourceTitle = document.createElement("h3");
-    resourceTitle.id = "reservation-resource-title";
-    resourceTitle.textContent = "Szabad pályák";
+    ["Felhasználó", "Típus", "Dátum", "Időpont", "Fő", "Státusz"].forEach(text => {
+        const th = document.createElement("th");
+        th.textContent = text;
+        headerRow.appendChild(th);
+    });
 
-    const resourceInfo = document.createElement("p");
-    resourceInfo.id = "reservation-resource-info";
-    resourceInfo.textContent = "Válassz dátumot és időpontot a szabad pályák megtekintéséhez.";
+    thead.appendChild(headerRow);
 
-    resourceHeader.append(resourceTitle, resourceInfo);
+    const tbody = document.createElement("tbody");
 
-    const resources = document.createElement("div");
-    resources.id = "reservation-resources";
-    resources.className = "reservation-resources-grid mb-4";
+    reservations.forEach(reservation => {
+        const tr = document.createElement("tr");
 
-    const notesWrapper = document.createElement("div");
-    notesWrapper.className = "mb-4";
+        const user = document.createElement("td");
 
-    const notesLabel = document.createElement("label");
-    notesLabel.className = "form-label reservation-label";
-    notesLabel.setAttribute("for", "reservation-notes");
-    notesLabel.textContent = "Megjegyzés";
+        const userBox = document.createElement("div");
+        userBox.className = "admin-user-cell";
 
-    const notesTextarea = document.createElement("textarea");
-    notesTextarea.id = "reservation-notes";
-    notesTextarea.className = "form-control reservation-input reservation-textarea";
-    notesTextarea.rows = 3;
-    notesTextarea.placeholder = "Opcionális megjegyzés...";
+        const avatar = document.createElement("div");
+        avatar.className = "admin-user-avatar";
+        avatar.textContent = getInitials(reservation.user_name);
 
-    notesWrapper.append(notesLabel, notesTextarea);
+        const userInfo = document.createElement("div");
 
-    const message = document.createElement("p");
-    message.id = "reservation-message";
-    message.className = "mb-3";
+        const userName = document.createElement("strong");
+        userName.textContent = reservation.user_name;
 
-    const submitBtn = document.createElement("button");
-    submitBtn.id = "reservation-submit-btn";
-    submitBtn.classList.add("btn");
-    submitBtn.type = "button";
-    submitBtn.textContent = "Foglalás elküldése";
+        const userEmail = document.createElement("small");
+        userEmail.textContent = reservation.user_email;
 
-    submitBtn.addEventListener("click", submitReservation);
+        userInfo.append(userName, userEmail);
+        userBox.append(avatar, userInfo);
+        user.appendChild(userBox);
 
-    form.append(
-        userRow,
-        detailsRow,
-        resourceHeader,
-        resources,
-        notesWrapper,
-        message,
-        submitBtn
-    );
+        const type = document.createElement("td");
 
-    dateInput.addEventListener("change", handleAvailabilityCheck);
-    timeSelect.addEventListener("change", handleAvailabilityCheck);
-    guestsSelect.addEventListener("change", handleAvailabilityCheck);
+        const typeBadge = document.createElement("span");
+        typeBadge.className = reservation.lane_name
+            ? "admin-type-badge lane"
+            : "admin-type-badge table";
 
-    return form;
+        const typeIcon = document.createElement("i");
+        typeIcon.className = reservation.lane_name
+            ? "bi bi-circle"
+            : "bi bi-cup-straw";
+
+        const typeText = document.createTextNode(
+            reservation.lane_name
+                ? reservation.lane_name
+                : `${reservation.table_number}. asztal`
+        );
+
+        typeBadge.append(typeIcon, typeText);
+        type.appendChild(typeBadge);
+
+        const date = document.createElement("td");
+        date.textContent = formatDate(reservation.reservation_date);
+
+        const time = document.createElement("td");
+        time.textContent = `${formatTime(reservation.start_time)} - ${formatTime(reservation.end_time)}`;
+
+        const guests = document.createElement("td");
+
+        const guestsBadge = document.createElement("span");
+        guestsBadge.className = "admin-soft-badge";
+        guestsBadge.innerHTML = `<i class="bi bi-people"></i> ${reservation.guests} fő`;
+
+        guests.appendChild(guestsBadge);
+
+        const status = document.createElement("td");
+
+        const statusBadge = document.createElement("span");
+        statusBadge.className = reservation.status === "active"
+            ? "admin-status active"
+            : "admin-status cancelled";
+
+        statusBadge.textContent = reservation.status === "active"
+            ? "Aktív"
+            : "Lemondva";
+
+        status.appendChild(statusBadge);
+
+        tr.append(user, type, date, time, guests, status);
+        tbody.appendChild(tr);
+    });
+
+    table.append(thead, tbody);
+    block.appendChild(tableWrapper);
+
+    return block;
 }
 
 function createTimeOptions(select) {
@@ -443,6 +387,14 @@ function clearResources() {
 }
 
 async function submitReservation() {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        setReservationMessage("A foglalás elküldéséhez előbb be kell jelentkezned.", false);
+        showReservationLoginModal();
+        return;
+    }
+
     const dateInput = document.getElementById("reservation-date");
     const timeInput = document.getElementById("reservation-time");
     const guestsInput = document.getElementById("reservation-guests");
@@ -464,8 +416,6 @@ async function submitReservation() {
 
         return;
     }
-
-    const token = localStorage.getItem("token");
 
     const reservationData = {
         type: selectedReservationType,
@@ -546,4 +496,39 @@ function resetReservationForm() {
             ? "Válassz dátumot és időpontot a szabad pályák megtekintéséhez."
             : "Válassz dátumot és időpontot a szabad asztalok megtekintéséhez.";
     }
+}
+
+function showReservationLoginModal() {
+    const loginRequiredModal = document.getElementById("loginRequiredModal");
+
+    if (!loginRequiredModal) return;
+
+    const modalText = loginRequiredModal.querySelector("p");
+
+    if (modalText) {
+        modalText.textContent = "A foglalás elküldéséhez előbb be kell jelentkezned.";
+    }
+
+    const modal = new bootstrap.Modal(loginRequiredModal);
+    modal.show();
+
+    const closeBtn = document.getElementById("loginRequiredModalX");
+
+    if (closeBtn) {
+        closeBtn.addEventListener("click", () => {
+            modal.hide();
+        }, { once: true });
+    }
+}
+
+function createTable() {
+    const responsive = document.createElement("div");
+    responsive.className = "admin-table-responsive";
+
+    const table = document.createElement("table");
+    table.className = "admin-table";
+
+    responsive.appendChild(table);
+
+    return responsive;
 }
