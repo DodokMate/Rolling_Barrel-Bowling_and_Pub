@@ -1871,6 +1871,47 @@ body.modal-open {
         0 0 18px rgba(0, 229, 255, 0.35);
 }
 
+.reservation-bottom-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.reservation-bottom-actions #reservation-message {
+    width: 100%;
+    margin-bottom: 0 !important;
+}
+
+.reservation-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.reservation-form-inner {
+    width: 100%;
+}
+
+#reservation-form-title {
+    font-family: "MainFont", sans-serif;
+    font-size: 1.7rem;
+    margin-bottom: 1.4rem;
+    color: #ffffff;
+    text-shadow:
+        0 0 8px rgba(255, 43, 214, 0.65),
+        0 0 18px rgba(255, 43, 214, 0.35);
+}
+
+.reservation-resource-panel {
+    width: 100%;
+    border-radius: 24px;
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
 #reservation-container {
     width: 100vw;
     min-height: 100vh;
@@ -3055,6 +3096,10 @@ body.modal-open {
     .menu-filter-badge {
         width: 100%;
         text-align: center;
+    }
+
+    .reservation-bottom-actions {
+        align-items: stretch;
     }
 
     #reservation-section {
