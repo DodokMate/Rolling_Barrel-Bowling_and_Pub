@@ -33,6 +33,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadEvents();
     await loadReviews();
 
+    const bookingCta = document.getElementById("booking-ctab");
+
+    if (bookingCta) {
+        bookingCta.addEventListener("click", () => {
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                showLoginModal();
+                return;
+            }
+
+            localStorage.setItem("currentView", "reservation");
+            sessionStorage.setItem("scrollTopAfterLoad", "true");
+            location.reload();
+        });
+    }
+
     function showLoginModal() {
         console.log(`[${new Date().toLocaleDateString()} - ${new Date().toLocaleTimeString()}] - Regisztráljon vagy jelentkezzen be fiókjába az eseményre való jelentkezéshez.`);
 
@@ -252,22 +269,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     if (view === "reservation") {
-        if (!token) {
-            localStorage.setItem("currentView", "home");
-
-            document.getElementById("headerNavbar").classList.remove("d-none");
-            document.getElementById("header").classList.remove("d-none");
-            document.getElementById("main-content").classList.remove("d-none");
-            document.getElementById("auth-container").classList.add("d-none");
-            document.getElementById("profile-container").classList.add("d-none");
-            document.getElementById("reservation-container").classList.add("d-none");
-            document.getElementById("menu-container").classList.add("d-none");
-            document.getElementById("admin-container").classList.add("d-none");
-
-            document.body.classList.remove("preload");
-            return;
-        }
-
         document.getElementById("headerNavbar").classList.remove("d-none");
         document.getElementById("header").classList.add("d-none");
         document.getElementById("main-content").classList.add("d-none");
@@ -278,7 +279,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById("admin-container").classList.add("d-none");
 
         import("./reservation.js").then(module => {
-            module.renderReservationPage();
+            module.renderReservationPage().then(() => {
+                scrollToTopAfterLoad();
+            });
         });
 
         document.body.classList.remove("preload");
@@ -296,9 +299,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById("admin-container").classList.add("d-none");
 
         import("./menu.js").then(module => {
-            module.renderMenuPage();
+            module.renderMenuPage().then(() => {
+                scrollToTopAfterLoad();
+            });
         });
-
         document.body.classList.remove("preload");
         return;
     }
@@ -339,17 +343,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
+    handlePendingScroll()
+
     document.body.classList.remove("preload");
 });
-
-const bookingCta = document.getElementById("booking-ctab");
-
-if (bookingCta) {
-    bookingCta.addEventListener("click", () => {
-        localStorage.setItem("currentView", "reservation");
-        location.reload();
-    });
-}
 
 //LOAD EVENTS
 export async function loadEvents() {
@@ -390,4 +387,73 @@ export function updateReviewStars(rating) {
             ? `${rating} / 5 csillag`
             : 'Válassz csillagot';
     }
+}
+
+//HANDLE PENDING SCROLL
+function handlePendingScroll() {
+    const scrollTarget = sessionStorage.getItem("scrollTarget");
+
+    if (!scrollTarget) return;
+
+    sessionStorage.removeItem("scrollTarget");
+
+    setTimeout(() => {
+        const targetElement = document.getElementById(scrollTarget);
+
+        if (!targetElement) return;
+
+        const navbar = document.getElementById("navbar");
+        const navbarHeight = navbar ? navbar.offsetHeight : 0;
+
+        const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - navbarHeight - 20;
+
+        window.scrollTo({
+            top: targetPosition,
+            behavior: "smooth"
+        });
+    }, 400);
+}
+
+//SCROLL TO TOP AFTER LOAD
+function scrollToTopAfterLoad() {
+    const shouldScrollTop = sessionStorage.getItem("scrollTopAfterLoad");
+
+    if (!shouldScrollTop) return;
+
+    sessionStorage.removeItem("scrollTopAfterLoad");
+
+    setTimeout(() => {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "auto"
+        });
+    }, 50);
+}
+
+async function deleteReservationFromAdmin(id) {
+    const confirmDelete = confirm("Biztosan törölni szeretnéd ezt a foglalást?");
+
+    if (!confirmDelete) return;
+
+    const token = localStorage.getItem("token");
+    const response = await deleteAdminReservation(id, token);
+
+    if (!response.success) {
+        alert(response.message || "Nem sikerült törölni a foglalást.");
+        return;
+    }
+
+    adminDashboard.reservations = response.results || [];
+
+    refreshAdminReservationsPanel();
+}
+
+function refreshAdminReservationsPanel() {
+    const reservationsPanel = document.querySelector('.admin-panel[data-panel="reservations"]');
+
+    if (!reservationsPanel) return;
+
+    reservationsPanel.innerHTML = "";
+    reservationsPanel.appendChild(createReservationsTable(adminDashboard.reservations || []));
 }
